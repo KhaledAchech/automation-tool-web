@@ -1,0 +1,25 @@
+package com.clevory.back.model.Network;
+
+import com.clevory.back.model.user.User;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+@Entity
+@Getter @Setter
+public class Interface {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String ipAddress;
+    private String type;
+    private String speed;
+    private String state;
+
+    //will be managed by :
+    @ManyToOne
+    private User user;
+}
