@@ -1,12 +1,9 @@
-package com.clevory.back.model.Network;
+package com.clevory.back.model.network;
 
-import com.clevory.back.model.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,9 +20,9 @@ public class Topology {
     @Column(length = 50)
     private String type;
 
-    //will be managed by :
-    @ManyToOne
-    private User user;
+//    //will be managed by :
+//    @ManyToOne
+//    private User user;
 
     //Belongs to :
     @ManyToOne

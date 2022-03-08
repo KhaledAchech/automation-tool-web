@@ -1,6 +1,5 @@
-package com.clevory.back.model.Network;
+package com.clevory.back.model.network;
 
-import com.clevory.back.model.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,9 +19,9 @@ public class Interface {
     private String speed;
     private String state;
 
-    //will be managed by :
-    @ManyToOne
-    private User user;
+//    //will be managed by :
+//    @ManyToOne
+//    private User user;
 
     //Belongs to :
     @ManyToMany(mappedBy = "deviceInterfaces")

@@ -1,6 +1,5 @@
-package com.clevory.back.model.Network;
+package com.clevory.back.model.network;
 
-import com.clevory.back.model.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,9 +18,9 @@ public class Protocol {
     private String type;
     private String configuration;
 
-    //will be managed by :
-    @ManyToOne
-    private User user;
+//    //will be managed by :
+//    @ManyToOne
+//    private User user;
 
     //run :
     @ManyToMany(mappedBy = "deviceProtocols")
