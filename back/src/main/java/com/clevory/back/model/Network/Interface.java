@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -22,4 +23,13 @@ public class Interface {
     //will be managed by :
     @ManyToOne
     private User user;
+
+    //Belongs to :
+    @ManyToMany(mappedBy = "deviceInterfaces")
+    Set<Device> devices;
+
+    //Use :
+    @Column(nullable = true)
+    @OneToOne
+    private Protocol protocol;
 }
