@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -27,4 +28,25 @@ public class Device {
     //will be managed by :
     @ManyToOne
     private User user;
+
+    //Belongs to :
+    @ManyToMany(mappedBy = "topologyDevices")
+    Set<Topology> topologies;
+
+    //Have :
+    @ManyToMany
+    @JoinTable(
+            name = "device_interface",
+            joinColumns = @JoinColumn(name = "device_id"),
+            inverseJoinColumns = @JoinColumn(name = "interface_id"))
+    Set<Interface> deviceInterfaces;
+
+    //Run on:
+    @ManyToMany
+    @JoinTable(
+            name = "device_protocols",
+            joinColumns = @JoinColumn(name = "device_id"),
+            inverseJoinColumns = @JoinColumn(name = "protocol_id"))
+    Set<Interface> deviceProtocols;
+
 }
