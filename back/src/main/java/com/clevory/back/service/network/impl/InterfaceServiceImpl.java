@@ -3,32 +3,38 @@ package com.clevory.back.service.network.impl;
 import com.clevory.back.model.network.Interface;
 import com.clevory.back.repository.network.InterfaceRepository;
 import com.clevory.back.service.network.itf.InterfaceService;
-import org.springframework.stereotype.Component;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Component
+@Service
+@AllArgsConstructor
 public class InterfaceServiceImpl implements InterfaceService {
 
     private InterfaceRepository interfaceRepository;
 
     @Override
-    public List<Interface> getInterfaces() {
-        return null;
+    public List<Interface> getInterfaces()
+    {
+        return interfaceRepository.findAll();
     }
 
     @Override
     public List<Interface> deleteInterface(long id) {
-        return null;
+        interfaceRepository.deleteById(id);
+        return interfaceRepository.findAll();
     }
 
     @Override
-    public Interface getInterfaceById(long id) {
-        return null;
+    public Interface getInterfaceById(long id)
+    {
+        return interfaceRepository.getById(id);
     }
 
     @Override
     public Interface saveOrUpdate(Interface anInterface) {
-        return null;
+        interfaceRepository.save(anInterface);
+        return anInterface;
     }
 }
