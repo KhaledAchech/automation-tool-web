@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Table(name = "INTERFACE")
 @Getter @Setter
 public class Interface {
 
@@ -28,7 +29,6 @@ public class Interface {
     Set<Device> devices;
 
     //Use :
-    @Column(nullable = true)
     @OneToOne
     private Protocol protocol;
 }

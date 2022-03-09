@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.sql.Date;
 
 @Entity
+@Table(name = "CONFIGURATION")
 @Getter @Setter
 public class Configuration {
 
