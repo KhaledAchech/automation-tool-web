@@ -1,6 +1,5 @@
-package com.clevory.back.model.Network;
+package com.clevory.back.model.network;
 
-import com.clevory.back.model.user.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,9 +24,9 @@ public class Device {
     @OneToOne
     private Configuration configuration;
 
-    //will be managed by :
-    @ManyToOne
-    private User user;
+//    //will be managed by :
+//    @ManyToOne
+//    private User user;
 
     //Belongs to :
     @ManyToMany(mappedBy = "topologyDevices")

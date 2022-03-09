@@ -1,6 +1,4 @@
-package com.clevory.back.model.Network;
-
-import com.clevory.back.model.user.User;
+package com.clevory.back.model.network;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,9 +14,9 @@ public class Tenant {
     @Column(length = 50)
     private String name;
 
-    //will be managed by :
-    @ManyToOne
-    private User user;
+//    //will be managed by :
+//    @ManyToOne
+//    private User user;
 
     //Have multiple topologies :
     @OneToMany(mappedBy = "tenant", cascade = CascadeType.REMOVE)
