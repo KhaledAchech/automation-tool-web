@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
+@Table(name = "TOPOLOGY")
 @Getter @Setter
 public class Topology {
 
