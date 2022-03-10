@@ -1,0 +1,34 @@
+<mat-nav-list>
+    <div class="profile-card">
+        <div class="header">
+            <h2>Shiba Inu</h2>
+            <h4>example@email.com</h4>
+        </div>
+        <img src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Shiba Inu">
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <h2 matSubheader>Pages</h2>
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/"><mat-icon>desktop_windows</mat-icon>Monitor</a>
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/"
+        [matMenuTriggerFor]="configurations">
+        <mat-icon>settings</mat-icon>
+    Configurations</a>
+    <mat-menu #configurations="matMenu" xPosition="before">
+        <a mat-menu-item><mat-icon>device_hub</mat-icon>Topologies</a>
+        <a mat-menu-item [matMenuTriggerFor]="Devices" routerLinkActive="list-item-active" routerLink="/devices"><mat-icon>devices_other</mat-icon>Devices</a>
+        <a mat-menu-item><mat-icon>graphic_eq</mat-icon>Protocols</a>
+    </mat-menu>
+    <mat-menu #Devices="matMenu">
+        <a mat-menu-item><mat-icon>router</mat-icon>Interfaces</a>
+        <a mat-menu-item><mat-icon>settings</mat-icon>Configuration</a>
+    </mat-menu>
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/tenants"><mat-icon> local_library</mat-icon>Tenants</a>
+    <mat-divider></mat-divider>
+
+    <h2 matSubheader> Administration </h2>
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/"><mat-icon>perm_identity</mat-icon>Profil</a>
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/"><mat-icon>group</mat-icon>Users</a>
+</mat-nav-list>
+
