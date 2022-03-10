@@ -16,13 +16,13 @@
         <mat-icon>settings</mat-icon>
     Configurations</a>
     <mat-menu #configurations="matMenu" xPosition="before">
-        <a mat-menu-item><mat-icon>device_hub</mat-icon>Topologies</a>
+        <a mat-menu-item routerLinkActive="list-item-active" routerLink="/topologies"><mat-icon>device_hub</mat-icon>Topologies</a>
         <a mat-menu-item [matMenuTriggerFor]="Devices" routerLinkActive="list-item-active" routerLink="/devices"><mat-icon>devices_other</mat-icon>Devices</a>
-        <a mat-menu-item><mat-icon>graphic_eq</mat-icon>Protocols</a>
+        <a mat-menu-item routerLinkActive="list-item-active" routerLink="/protocols"><mat-icon>graphic_eq</mat-icon>Protocols</a>
     </mat-menu>
     <mat-menu #Devices="matMenu">
-        <a mat-menu-item><mat-icon>router</mat-icon>Interfaces</a>
-        <a mat-menu-item><mat-icon>settings</mat-icon>Configuration</a>
+        <a mat-menu-item routerLinkActive="list-item-active" routerLink="/interfaces"><mat-icon>router</mat-icon>Interfaces</a>
+        <a mat-menu-item routerLinkActive="list-item-active" routerLink="/configurations"><mat-icon>settings</mat-icon>Configuration</a>
     </mat-menu>
     <a mat-list-item routerLinkActive="list-item-active" routerLink="/tenants"><mat-icon> local_library</mat-icon>Tenants</a>
     <mat-divider></mat-divider>
