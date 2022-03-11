@@ -12,6 +12,9 @@ import { DevicesComponent } from 'src/app/modules/devices/devices.component';
 import { ConfigurationsComponent } from 'src/app/modules/configurations/configurations.component';
 import { ProtocolsComponent } from 'src/app/modules/protocols/protocols.component';
 import { InterfacesComponent } from 'src/app/modules/interfaces/interfaces.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import {MatCardModule} from '@angular/material/card';
+
 
 @NgModule({
   declarations: [
@@ -29,7 +32,9 @@ import { InterfacesComponent } from 'src/app/modules/interfaces/interfaces.compo
     RouterModule,
     SharedModule,
     MatSidenavModule,
-    MatDividerModule
+    MatDividerModule,
+    FlexLayoutModule,
+    MatCardModule
   ]
 })
 export class DefaultModule { }

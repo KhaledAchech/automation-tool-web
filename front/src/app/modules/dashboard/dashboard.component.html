@@ -1,19 +1,38 @@
 <div>
-    Line charts
+    <app-widget-area></app-widget-area>
 </div>
+
+<br>
 
 <mat-divider></mat-divider>
 
-<div>
-    <div>Line chart</div>
-    <div>Line chart</div>
-    <div>Line chart</div>
-    <div>Line chart</div>
+<br>
+
+<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20px">
+    <div fxFlex="60">
+        <app-widget-dynamic></app-widget-dynamic>
+    </div>
+    <div fxFlex="40">
+        <app-widget-pie></app-widget-pie>
+    </div>
 </div>
+
+<br>
 
 <mat-divider></mat-divider>
 
-<div>
-    <div>Table</div>
-    <div>Pie Chart</div>
+<br>
+<div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20" class="stat">
+    <mat-card fxFlex="25">
+        <app-widget-card label="Full Connectivity" total="18k" percentage="50%"></app-widget-card>
+    </mat-card>
+    <mat-card fxFlex="25">
+        <app-widget-card label="Partial Connectivity" total="18k" percentage="50%"></app-widget-card>
+    </mat-card>
+    <mat-card fxFlex="25">
+        <app-widget-card label="No Connectivity" total="18k" percentage="50%"></app-widget-card>
+    </mat-card>
+    <mat-card fxFlex="25">
+        <app-widget-card label="Routing Latency" total="18k" percentage="50%"></app-widget-card>
+    </mat-card>
 </div>

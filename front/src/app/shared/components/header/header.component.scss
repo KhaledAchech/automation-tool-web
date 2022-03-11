@@ -1,3 +1,14 @@
+:host {
+  .mat-icon {
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+}
+
+.header-btn-class:hover {
+  background-color: #caccce;
+  color: rgb(44, 44, 44);
+}
 ul li {
   list-style: none;
 }
