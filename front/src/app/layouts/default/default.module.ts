@@ -14,7 +14,8 @@ import { ProtocolsComponent } from 'src/app/modules/protocols/protocols.componen
 import { InterfacesComponent } from 'src/app/modules/interfaces/interfaces.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatCardModule} from '@angular/material/card';
-
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,9 @@ import {MatCardModule} from '@angular/material/card';
     MatSidenavModule,
     MatDividerModule,
     FlexLayoutModule,
-    MatCardModule
+    MatCardModule,
+    MatPaginatorModule,
+    MatTableModule
   ]
 })
 export class DefaultModule { }

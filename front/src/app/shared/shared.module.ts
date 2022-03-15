@@ -16,6 +16,10 @@ import { HighchartsChartModule } from 'highcharts-angular';
 import { CardComponent } from './widgets/card/card.component';
 import { PieComponent } from './widgets/pie/pie.component';
 import { DynamicComponent } from './widgets/dynamic/dynamic.component';
+import { TableComponent } from './widgets/table/table.component';
+import { SearchBarComponent } from './widgets/search-bar/search-bar.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import {MatTableModule} from '@angular/material/table';
 
 @NgModule({
   declarations: [
@@ -25,7 +29,9 @@ import { DynamicComponent } from './widgets/dynamic/dynamic.component';
     AreaComponent,
     CardComponent,
     PieComponent,
-    DynamicComponent
+    DynamicComponent,
+    TableComponent,
+    SearchBarComponent
   ],
   imports: [
     CommonModule,
@@ -37,7 +43,9 @@ import { DynamicComponent } from './widgets/dynamic/dynamic.component';
     MatMenuModule,
     MatListModule,
     RouterModule,
-    HighchartsChartModule
+    HighchartsChartModule,
+    MatPaginatorModule,
+    MatTableModule
   ],
   exports: [
     HeaderComponent,
@@ -46,7 +54,9 @@ import { DynamicComponent } from './widgets/dynamic/dynamic.component';
     AreaComponent,
     CardComponent,
     PieComponent,
-    DynamicComponent
+    DynamicComponent,
+    TableComponent,
+    SearchBarComponent
   ]
 })
 export class SharedModule { }
