@@ -20,6 +20,8 @@ import { TableComponent } from './widgets/table/table.component';
 import { SearchBarComponent } from './widgets/search-bar/search-bar.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import {MatTableModule} from '@angular/material/table';
+import {MatFormFieldModule} from '@angular/material/form-field';
+
 
 @NgModule({
   declarations: [
@@ -45,7 +47,8 @@ import {MatTableModule} from '@angular/material/table';
     RouterModule,
     HighchartsChartModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    MatFormFieldModule
   ],
   exports: [
     HeaderComponent,

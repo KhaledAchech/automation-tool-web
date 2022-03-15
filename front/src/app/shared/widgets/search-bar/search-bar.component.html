@@ -1,1 +1,9 @@
-<p>search-bar works!</p>
+<!--<mat-form-field appearance="standard">
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+</mat-form-field>-->
+<form>
+<div class="md-form active-purple active-purple-2 mb-3">
+    <input class="form-control" type="search" (keyup)="applyFilter($event)" placeholder="Search ..." #input mdbInput>
+</div>
+</form>

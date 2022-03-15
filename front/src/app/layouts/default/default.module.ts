@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { DefaultComponent } from './default.component';
 import { DashboardComponent } from 'src/app/modules/dashboard/dashboard.component';
@@ -16,6 +17,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import {MatCardModule} from '@angular/material/card';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableModule} from '@angular/material/table';
+import { ShowTopologiesComponent } from 'src/app/modules/topologies/show-topologies/show-topologies.component';
+import { AddEditTopologyComponent } from 'src/app/modules/topologies/add-edit-topology/add-edit-topology.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +29,9 @@ import {MatTableModule} from '@angular/material/table';
     DevicesComponent,
     ConfigurationsComponent,
     ProtocolsComponent,
-    InterfacesComponent
+    InterfacesComponent,
+    ShowTopologiesComponent,
+    AddEditTopologyComponent,
   ],
   imports: [
     CommonModule,
@@ -37,7 +42,9 @@ import {MatTableModule} from '@angular/material/table';
     FlexLayoutModule,
     MatCardModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class DefaultModule { }

@@ -43,6 +43,9 @@ export class PieComponent implements OnInit {
             showInLegend: true
         }
     },
+    credits: {
+        enabled: false
+      },
     series: [{
         name: 'Devices',
         colorByPoint: true,
