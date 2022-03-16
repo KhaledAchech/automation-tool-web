@@ -1,0 +1,20 @@
+<form>
+    <div class="mb-3">
+        <label for="Name" class="form-label">Name</label>
+        <input type="text" class="form-control" [(ngModel)]="name" name="name">
+    </div>
+    <div class="mb-3">
+        <label for="Type" class="form-label">Type</label>
+        <input type="text" class="form-control" [(ngModel)]="type" name="type">
+    </div>
+    <div class="mb-3">
+        <label for="Configuration" class="form-label">Configuration</label>
+        <input type="text" class="form-control" [(ngModel)]="configuration" name="configuration">
+    </div>
+    <button (click)="addProtocol()" *ngIf="protocol.id==0" class="btn btn-primary">
+        Add
+    </button>
+    <button (click)="updateProtocol()" *ngIf="protocol.id!=0" class="btn btn-primary">
+        Update
+    </button>
+</form>

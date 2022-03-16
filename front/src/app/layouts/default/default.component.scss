@@ -19,6 +19,7 @@ mat-drawer-content {
   height: 4px;
   width: 4px;
   background: gray;
+  overflow: visible;
 }
 ::-webkit-scrollbar-thumb:horizontal {
   background: #000;

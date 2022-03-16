@@ -47,7 +47,7 @@ export class AddEditDeviceComponent implements OnInit {
     var device = {
       name:this.name,
       os:this.os,
-      status:'Up'
+      status:'Down'
     }
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {

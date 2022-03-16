@@ -1,22 +1,22 @@
 <br>
-<div class="main" >
+<div class="main">
     <button type="button" class="btn custom-add-btn float-end m-2" data-bs-toggle="modal"
         data-bs-target="#staticBackdrop" (click)="modalAdd()">
-        Add a new device
+        Add a new Protocol
     </button>
-    <h3> List of devices : </h3>
+    <h3> List of protocols : </h3>
     <mat-divider></mat-divider>
-        <div class="alert alert-success" role="alert" id="add-success-alert">
-            Device successfully added!
-        </div>
-        
-        <div class="alert alert-success" role="alert" id="update-success-alert">
-            Device successfully updated!
-        </div>
-        
-        <div class="alert alert-success" role="alert" id="delete-success-alert">
-            Device successfully deleted!
-        </div>
+    <div class="alert alert-success" role="alert" id="add-success-alert">
+        Protocol successfully added!
+    </div>
+
+    <div class="alert alert-success" role="alert" id="update-success-alert">
+        Protocol successfully updated!
+    </div>
+
+    <div class="alert alert-success" role="alert" id="delete-success-alert">
+        Protocol successfully deleted!
+    </div>
     <br>
     <app-widget-search-bar [dataSource]="dataSource"></app-widget-search-bar>
     <div class="mat-elevation-z8">
@@ -24,36 +24,19 @@
             <thead>
                 <th>Id</th>
                 <th>Name</th>
-                <th>OS</th>
-                <th>Protocols</th>
-                <th>Status</th>
+                <th>Type</th>
+                <th>Configuration</th>
                 <th>Actions</th>
             </thead>
             <tbody>
                 <tr *ngFor="let item of dataSource">
                     <td>{{item.id}}</td>
                     <td>{{item.name}}</td>
-                    <td>{{item.os}}</td>
+                    <td>{{item.type}}</td>
+                    <td>{{item.configuration}}</td>
                     <td>
-                        <mat-list *ngFor="let protocol of item.protocols">
-                            <mat-list-item><mat-icon>arrow_right</mat-icon>{{protocol}}</mat-list-item>
-                        </mat-list>
-                    </td>
-                    <td class="connected" *ngIf="item.status == 'Connected'">
-                        <mat-icon>check</mat-icon>{{item.status}}
-                    </td>
-                    <td class="disconnected" *ngIf="item.status == 'Disconnected'">
-                        <mat-icon>close</mat-icon>{{item.status}}
-                    </td>
-                    <td class="down" *ngIf="item.status == 'Down'">
-                        <mat-icon>arrow_downward</mat-icon>{{item.status}}
-                    </td>
-                    <td class="up" *ngIf="item.status == 'Up'">
-                        <mat-icon>arrow_upward</mat-icon>{{item.status}}
-                    </td>
-                    <td>
-                        <button class="btn btn-outline-primary me-2 mb-1"  (click)="modalEdit(item)" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">
+                        <button class="btn btn-outline-primary me-2 mb-1" (click)="modalEdit(item)"
+                            data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-pencil-square" viewBox="0 0 16 16">
                                 <path
@@ -62,16 +45,7 @@
                                     d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                             </svg>
                         </button>
-                        <button class="btn btn-outline-success me-2 mb-1" (click)="modalConfigure()" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">
-                            <mat-icon class="btn-outline-configuration icon-display" >settings</mat-icon>
-                        </button>
-                        <button class="btn btn-outline-secondary me-2 mb-1" (click)="modalDeviceInterface()" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">
-                            <mat-icon class="btn-outline-interface icon-display">select_all</mat-icon>
-                        </button>
-                        <button class="btn btn-outline-danger me-2 mb-1"
-                        (click)="delete(item)">
+                        <button class="btn btn-outline-danger me-2 mb-1" (click)="delete(item)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-trash" viewBox="0 0 16 16">
                                 <path
@@ -91,7 +65,7 @@
 
 <!-- Add or edit inspection Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -100,11 +74,8 @@
                     (click)="modalClose()" id="add-edit-modal-close"></button>
             </div>
             <div class="modal-body">
-                <app-add-edit-device [device]="device" *ngIf="activateAddEditDeviceComponent">
-                </app-add-edit-device>
-                <app-show-device-configuration *ngIf="activateConfigureDeviceComponent">
-                </app-show-device-configuration>
-                <app-show-device-interfaces *ngIf="activateDeviceInterfacesComponent"></app-show-device-interfaces>
+                <app-add-edit-protocol [protocol]="protocol" *ngIf="activateAddEditProtocolComponent">
+                </app-add-edit-protocol>
             </div>
         </div>
     </div>
