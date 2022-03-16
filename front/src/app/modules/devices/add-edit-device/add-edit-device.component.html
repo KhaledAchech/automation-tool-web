@@ -1,0 +1,17 @@
+<form>
+    <div class="mb-3">
+        <label for="Name" class="form-label">Name</label>
+        <input type="text" class="form-control" [(ngModel)]="name" name="name">
+    </div>
+    <div class="mb-3">
+        <label for="os" class="form-label">OS</label>
+        <input type="text" class="form-control" [(ngModel)]="os" name="os">
+    </div>
+    <button (click)="addDevice()" *ngIf="device.id==0" class="btn btn-primary">
+        Add
+    </button>
+    <button (click)="updateDevice()" *ngIf="device.id!=0" class="btn btn-primary">
+        Update
+    </button>
+</form>
+

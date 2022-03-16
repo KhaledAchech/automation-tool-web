@@ -19,6 +19,11 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatTableModule} from '@angular/material/table';
 import { ShowTopologiesComponent } from 'src/app/modules/topologies/show-topologies/show-topologies.component';
 import { AddEditTopologyComponent } from 'src/app/modules/topologies/add-edit-topology/add-edit-topology.component';
+import { ShowDevicesComponent } from 'src/app/modules/devices/show-devices/show-devices.component';
+import { AddEditDeviceComponent } from 'src/app/modules/devices/add-edit-device/add-edit-device.component';
+import {MatIconModule} from '@angular/material/icon';
+import {MatChipsModule} from '@angular/material/chips';
+
 
 @NgModule({
   declarations: [
@@ -32,6 +37,8 @@ import { AddEditTopologyComponent } from 'src/app/modules/topologies/add-edit-to
     InterfacesComponent,
     ShowTopologiesComponent,
     AddEditTopologyComponent,
+    ShowDevicesComponent,
+    AddEditDeviceComponent,
   ],
   imports: [
     CommonModule,
@@ -44,7 +51,9 @@ import { AddEditTopologyComponent } from 'src/app/modules/topologies/add-edit-to
     MatPaginatorModule,
     MatTableModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatIconModule,
+    MatChipsModule
   ]
 })
 export class DefaultModule { }
