@@ -32,6 +32,9 @@ import { ShowProtocolsComponent } from 'src/app/modules/protocols/show-protocols
 import { AddEditProtocolComponent } from 'src/app/modules/protocols/add-edit-protocol/add-edit-protocol.component';
 import { ShowInterfacesComponent } from 'src/app/modules/interfaces/show-interfaces/show-interfaces.component';
 import { AddEditInterfaceComponent } from 'src/app/modules/interfaces/add-edit-interface/add-edit-interface.component';
+import { ShowConfigurationsComponent } from 'src/app/modules/configurations/show-configurations/show-configurations.component';
+import { AddEditConfigurationComponent } from 'src/app/modules/configurations/add-edit-configuration/add-edit-configuration.component';
+import { AssignConfigurationComponent } from 'src/app/modules/configurations/assign-configuration/assign-configuration.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +56,9 @@ import { AddEditInterfaceComponent } from 'src/app/modules/interfaces/add-edit-i
     AddEditProtocolComponent,
     ShowInterfacesComponent,
     AddEditInterfaceComponent,
+    ShowConfigurationsComponent,
+    AddEditConfigurationComponent,
+    AssignConfigurationComponent
   ],
   imports: [
     CommonModule,

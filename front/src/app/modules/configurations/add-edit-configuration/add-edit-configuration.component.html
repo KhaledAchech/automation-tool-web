@@ -1,0 +1,28 @@
+<mat-card class="example-card">
+    <mat-card-title>Configuration</mat-card-title>
+    <mat-card-content>
+        <br>
+        <div>
+            <h3>Configuration Id : 1</h3>
+        </div>
+        <div>
+            <h3>Configuration Date : 01/01/2022</h3>
+        </div>
+        <div>
+            <h3>Configuration Status : Used</h3>
+        </div>
+        <div>
+            <br>
+            <button (click)="addConfiguration()" *ngIf="configuration.id==0" class="btn btn-primary">
+                Add
+            </button>
+            <button (click)="updateConfiguration()" *ngIf="configuration.id!=0" class="btn btn-primary">
+                Update
+            </button>
+        </div>
+    </mat-card-content>
+    <mat-divider inset></mat-divider>
+    <mat-card-footer>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+</mat-card>
