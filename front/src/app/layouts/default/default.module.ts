@@ -35,6 +35,9 @@ import { AddEditInterfaceComponent } from 'src/app/modules/interfaces/add-edit-i
 import { ShowConfigurationsComponent } from 'src/app/modules/configurations/show-configurations/show-configurations.component';
 import { AddEditConfigurationComponent } from 'src/app/modules/configurations/add-edit-configuration/add-edit-configuration.component';
 import { AssignConfigurationComponent } from 'src/app/modules/configurations/assign-configuration/assign-configuration.component';
+import { ShowTenantsComponent } from 'src/app/modules/tenants/show-tenants/show-tenants.component';
+import { ShowTenantTopologiesComponent } from 'src/app/modules/tenants/show-tenant-topologies/show-tenant-topologies.component';
+import { AddEditTenantComponent } from 'src/app/modules/tenants/add-edit-tenant/add-edit-tenant.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +61,10 @@ import { AssignConfigurationComponent } from 'src/app/modules/configurations/ass
     AddEditInterfaceComponent,
     ShowConfigurationsComponent,
     AddEditConfigurationComponent,
-    AssignConfigurationComponent
+    AssignConfigurationComponent,
+    ShowTenantsComponent,
+    ShowTenantTopologiesComponent,
+    AddEditTenantComponent,
   ],
   imports: [
     CommonModule,
