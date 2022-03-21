@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
+import { TenantService } from 'src/app/services/network/tenant.service';
+
 @Component({
   selector: 'app-add-edit-tenant',
   templateUrl: './add-edit-tenant.component.html',
@@ -10,7 +12,7 @@ export class AddEditTenantComponent implements OnInit {
   @Input() tenant:any;
   id: number = 0;
   name: string = "";
-  constructor() { }
+  constructor(private service:TenantService) { }
 
   ngOnInit(): void {
     this.id = this.tenant.id;
@@ -20,6 +22,7 @@ export class AddEditTenantComponent implements OnInit {
     var tenant = {
       name:this.name,
     }
+    this.service.addTenant(tenant).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {
         closeModalBtn.click();
@@ -34,13 +37,17 @@ export class AddEditTenantComponent implements OnInit {
           showAddSuccess.style.display = "none"
         }
       }, 4000);
+    })
+      
   }
 
   updateTenant() {
    var tenant = {
+      id: this.id,
       name:this.name,
     }
     var id:number = this.id;
+    this.service.updateTenant(id,tenant).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {
         closeModalBtn.click();
@@ -55,6 +62,6 @@ export class AddEditTenantComponent implements OnInit {
           showUpdateSuccess.style.display = "none"
         }
       }, 4000);
-
+      })
   }
 }

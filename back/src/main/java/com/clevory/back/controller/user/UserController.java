@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
+
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -33,7 +34,12 @@ public class UserController {
     }
 
     @PostMapping
-    public User createOrUpdate (@RequestBody User user) {return userService.saveOrUpdate(user);}
+    public User create (@RequestBody User user) {return userService.save(user);}
+
+    @PutMapping("/{id}")
+    public User update (@PathVariable("id") long id, @RequestBody  User user) {
+        return userService.update(id, user);
+    }
 
     @DeleteMapping("/{id}")
     public List<User> deleteById(@PathVariable("id") long id) {

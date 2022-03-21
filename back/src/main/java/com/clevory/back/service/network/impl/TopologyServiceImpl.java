@@ -1,5 +1,6 @@
 package com.clevory.back.service.network.impl;
 
+import com.clevory.back.model.network.Tenant;
 import com.clevory.back.model.network.Topology;
 import com.clevory.back.repository.network.TopologyRepository;
 import com.clevory.back.service.network.itf.TopologyService;
@@ -30,13 +31,21 @@ public class TopologyServiceImpl implements TopologyService {
     @Override
     public Topology getTopologyById(long id)
     {
-        return topologyRepository.getById(id);
+        return topologyRepository.findById(id).get();
     }
 
     @Override
-    public Topology saveOrUpdate(Topology topology)
-    {
+    public Topology save(Topology topology) {
         topologyRepository.save(topology);
         return topology;
+    }
+
+    @Override
+    public Topology update(long id, Topology topology) {
+        Topology thisTopology = this.getTopologyById(id);
+        thisTopology.setName(topology.getName());
+        thisTopology.setType(topology.getType());
+        topologyRepository.save(thisTopology);
+        return thisTopology;
     }
 }

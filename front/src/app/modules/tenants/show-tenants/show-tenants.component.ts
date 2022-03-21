@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { TenantService } from 'src/app/services/network/tenant.service';
 
 @Component({
   selector: 'app-show-tenants',
@@ -7,21 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShowTenantsComponent implements OnInit {
 
-dataSource!:  any[]; 
+  dataSource$!:  Observable<any[]>; 
 
-  constructor() { }
+  constructor(private service:TenantService) { }
 
   ngOnInit(): void {
-    this.dataSource = [
-      { id: 1, name: 'Cisco Systems', },
-      { id: 2, name: 'Cumulus Networks',},
-      { id: 3, name: 'Dell EMC',},
-      { id: 4, name: 'Extreme Networks',},
-      { id: 5, name: 'Juniper Networks',},
-      { id: 6, name: 'Hewlett Packard Enterprise',},
-      { id: 7, name: 'Netscout', },
-
-  ];
+    this.dataSource$ = this.service.getTenants();
   }
 
   modalTitle:string = '';
@@ -34,13 +27,13 @@ dataSource!:  any[];
       id:0,
       name:null,
     }
-    this.modalTitle = "Add Device";
+    this.modalTitle = "Add Tenant";
     this.activateAddEditTenantComponent = true;
   }
 
   modalEdit(item:any) {
     this.tenant = item;
-    this.modalTitle = "Edit Device";
+    this.modalTitle = "Edit Tenant";
     this.activateAddEditTenantComponent = true;
   }
 
@@ -51,7 +44,7 @@ dataSource!:  any[];
 
   delete(item:any) {
     if(confirm(`Are you sure you want to delete this tenant ${item.id}`)) {
-
+    this.service.deleteTenant(item.id).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {
         closeModalBtn.click();
@@ -65,12 +58,14 @@ dataSource!:  any[];
           showDeleteSuccess.style.display = "none"
         }
       }, 4000);
-
+      this.dataSource$ = this.service.getTenants();
+      })
     }
   }
 
   modalClose() {
     this.activateAddEditTenantComponent = false;
     this.activateTenantTopologiesComponent = false;
+    this.dataSource$ = this.service.getTenants();
   }
 }

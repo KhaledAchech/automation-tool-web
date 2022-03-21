@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/protocols")
 public class ProtocolController {
@@ -32,7 +33,12 @@ public class ProtocolController {
     }
 
     @PostMapping
-    public Protocol createOrUpdate (@RequestBody Protocol protocol) {return protocolService.saveOrUpdate(protocol);}
+    public Protocol creat (@RequestBody Protocol protocol) {return protocolService.save(protocol);}
+
+    @PutMapping("/{id}")
+    public Protocol update (@PathVariable("id") long id, @RequestBody  Protocol protocol) {
+        return protocolService.update(id, protocol);
+    }
 
     @DeleteMapping("/{id}")
     public List<Protocol> deleteById(@PathVariable("id") long id) {return protocolService.deleteProtocol(id);}

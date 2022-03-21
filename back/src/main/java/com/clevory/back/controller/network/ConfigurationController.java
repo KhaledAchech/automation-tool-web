@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/configurations")
 public class ConfigurationController {
@@ -32,7 +33,12 @@ public class ConfigurationController {
     }
 
     @PostMapping
-    public Configuration createOrUpdate (@RequestBody Configuration configuration) {return configurationService.saveOrUpdate(configuration);}
+    public Configuration create (@RequestBody Configuration configuration) {return configurationService.save(configuration);}
+
+    @PutMapping("/{id}")
+    public Configuration update (@PathVariable("id") long id, @RequestBody  Configuration configuration) {
+        return configurationService.update(id, configuration);
+    }
 
     @DeleteMapping("/{id}")
     public List<Configuration> deleteById(@PathVariable("id") long id) {return configurationService.deleteConfiguration(id);}

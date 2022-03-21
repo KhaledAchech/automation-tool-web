@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { TopologyService } from 'src/app/services/network/topology.service';
 
 @Component({
   selector: 'app-add-edit-topology',
@@ -7,9 +8,64 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddEditTopologyComponent implements OnInit {
 
-  constructor() { }
+  @Input() topology:any;
+  id: number = 0;
+  name: string = "";
+  type: string = "";
+
+  constructor(private service:TopologyService) { }
 
   ngOnInit(): void {
+    this.id = this.topology.id;
+    this.name = this.topology.name;
+    this.type = this.topology.type;
   }
 
+    addTopology() {
+    var topology = {
+      name:this.name,
+      type:this.type
+    }
+    this.service.addTopology(topology).subscribe(res => {
+      var closeModalBtn = document.getElementById('add-edit-modal-close');
+      if(closeModalBtn) {
+        closeModalBtn.click();
+      }
+
+      var showAddSuccess = document.getElementById('add-success-alert');
+      if(showAddSuccess) {
+        showAddSuccess.style.display = "block";
+      }
+      setTimeout(function() {
+        if(showAddSuccess) {
+          showAddSuccess.style.display = "none"
+        }
+      }, 4000);
+    })
+  }
+
+  updateTopology() {
+    var topology = {
+      id: this.id,
+      name:this.name,
+      type:this.type
+    }
+    var id:number = this.id;
+    this.service.updateTopology(id,topology).subscribe(res => {
+      var closeModalBtn = document.getElementById('add-edit-modal-close');
+      if(closeModalBtn) {
+        closeModalBtn.click();
+      }
+
+      var showUpdateSuccess = document.getElementById('update-success-alert');
+      if(showUpdateSuccess) {
+        showUpdateSuccess.style.display = "block";
+      }
+      setTimeout(function() {
+        if(showUpdateSuccess) {
+          showUpdateSuccess.style.display = "none"
+        }
+      }, 4000);
+    })
+  }
 }

@@ -1,5 +1,6 @@
 package com.clevory.back.service.network.impl;
 
+import com.clevory.back.model.network.Protocol;
 import com.clevory.back.model.network.Tenant;
 import com.clevory.back.repository.network.TenantRepository;
 import com.clevory.back.service.network.itf.TenantService;
@@ -30,13 +31,22 @@ public class TenantServiceImpl implements TenantService {
     @Override
     public Tenant getTenantById(long id)
     {
-        return tenantRepository.getById(id);
+        return tenantRepository.findById(id).get();
     }
 
     @Override
-    public Tenant saveOrUpdate(Tenant tenant)
-    {
+    public Tenant save(Tenant tenant) {
         tenantRepository.save(tenant);
         return tenant;
     }
+
+    @Override
+    public Tenant update(long id, Tenant tenant) {
+        Tenant thisTenant = this.getTenantById(id);
+        thisTenant.setName(tenant.getName());
+
+        tenantRepository.save(thisTenant);
+        return thisTenant;
+    }
+
 }

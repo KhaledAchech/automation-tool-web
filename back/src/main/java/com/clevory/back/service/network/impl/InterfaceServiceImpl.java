@@ -1,5 +1,6 @@
 package com.clevory.back.service.network.impl;
 
+import com.clevory.back.model.network.Device;
 import com.clevory.back.model.network.Interface;
 import com.clevory.back.repository.network.InterfaceRepository;
 import com.clevory.back.service.network.itf.InterfaceService;
@@ -29,12 +30,24 @@ public class InterfaceServiceImpl implements InterfaceService {
     @Override
     public Interface getInterfaceById(long id)
     {
-        return interfaceRepository.getById(id);
+        return interfaceRepository.findById(id).get();
     }
 
     @Override
-    public Interface saveOrUpdate(Interface anInterface) {
+    public Interface save(Interface anInterface) {
         interfaceRepository.save(anInterface);
         return anInterface;
+    }
+
+    @Override
+    public Interface update(long id, Interface anInterface) {
+        Interface thisInterface = this.getInterfaceById(id);
+        thisInterface.setIpAddress(anInterface.getIpAddress());
+        thisInterface.setSpeed(anInterface.getSpeed());
+        thisInterface.setState(anInterface.getState());
+        thisInterface.setType(anInterface.getType());
+
+        interfaceRepository.save(thisInterface);
+        return thisInterface;
     }
 }

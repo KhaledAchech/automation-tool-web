@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/interfaces")
 public class InterfaceController {
@@ -32,7 +33,12 @@ public class InterfaceController {
     }
 
     @PostMapping
-    public Interface createOrUpdate (@RequestBody Interface anInterface) {return interfaceService.saveOrUpdate(anInterface);}
+    public Interface create (@RequestBody Interface anInterface) {return interfaceService.save(anInterface);}
+
+    @PutMapping("/{id}")
+    public Interface update (@PathVariable("id") long id, @RequestBody  Interface anInterface) {
+        return interfaceService.update(id, anInterface);
+    }
 
     @DeleteMapping("/{id}")
     public List<Interface> deleteById(@PathVariable("id") long id) {return interfaceService.deleteInterface(id);}

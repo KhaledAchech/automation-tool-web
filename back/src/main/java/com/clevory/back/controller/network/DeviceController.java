@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/devices")
 public class DeviceController {
@@ -32,7 +33,12 @@ public class DeviceController {
     }
 
     @PostMapping
-    public Device createOrUpdate (@RequestBody Device device) {return deviceService.saveOrUpdate(device);}
+    public Device create (@RequestBody Device device) {return deviceService.save(device);}
+
+    @PutMapping("/{id}")
+    public Device update (@PathVariable("id") long id, @RequestBody  Device device) {
+        return deviceService.update(id, device);
+    }
 
     @DeleteMapping("/{id}")
     public List<Device> deleteById(@PathVariable("id") long id) {return deviceService.deleteDevice(id);}

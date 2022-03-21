@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { TopologyService } from 'src/app/services/network/topology.service';
 
 @Component({
   selector: 'app-show-topologies',
@@ -8,35 +9,59 @@ import { Observable } from 'rxjs';
 })
 export class ShowTopologiesComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'name', 'type'];
-  
-  dataSource!:  any[]; 
+  dataSource$!:  Observable<any[]>;
 
-  constructor() { }
+  constructor(private service:TopologyService) { }
 
   ngOnInit(): void {
-    this.dataSource = [
-      { id: 1, name: 'Hydrogen', type: 'WAN', tenant:'Hewlett Packard Enterprise' },
-      { id: 2, name: 'Helium',  type: 'LAN', tenant:'Cisco Systems' },
-      { id: 3, name: 'Lithium',  type: 'WAN', tenant:'Cumulus Networks' },
-      { id: 4, name: 'Beryllium', type: 'WAN', tenant:'Dell EMC' },
-      { id: 5, name: 'Boron',  type: 'LAN', tenant:'Extreme Networks' },
-      { id: 6, name: 'Carbon',  type: 'WAN', tenant:'Juniper Networks' },
-      { id: 7, name: 'Nitrogen',  type: 'WAN', tenant:'Netscout' },
-      { id: 8, name: 'Oxygen',  type: 'LAN', tenant:'Hewlett Packard Enterprise' },
-      { id: 9, name: 'Fluorine',  type: 'LAN', tenant:'Hewlett Packard Enterprise' },
-      { id: 10, name: 'Neon',  type: 'WAN', tenant:'Hewlett Packard Enterprise' },
-      { id: 11, name: 'Sodium',  type: 'WAN', tenant:'Hewlett Packard Enterprise' },
-      { id: 12, name: 'Magnesium',  type: 'WAN', tenant:'Hewlett Packard Enterprise' },
-      { id: 13, name: 'Aluminum',  type: 'LAN', tenant:'Hewlett Packard Enterprise' },
-      { id: 14, name: 'Silicon',  type: 'LAN', tenant:'Hewlett Packard Enterprise' },
-      { id: 15, name: 'Phosphorus',  type: 'LAN', tenant:'Hewlett Packard Enterprise' },
-      { id: 16, name: 'Sulfur',  type: 'LAN', tenant:'Hewlett Packard Enterprise' },
-      { id: 17, name: 'Chlorine',  type: 'LAN', tenant:'Hewlett Packard Enterprise' },
-      { id: 18, name: 'Argon',  type: 'LAN', tenant:'Hewlett Packard Enterprise' },
-      { id: 19, name: 'Potassium',  type: 'LAN', tenant:'Hewlett Packard Enterprise' },
-      { id: 20, name: 'Calcium',  type: 'WAN', tenant:'Hewlett Packard Enterprise' },
-  ];
+    this.dataSource$ = this.service.getTopologies();
+  }
+
+  modalTitle:string = '';
+  activateAddEditTopologyComponent:boolean = false;
+  topology:any;
+
+  modalAdd() {
+    this.topology = {
+      id:0,
+      name:null,
+      type:null,
+    }
+    this.modalTitle = "Add Topology";
+    this.activateAddEditTopologyComponent = true;
+  }
+
+  modalEdit(item:any) {
+    console.log(item);
+    this.topology = item;
+    this.modalTitle = "Edit Topology";
+    this.activateAddEditTopologyComponent = true;
+  }
+
+  delete(item:any) {
+    if(confirm(`Are you sure you want to delete this topology ${item.id}`)) {
+      this.service.deleteTopology(item.id).subscribe(res => {
+      var closeModalBtn = document.getElementById('add-edit-modal-close');
+      if(closeModalBtn) {
+        closeModalBtn.click();
+      }
+      var showDeleteSuccess = document.getElementById('delete-success-alert');
+      if(showDeleteSuccess) {
+        showDeleteSuccess.style.display = "block";
+      }
+      setTimeout(function() {
+        if(showDeleteSuccess) {
+          showDeleteSuccess.style.display = "none"
+        }
+      }, 4000);
+       this.dataSource$ = this.service.getTopologies();
+    })
+    }
+  }
+
+  modalClose() {
+    this.activateAddEditTopologyComponent = false;
+    this.dataSource$ = this.service.getTopologies();
   }
 
 }

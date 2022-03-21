@@ -1,6 +1,7 @@
 package com.clevory.back.service.network.impl;
 
 import com.clevory.back.model.network.Configuration;
+import com.clevory.back.model.user.User;
 import com.clevory.back.repository.network.ConfigurationRepository;
 import com.clevory.back.service.network.itf.ConfigurationService;
 import lombok.AllArgsConstructor;
@@ -30,13 +31,23 @@ public class ConfigurationServiceImpl implements ConfigurationService {
     @Override
     public Configuration getConfigurationById(long id)
     {
-        return configurationRepository.getById(id);
+        return configurationRepository.findById(id).get();
     }
 
     @Override
-    public Configuration saveOrUpdate(Configuration configuration)
-    {
+    public Configuration save(Configuration configuration) {
         configurationRepository.save(configuration);
         return configuration;
     }
+
+    @Override
+    public Configuration update(long id, Configuration configuration) {
+        Configuration thisConfiguration = this.getConfigurationById(id);
+        thisConfiguration.setDate(configuration.getDate());
+        thisConfiguration.setStatus(configuration.getStatus());
+
+        configurationRepository.save(thisConfiguration);
+        return thisConfiguration;
+    }
+
 }

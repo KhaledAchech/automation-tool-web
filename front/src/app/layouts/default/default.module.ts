@@ -39,6 +39,7 @@ import { ShowTenantsComponent } from 'src/app/modules/tenants/show-tenants/show-
 import { ShowTenantTopologiesComponent } from 'src/app/modules/tenants/show-tenant-topologies/show-tenant-topologies.component';
 import { AddEditTenantComponent } from 'src/app/modules/tenants/add-edit-tenant/add-edit-tenant.component';
 
+
 @NgModule({
   declarations: [
     DefaultComponent,
@@ -82,7 +83,7 @@ import { AddEditTenantComponent } from 'src/app/modules/tenants/add-edit-tenant/
     MatChipsModule,
     NgbModule,
     MatProgressBarModule,
-    MatListModule
+    MatListModule,
   ]
 })
 export class DefaultModule { }
