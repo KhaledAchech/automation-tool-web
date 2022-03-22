@@ -19,7 +19,9 @@ public class Device {
     private String name;
 
     @Column(length = 50)
-    private String ios;
+    private String os;
+
+    private String status;
 
     //Have :
     @OneToOne
@@ -47,6 +49,6 @@ public class Device {
             name = "device_protocols",
             joinColumns = @JoinColumn(name = "device_id"),
             inverseJoinColumns = @JoinColumn(name = "protocol_id"))
-    Set<Interface> deviceProtocols;
+    Set<Protocol> deviceProtocols;
 
 }

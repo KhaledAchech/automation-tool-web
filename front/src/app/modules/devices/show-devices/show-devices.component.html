@@ -18,7 +18,7 @@
             Device successfully deleted!
         </div>
     <br>
-    <app-widget-search-bar [dataSource]="dataSource"></app-widget-search-bar>
+    <app-widget-search-bar [dataSource]="dataSource$"></app-widget-search-bar>
     <div class="mat-elevation-z8">
         <table>
             <thead>
@@ -30,12 +30,12 @@
                 <th>Actions</th>
             </thead>
             <tbody>
-                <tr *ngFor="let item of dataSource">
+                <tr *ngFor="let item of dataSource$|async">
                     <td>{{item.id}}</td>
                     <td>{{item.name}}</td>
                     <td>{{item.os}}</td>
                     <td>
-                        <mat-list *ngFor="let protocol of item.protocols">
+                        <mat-list *ngFor="let protocol of protocols">
                             <mat-list-item><mat-icon>arrow_right</mat-icon>{{protocol}}</mat-list-item>
                         </mat-list>
                     </td>

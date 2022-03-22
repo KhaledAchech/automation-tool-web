@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ConfigurationService } from 'src/app/services/network/configuration.service';
 
 @Component({
   selector: 'app-add-edit-configuration',
@@ -13,7 +14,7 @@ export class AddEditConfigurationComponent implements OnInit {
   device: string = "N/A";
   status: string = "Unassigned";
 
-  constructor() {  }
+  constructor(private service:ConfigurationService) {  }
 
   ngOnInit(): void {
     this.id = this.configuration.id;
@@ -23,11 +24,16 @@ export class AddEditConfigurationComponent implements OnInit {
   }
 
    addConfiguration() {
+      /*var configuration = {
+      date:this.date,
+      device:this.device,
+      status:'Unassigned'
+    }*/
+      ///this.service.addConfiguration(configuration).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {
         closeModalBtn.click();
       }
-
       var showAddSuccess = document.getElementById('add-success-alert');
       if(showAddSuccess) {
         showAddSuccess.style.display = "block";
@@ -37,9 +43,17 @@ export class AddEditConfigurationComponent implements OnInit {
           showAddSuccess.style.display = "none"
         }
       }, 4000);
+    //)}
   }
 
   updateConfiguration() {
+      /*var configuration = {
+        id:this.id,
+      date:this.date,
+      device:this.device,
+      status:'Unassigned'
+    }*/
+      ///this.service.updateConfiguration(id,configuration).subscribe(res => {
     var id:number = this.id;
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {
@@ -55,6 +69,6 @@ export class AddEditConfigurationComponent implements OnInit {
           showUpdateSuccess.style.display = "none"
         }
       }, 4000);
-
+      //)}
   }
 }

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DeviceService } from 'src/app/services/network/device.service';
 
 @Component({
   selector: 'app-add-edit-device',
@@ -12,36 +13,14 @@ export class AddEditDeviceComponent implements OnInit {
   id: number = 0;
   name: string = "";
   os: string = "";
-  status: string = "";
-  constructor() { }
+  status: string = "Up";
+  
+  constructor(private service:DeviceService) { }
 
   ngOnInit(): void {
     this.id = this.device.id;
     this.name = this.device.name;
     this.os = this.device.os;
-    this.status = this.device.status;
-    this.dataSource = [
-      { id: 1, name: 'Hub', os: 'CatOS', status:'Connected' },
-      { id: 2, name: 'Switch',  os: 'ZyNOS', status:'Disconnected' },
-      { id: 3, name: 'Lithium',  os: 'ZyNOS', status:'Connected' },
-      { id: 4, name: 'Router', os: 'CatOS', status:'Up' },
-      { id: 5, name: 'Bridge',  os: 'LCOS', status:'Down' },
-      { id: 6, name: 'Gateway',  os: 'FTOS ', status:'Connected'  },
-      { id: 7, name: 'Modem',  os: 'Dell Networking Operating System', status:'Disconnected' },
-      { id: 8, name: 'Repeater',  os: 'ExtremeXOS', status:'Disconnected' },
-      { id: 9, name: 'Access Point',  os: 'CatOS', status:'Connected' },
-      { id: 10, name: 'Hub',  os: 'ExtremeXOS', status:'Up' },
-      { id: 11, name: 'Hub',  os: 'CatOS', status:'Up' },
-      { id: 12, name: 'Gateway',  os: 'Cisco IOS', status:'Down' },
-      { id: 13, name: 'Router',  os: 'Cisco IOS,', status:'Down' },
-      { id: 14, name: 'Bridge',  os: 'Dell Networking Operating System', status:'Disconnected' },
-      { id: 15, name: 'Phosphorus',  os: 'Cumulus Linux', status:'Disconnected' },
-      { id: 16, name: 'Switch',  os: 'FTOS', status:'Connected' },
-      { id: 17, name: 'Switch',  os: 'FTOS', status:'Connected' },
-      { id: 18, name: 'Modem',  os: 'Dell Networking Operating System', status:'Up'  },
-      { id: 19, name: 'Hub',  os: 'Cumulus Linux', status:'Disconnected' },
-      { id: 20, name: 'Server',  os: 'Unix', status:'Down' },
-  ];
   }
   addDevice() {
     var device = {
@@ -49,6 +28,7 @@ export class AddEditDeviceComponent implements OnInit {
       os:this.os,
       status:'Down'
     }
+    this.service.addDevice(device).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {
         closeModalBtn.click();
@@ -63,14 +43,18 @@ export class AddEditDeviceComponent implements OnInit {
           showAddSuccess.style.display = "none"
         }
       }, 4000);
-  }
+    }
+    )}
 
   updateDevice() {
    var device = {
+      id : this.id,
       name:this.name,
-      os:this.os
+      os:this.os,
+      status:this.status
     }
     var id:number = this.id;
+     this.service.updateDevice(id,device).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {
         closeModalBtn.click();
@@ -85,6 +69,6 @@ export class AddEditDeviceComponent implements OnInit {
           showUpdateSuccess.style.display = "none"
         }
       }, 4000);
-
+     })
   }
 }

@@ -44,7 +44,8 @@ public class DeviceServiceImpl implements DeviceService {
     public Device update(long id, Device device) {
         Device thisDevice = this.getDeviceById(id);
         thisDevice.setName(device.getName());
-        thisDevice.setIos(device.getIos());
+        thisDevice.setOs(device.getOs());
+        thisDevice.setStatus(device.getStatus());
 
         deviceRepository.save(thisDevice);
         return thisDevice;

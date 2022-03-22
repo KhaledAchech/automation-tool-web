@@ -6,8 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./show-configurations.component.scss']
 })
 export class ShowConfigurationsComponent implements OnInit {
+
+  //dataSource$!:  Observable<any[]>; 
   dataSource!:  any[]; 
   constructor() { }
+  //constructor(private service:ConfigurationService) { }
 
   ngOnInit(): void {
     this.dataSource = [
@@ -32,7 +35,10 @@ export class ShowConfigurationsComponent implements OnInit {
       { id: 19, date: '01/02/2022',  device : 'N/A', status:'Unassigned' },
       { id: 20, date: '01/02/2022',  device : 'N/A', status:'Unassigned' },
   ];
+    //this.dataSource$ = this.service.getConfigurations();
   }
+
+
   
   modalTitle:string = '';
   activateAddEditConfigurationComponent:boolean = false;
@@ -64,7 +70,7 @@ export class ShowConfigurationsComponent implements OnInit {
 
   delete(item:any) {
     if(confirm(`Are you sure you want to delete this configuration ${item.id}`)) {
-
+      //this.service.deleteConfiguration(item.id).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {
         closeModalBtn.click();
@@ -78,13 +84,14 @@ export class ShowConfigurationsComponent implements OnInit {
           showDeleteSuccess.style.display = "none"
         }
       }, 4000);
-
+      //this.dataSource$ = this.service.getConfigurations();})
     }
   }
 
   modalClose() {
     this.activateAddEditConfigurationComponent = false;
     this.activateAssignConfigurationComponent = false;
+    //this.dataSource$ = this.service.getConfigurations();
   }
 
 

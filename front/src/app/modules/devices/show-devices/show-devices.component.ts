@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { DeviceService } from 'src/app/services/network/device.service';
 
 @Component({
   selector: 'app-show-devices',
@@ -7,34 +9,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ShowDevicesComponent implements OnInit {
   
-  dataSource!:  any[]; 
+  dataSource$!:  Observable<any[]>; 
+  protocols!: any[];
 
-  constructor() { }
+  constructor(private service:DeviceService) { }
 
   ngOnInit(): void {
-    this.dataSource = [
-      { id: 1, name: 'Hub',protocols : ['ssh','smtp'] ,os: 'CatOS', status:'Connected' },
-      { id: 2, name: 'Switch', protocols : ['https','smtp'] ,os: 'ZyNOS', status:'Disconnected' },
-      { id: 3, name: 'Lithium',  protocols : ['ssh'], os: 'ZyNOS', status:'Connected' },
-      { id: 4, name: 'Router', protocols : ['ssh'],os: 'CatOS', status:'Up' },
-      { id: 5, name: 'Bridge',  protocols : ['smtp'],os: 'LCOS', status:'Down' },
-      { id: 6, name: 'Gateway',  protocols : ['ssh','smtp'],os: 'FTOS ', status:'Connected'  },
-      { id: 7, name: 'Modem',  protocols : ['ssh'],os: 'Dell Networking Operating System', status:'Disconnected' },
-      { id: 8, name: 'Repeater',  protocols : ['https','smtp'],os: 'ExtremeXOS', status:'Disconnected' },
-      { id: 9, name: 'Access Point',  protocols : ['https','smtp'],os: 'CatOS', status:'Connected' },
-      { id: 10, name: 'Hub',  protocols : ['https','smtp'],os: 'ExtremeXOS', status:'Up' },
-      { id: 11, name: 'Hub',  protocols : ['ssh','smtp'],os: 'CatOS', status:'Up' },
-      { id: 12, name: 'Gateway',  protocols : ['https','smtp'],os: 'Cisco IOS', status:'Down' },
-      { id: 13, name: 'Router',  protocols : ['ssh','smtp'],os: 'Cisco IOS,', status:'Down' },
-      { id: 14, name: 'Bridge',  protocols : ['ssh','https'],os: 'Dell Networking Operating System', status:'Disconnected' },
-      { id: 15, name: 'Phosphorus',  protocols : ['https','smtp'],os: 'Cumulus Linux', status:'Disconnected' },
-      { id: 16, name: 'Switch',  protocols : ['ssh'],os: 'FTOS', status:'Connected' },
-      { id: 17, name: 'Switch',  protocols : ['https'],os: 'FTOS', status:'Connected' },
-      { id: 18, name: 'Modem',  protocols : ['ssh'],os: 'Dell Networking Operating System', status:'Up'  },
-      { id: 19, name: 'Hub',  protocols : ['ssh','https','smtp'],os: 'Cumulus Linux', status:'Disconnected' },
-      { id: 20, name: 'Server',  protocols : ['https'],os: 'Unix', status:'Down' },
-  ];
+    this.protocols = ['ssh','smtp'];
+    this.dataSource$ = this.service.getDevices();
   }
+
 
   modalTitle:string = '';
   activateAddEditDeviceComponent:boolean = false;
@@ -70,7 +54,7 @@ export class ShowDevicesComponent implements OnInit {
 
   delete(item:any) {
     if(confirm(`Are you sure you want to delete this device ${item.id}`)) {
-
+      this.service.deleteDevice(item.id).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {
         closeModalBtn.click();
@@ -84,7 +68,8 @@ export class ShowDevicesComponent implements OnInit {
           showDeleteSuccess.style.display = "none"
         }
       }, 4000);
-
+      this.dataSource$ = this.service.getDevices();
+    })
     }
   }
 
@@ -92,6 +77,7 @@ export class ShowDevicesComponent implements OnInit {
     this.activateAddEditDeviceComponent = false;
     this.activateConfigureDeviceComponent = false;
     this.activateDeviceInterfacesComponent = false;
+    this.dataSource$ = this.service.getDevices();
   }
 
 }
