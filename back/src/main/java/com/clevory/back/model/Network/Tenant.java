@@ -1,5 +1,6 @@
 package com.clevory.back.model.network;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +25,7 @@ public class Tenant {
 //    private User user;
 
     //Have multiple topologies :
-    @OneToMany(mappedBy = "tenant", cascade = CascadeType.REMOVE)
+    @JsonIgnore
+    @OneToMany(mappedBy = "tenant", cascade=CascadeType.ALL)
     List<Topology> Topologies = new ArrayList<>();
 }

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ProtocolService } from 'src/app/services/network/protocol.service';
 
 @Component({
   selector: 'app-add-edit-protocol',
@@ -13,7 +14,7 @@ export class AddEditProtocolComponent implements OnInit {
   type: string = "";
   configuration: string = "";
 
-  constructor() { }
+  constructor(private service:ProtocolService) { }
 
   ngOnInit(): void {
     this.id = this.protocol.id;
@@ -28,6 +29,7 @@ export class AddEditProtocolComponent implements OnInit {
       type:this.type,
       configuration:this.configuration
     }
+    this.service.addProtocol(protocol).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {
         closeModalBtn.click();
@@ -42,15 +44,18 @@ export class AddEditProtocolComponent implements OnInit {
           showAddSuccess.style.display = "none"
         }
       }, 4000);
-  }
+    }
+    )}
 
   updateProtocol() {
     var protocol = {
+      id: this.id,
       name:this.name,
       type:this.type,
       configuration:this.configuration
     }
     var id:number = this.id;
+    this.service.updateProtocol(id,protocol).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {
         closeModalBtn.click();
@@ -65,7 +70,6 @@ export class AddEditProtocolComponent implements OnInit {
           showUpdateSuccess.style.display = "none"
         }
       }, 4000);
-
+    }
+    )}
   }
-
-}

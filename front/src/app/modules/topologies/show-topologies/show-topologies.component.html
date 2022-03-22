@@ -32,7 +32,8 @@
                     <td>{{item.id}}</td>
                     <td>{{item.name}}</td>
                     <td>{{item.type}}</td>
-                    <td>{{item.tenant}}</td>
+                    <td *ngIf="item.tenant">{{item.tenant["name"]}}</td>
+                    <td *ngIf="!item.tenant">N/A</td>
                     <td>
                         <button class="btn btn-outline-primary me-2 mb-1" data-bs-toggle="modal" (click)="modalEdit(item)"
                             data-bs-target="#staticBackdrop">
