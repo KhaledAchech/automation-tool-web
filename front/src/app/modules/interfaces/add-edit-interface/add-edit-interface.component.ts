@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { InterfaceService } from 'src/app/services/network/interface.service';
 
 @Component({
   selector: 'app-add-edit-interface',
@@ -7,25 +8,30 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class AddEditInterfaceComponent implements OnInit {
 
-  constructor() { }
+  constructor(private service:InterfaceService) { }
 
   @Input() interface:any;
   id: number = 0;
   ipAddress: string = "";
   type: string = "";
-  protocol: string = "";
-  speed: string = "0Mbs/s";
+  //protocol: string = "";
+  speed: string = "50Mbs/s";
   state: string = "Not connected";
 
   ngOnInit(): void {
     this.id = this.interface.id;
     this.ipAddress = this.interface.ipAddress;
     this.type = this.interface.type;
-    this.state = this.interface.state;
-    this.speed = this.interface.speed;
-    this.protocol = this.interface.protocol;
+    //this.protocol = this.interface.protocol;
   }
   addInterface() {
+    var anInterface = {
+      ipAddress:this.ipAddress,
+      type:this.type,
+      speed:this.speed,
+      state:this.state
+    }
+    this.service.addInterface(anInterface).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {
         closeModalBtn.click();
@@ -40,10 +46,20 @@ export class AddEditInterfaceComponent implements OnInit {
           showAddSuccess.style.display = "none"
         }
       }, 4000);
-  }
+    }
+    )}
+  
 
   updateInterface() {
+    var anInterface = {
+      id:this.id,
+      ipAddress:this.ipAddress,
+      type:this.type,
+      speed:this.speed,
+      state:this.state
+    }
     var id:number = this.id;
+    this.service.updateInterface(id,anInterface).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
       if(closeModalBtn) {
         closeModalBtn.click();
@@ -58,6 +74,6 @@ export class AddEditInterfaceComponent implements OnInit {
           showUpdateSuccess.style.display = "none"
         }
       }, 4000);
-
+    }
+    )}
   }
-}

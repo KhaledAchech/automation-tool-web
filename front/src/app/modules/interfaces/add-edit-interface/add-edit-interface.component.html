@@ -7,10 +7,10 @@
         <label for="Type" class="form-label">Type</label>
         <input type="text" class="form-control" [(ngModel)]="type" name="type">
     </div>
-    <div class="mb-3">
+    <!--<div class="mb-3">
         <label for="Protocol" class="form-label">Protocol</label>
         <input type="text" class="form-control" [(ngModel)]="protocol" name="protocol">
-    </div>
+    </div>-->
     <button (click)="addInterface()" *ngIf="interface.id==0" class="btn btn-primary">
         Add
     </button>
