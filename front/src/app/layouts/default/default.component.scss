@@ -1,0 +1,27 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+mat-drawer {
+  width: 350px;
+}
+
+mat-drawer-container {
+  height: 100%;
+}
+
+mat-drawer-content {
+  padding: 20px;
+}
+
+::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+  background: gray;
+  overflow: visible;
+}
+::-webkit-scrollbar-thumb:horizontal {
+  background: #000;
+  border-radius: 10px;
+}

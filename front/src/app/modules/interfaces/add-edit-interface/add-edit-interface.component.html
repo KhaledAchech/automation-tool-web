@@ -1,0 +1,20 @@
+<form>
+    <div class="mb-3">
+        <label for="Ip-address" class="form-label">Ip-address</label>
+        <input type="text" class="form-control" [(ngModel)]="ipAddress" name="ipAddress">
+    </div>
+    <div class="mb-3">
+        <label for="Type" class="form-label">Type</label>
+        <input type="text" class="form-control" [(ngModel)]="type" name="type">
+    </div>
+    <!--<div class="mb-3">
+        <label for="Protocol" class="form-label">Protocol</label>
+        <input type="text" class="form-control" [(ngModel)]="protocol" name="protocol">
+    </div>-->
+    <button (click)="addInterface()" *ngIf="interface.id==0" class="btn btn-primary">
+        Add
+    </button>
+    <button (click)="updateInterface()" *ngIf="interface.id!=0" class="btn btn-primary">
+        Update
+    </button>
+</form>

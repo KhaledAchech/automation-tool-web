@@ -1,5 +1,6 @@
 package com.clevory.back.service.network.impl;
 
+import com.clevory.back.model.network.Configuration;
 import com.clevory.back.model.network.Device;
 import com.clevory.back.repository.network.DeviceRepository;
 import com.clevory.back.service.network.itf.DeviceService;
@@ -30,13 +31,24 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public Device getDeviceById(long id)
     {
-        return deviceRepository.getById(id);
+        return deviceRepository.findById(id).get();
     }
 
     @Override
-    public Device saveOrUpdate(Device device)
-    {
+    public Device save(Device device) {
         deviceRepository.save(device);
         return device;
     }
+
+    @Override
+    public Device update(long id, Device device) {
+        Device thisDevice = this.getDeviceById(id);
+        thisDevice.setName(device.getName());
+        thisDevice.setOs(device.getOs());
+        thisDevice.setStatus(device.getStatus());
+
+        deviceRepository.save(thisDevice);
+        return thisDevice;
+    }
+
 }

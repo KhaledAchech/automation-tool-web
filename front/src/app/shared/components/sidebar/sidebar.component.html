@@ -1,0 +1,38 @@
+<mat-nav-list>
+    <div class="profile-card">
+        <div class="header">
+            <h2>Shiba Inu</h2>
+            <h4>example@email.com</h4>
+        </div>
+        <img src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Shiba Inu">
+    </div>
+
+    <mat-divider></mat-divider>
+
+    <h2 matSubheader>Pages</h2>
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/"><mat-icon>desktop_windows</mat-icon>Monitor</a>
+    <a mat-menu-item routerLinkActive="list-item-active" routerLink="/topologies"><mat-icon>device_hub</mat-icon>Topologies</a>
+        <div class="dropdown">
+            <a mat-menu-item routerLinkActive="list-item-active" routerLink="/devices">
+                <mat-icon>devices_other</mat-icon>Devices <mat-icon class = "dropdown-menu">keyboard_arrow_right</mat-icon>
+            </a>
+            <div class="dropdown-content">
+        
+                <a mat-menu-item routerLinkActive="list-item-active" routerLink="/interfaces">
+                    <mat-icon>router</mat-icon>Interfaces
+                </a>
+                <a mat-menu-item routerLinkActive="list-item-active" routerLink="/configurations">
+                    <mat-icon>settings</mat-icon>Configuration
+                </a>
+        
+            </div>
+        </div>
+    <a mat-menu-item routerLinkActive="list-item-active" routerLink="/protocols"><mat-icon>graphic_eq</mat-icon>Protocols</a>
+    <mat-divider></mat-divider>
+    
+    <h2 matSubheader> Administration </h2>
+    
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/"><mat-icon>perm_identity</mat-icon>Profil</a>
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/"><mat-icon>group</mat-icon>Users</a>
+</mat-nav-list>
+

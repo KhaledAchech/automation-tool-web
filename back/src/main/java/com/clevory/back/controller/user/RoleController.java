@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/roles")
 public class RoleController {
@@ -32,7 +33,12 @@ public class RoleController {
     }
 
     @PostMapping
-    public Role createOrUpdate (@RequestBody Role role) {return roleService.saveOrUpdate(role);}
+    public Role create (@RequestBody Role role) {return roleService.save(role);}
+
+    @PutMapping("/{id}")
+    public Role update (@PathVariable("id") long id, @RequestBody  Role role) {
+        return roleService.update(id, role);
+    }
 
     @DeleteMapping("/{id}")
     public List<Role> deleteById(@PathVariable("id") long id) {

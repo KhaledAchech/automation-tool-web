@@ -1,0 +1,111 @@
+<br>
+<div class="main" >
+    <button type="button" class="btn custom-add-btn float-end m-2" data-bs-toggle="modal"
+        data-bs-target="#staticBackdrop" (click)="modalAdd()">
+        Add a new device
+    </button>
+    <h3> List of devices : </h3>
+    <mat-divider></mat-divider>
+        <div class="alert alert-success" role="alert" id="add-success-alert">
+            Device successfully added!
+        </div>
+        
+        <div class="alert alert-success" role="alert" id="update-success-alert">
+            Device successfully updated!
+        </div>
+        
+        <div class="alert alert-success" role="alert" id="delete-success-alert">
+            Device successfully deleted!
+        </div>
+    <br>
+    <app-widget-search-bar [dataSource]="dataSource$"></app-widget-search-bar>
+    <div class="mat-elevation-z8">
+        <table>
+            <thead>
+                <th>Id</th>
+                <th>Name</th>
+                <th>OS</th>
+                <th>Protocols</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of dataSource$|async">
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.os}}</td>
+                    <td>
+                        <mat-list *ngFor="let protocol of protocols">
+                            <mat-list-item><mat-icon>arrow_right</mat-icon>{{protocol}}</mat-list-item>
+                        </mat-list>
+                    </td>
+                    <td class="connected" *ngIf="item.status == 'Connected'">
+                        <mat-icon>check</mat-icon>{{item.status}}
+                    </td>
+                    <td class="disconnected" *ngIf="item.status == 'Disconnected'">
+                        <mat-icon>close</mat-icon>{{item.status}}
+                    </td>
+                    <td class="down" *ngIf="item.status == 'Down'">
+                        <mat-icon>arrow_downward</mat-icon>{{item.status}}
+                    </td>
+                    <td class="up" *ngIf="item.status == 'Up'">
+                        <mat-icon>arrow_upward</mat-icon>{{item.status}}
+                    </td>
+                    <td>
+                        <button class="btn btn-outline-primary me-2 mb-1"  (click)="modalEdit(item)" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path
+                                    d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                <path fill-rule="evenodd"
+                                    d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
+                            </svg>
+                        </button>
+                        <button class="btn btn-outline-success me-2 mb-1" (click)="modalConfigure()" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop">
+                            <mat-icon class="btn-outline-configuration icon-display" >settings</mat-icon>
+                        </button>
+                        <button class="btn btn-outline-secondary me-2 mb-1" (click)="modalDeviceInterface()" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop">
+                            <mat-icon class="btn-outline-interface icon-display">select_all</mat-icon>
+                        </button>
+                        <button class="btn btn-outline-danger me-2 mb-1"
+                        (click)="delete(item)">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-trash" viewBox="0 0 16 16">
+                                <path
+                                    d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z" />
+                                <path fill-rule="evenodd"
+                                    d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+<!-- Add or edit inspection Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">{{modalTitle}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="modalClose()" id="add-edit-modal-close"></button>
+            </div>
+            <div class="modal-body">
+                <app-add-edit-device [device]="device" *ngIf="activateAddEditDeviceComponent">
+                </app-add-edit-device>
+                <app-show-device-configuration *ngIf="activateConfigureDeviceComponent">
+                </app-show-device-configuration>
+                <app-show-device-interfaces *ngIf="activateDeviceInterfacesComponent"></app-show-device-interfaces>
+            </div>
+        </div>
+    </div>
+</div>

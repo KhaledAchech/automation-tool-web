@@ -18,9 +18,6 @@ public class Configuration {
     @Column(length = 50)
     private Date date;
 
-    @Column(length = 50)
-    private String ios;
-
     private String status;
 
 }

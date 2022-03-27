@@ -1,0 +1,83 @@
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { DeviceService } from 'src/app/services/network/device.service';
+
+@Component({
+  selector: 'app-show-devices',
+  templateUrl: './show-devices.component.html',
+  styleUrls: ['./show-devices.component.scss']
+})
+export class ShowDevicesComponent implements OnInit {
+  
+  dataSource$!:  Observable<any[]>; 
+  protocols!: any[];
+
+  constructor(private service:DeviceService) { }
+
+  ngOnInit(): void {
+    this.protocols = ['ssh','smtp'];
+    this.dataSource$ = this.service.getDevices();
+  }
+
+
+  modalTitle:string = '';
+  activateAddEditDeviceComponent:boolean = false;
+  activateConfigureDeviceComponent:boolean = false;
+  activateDeviceInterfacesComponent:boolean = false;
+  device:any;
+
+  modalAdd() {
+    this.device = {
+      id:0,
+      name:null,
+      os:null,
+      status:'Down'
+    }
+    this.modalTitle = "Add Device";
+    this.activateAddEditDeviceComponent = true;
+  }
+
+  modalEdit(item:any) {
+    this.device = item;
+    this.modalTitle = "Edit Device";
+    this.activateAddEditDeviceComponent = true;
+  }
+
+  modalConfigure() {
+    this.modalTitle = "Device Configuration";
+    this.activateConfigureDeviceComponent = true;
+  }
+  modalDeviceInterface() {
+    this.modalTitle = "Device list of interfaces";
+    this.activateDeviceInterfacesComponent = true;
+  }
+
+  delete(item:any) {
+    if(confirm(`Are you sure you want to delete this device ${item.id}`)) {
+      this.service.deleteDevice(item.id).subscribe(res => {
+      var closeModalBtn = document.getElementById('add-edit-modal-close');
+      if(closeModalBtn) {
+        closeModalBtn.click();
+      }
+      var showDeleteSuccess = document.getElementById('delete-success-alert');
+      if(showDeleteSuccess) {
+        showDeleteSuccess.style.display = "block";
+      }
+      setTimeout(function() {
+        if(showDeleteSuccess) {
+          showDeleteSuccess.style.display = "none"
+        }
+      }, 4000);
+      this.dataSource$ = this.service.getDevices();
+    })
+    }
+  }
+
+  modalClose() {
+    this.activateAddEditDeviceComponent = false;
+    this.activateConfigureDeviceComponent = false;
+    this.activateDeviceInterfacesComponent = false;
+    this.dataSource$ = this.service.getDevices();
+  }
+
+}

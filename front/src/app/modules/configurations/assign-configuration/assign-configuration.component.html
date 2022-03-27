@@ -1,0 +1,31 @@
+<mat-card class="example-card">
+    <mat-card-title>Configuration</mat-card-title>
+    <mat-card-content>
+        <br>
+        <div>
+            <h3>Configuration Id : 1</h3>
+        </div>
+        <div>
+            <h3>Configuration Date : 01/01/2022</h3>
+        </div>
+        <div>
+            <select class="form-select" aria-label="Default select example">
+                <option selected>Devices</option>
+                <option value="1">1 : Hub</option>
+                <option value="2">2 : Switch</option>
+                <option value="3">3 : Router</option>
+            </select>
+        </div>
+        <div>
+            <br>
+            <button class="btn btn-primary" (click)="assignConfiguration()" *ngIf="configuration.id!=0">
+                Assign
+            </button>
+        </div>
+    </mat-card-content>
+    <mat-divider inset></mat-divider>
+    <mat-card-footer>
+
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+</mat-card>

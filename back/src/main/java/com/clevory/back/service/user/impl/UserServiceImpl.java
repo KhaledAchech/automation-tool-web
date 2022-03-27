@@ -1,5 +1,6 @@
 package com.clevory.back.service.user.impl;
 
+import com.clevory.back.model.user.Role;
 import com.clevory.back.model.user.User;
 import com.clevory.back.repository.user.UserRepository;
 import com.clevory.back.service.user.itf.UserService;
@@ -30,12 +31,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(long id)
     {
-        return userRepository.getById(id);
+        return userRepository.findById(id).get();
     }
 
     @Override
-    public User saveOrUpdate(User user) {
+    public User save(User user) {
         userRepository.save(user);
         return user;
+    }
+
+    @Override
+    public User update(long id, User user) {
+        User thisUser = this.getUserById(id);
+        thisUser.setUsername(user.getUsername());
+        thisUser.setPassword(user.getPassword());
+
+        userRepository.save(thisUser);
+        return thisUser;
     }
 }
