@@ -1,6 +1,9 @@
 package com.clevory.back.controller.network;
 
+import com.clevory.back.dto.mapper.itf.NetworkStructMapper;
+import com.clevory.back.dto.network.response.TenantResponseDto;
 import com.clevory.back.model.network.Tenant;
+import com.clevory.back.model.network.Topology;
 import com.clevory.back.service.network.itf.TenantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,4 +45,15 @@ public class TenantController {
 
     @DeleteMapping("/{id}")
     public List<Tenant> deleteById(@PathVariable("id") long id) {return tenantService.deleteTenant(id);}
+
+    //DTOS
+    @GetMapping("/withTopologies")
+    public List<TenantResponseDto> getAllWithTopologies ()
+    {
+        return tenantService.getTenantWithTopologies();
+    }
+
+    //Add Topology to Tenant
+    @PostMapping("/{id}/addTopology")
+    public TenantResponseDto addTopology (@PathVariable("id") long id,@RequestBody Topology topology) {return tenantService.addTopologyToTenant(id, topology);}
 }

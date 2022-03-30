@@ -1,8 +1,11 @@
 package com.clevory.back.service.network.impl;
 
-import com.clevory.back.model.network.Configuration;
-import com.clevory.back.model.network.Device;
+import com.clevory.back.dto.mapper.itf.NetworkStructMapper;
+import com.clevory.back.dto.network.response.DeviceResponseDto;
+import com.clevory.back.model.network.*;
 import com.clevory.back.repository.network.DeviceRepository;
+import com.clevory.back.repository.network.InterfaceRepository;
+import com.clevory.back.repository.network.ProtocolRepository;
 import com.clevory.back.service.network.itf.DeviceService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,10 +13,25 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class DeviceServiceImpl implements DeviceService {
 
     private DeviceRepository deviceRepository;
+    private InterfaceRepository interfaceRepository;
+    private ProtocolRepository protocolRepository;
+    private NetworkStructMapper networkStructMapper;
+
+    public DeviceServiceImpl(
+            DeviceRepository deviceRepository,
+            InterfaceRepository interfaceRepository,
+            ProtocolRepository protocolRepository,
+            NetworkStructMapper networkStructMapper
+    )
+    {
+        this.deviceRepository = deviceRepository;
+        this.interfaceRepository = interfaceRepository;
+        this.protocolRepository = protocolRepository;
+        this.networkStructMapper = networkStructMapper;
+    }
 
     @Override
     public List<Device> getDevices()
@@ -49,6 +67,35 @@ public class DeviceServiceImpl implements DeviceService {
 
         deviceRepository.save(thisDevice);
         return thisDevice;
+    }
+
+    @Override
+    public List<DeviceResponseDto> getDeviceWithDetails() {
+        return  networkStructMapper.getAllDeviceDtos(getDevices());
+    }
+
+    @Override
+    public DeviceResponseDto addInterfaceToDevice(long id, Interface anInterface) {
+        Device device = deviceRepository.findById(id).get();
+
+        anInterface = interfaceRepository.save(anInterface);
+
+        device.getDeviceInterfaces().add(anInterface);
+        deviceRepository.save(device);
+
+        return networkStructMapper.deviceToDeviceResponseDto(device);
+    }
+
+    @Override
+    public DeviceResponseDto addProtocolToDevice(long id, Protocol protocol) {
+        Device device = deviceRepository.findById(id).get();
+
+        protocol = protocolRepository.save(protocol);
+
+        device.getDeviceProtocols().add(protocol);
+        deviceRepository.save(device);
+
+        return networkStructMapper.deviceToDeviceResponseDto(device);
     }
 
 }
