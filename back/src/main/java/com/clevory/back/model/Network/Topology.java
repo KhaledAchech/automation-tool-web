@@ -31,6 +31,7 @@ public class Topology {
     private Tenant tenant;
 
     //Have :
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "topology_device",

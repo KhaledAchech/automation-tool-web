@@ -1,5 +1,6 @@
 package com.clevory.back.model.network;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,6 +25,7 @@ public class Protocol {
 //    private User user;
 
     //run :
+    @JsonIgnore
     @ManyToMany(mappedBy = "deviceProtocols")
     Set<Device> devices;
 }

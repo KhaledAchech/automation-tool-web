@@ -7,6 +7,7 @@ import { DevicesComponent } from './modules/devices/devices.component';
 import { InterfacesComponent } from './modules/interfaces/interfaces.component';
 import { ProtocolsComponent } from './modules/protocols/protocols.component';
 import { TenantsComponent } from './modules/tenants/tenants.component';
+import { EditorComponent } from './modules/topologies/editor/editor.component';
 import { TopologiesComponent } from './modules/topologies/topologies.component';
 
 const routes: Routes = [{
@@ -33,6 +34,9 @@ const routes: Routes = [{
   }, {
     path:'interfaces',
     component: InterfacesComponent
+  }, {
+    path : 'editor',
+    component: EditorComponent
   }
 ]
 }];

@@ -1,6 +1,6 @@
 <br>
 <div class="main">
-    <button type="button" class="btn custom-add-btn float-end m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+    <button type="button" class="btn custom-add-btn float-end m-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="modalAdd()">
             Draw a new topology
     </button>
     <h3> List of topologies : </h3>
@@ -45,6 +45,9 @@
                                     d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                             </svg>
                         </button>
+                        <a class="btn btn-outline-secondary me-2 mb-1" routerLink="/editor">
+                            <mat-icon class="btn-outline-interface icon-display">device_hub</mat-icon>
+                        </a>
                         <button class="btn btn-outline-danger me-2 mb-1" (click)="delete(item)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash"
                                 viewBox="0 0 16 16">

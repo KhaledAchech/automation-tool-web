@@ -1,5 +1,6 @@
 package com.clevory.back.model.network;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +26,7 @@ public class Interface {
 //    private User user;
 
     //Belongs to :
+    @JsonIgnore
     @ManyToMany(mappedBy = "deviceInterfaces")
     Set<Device> devices;
 
