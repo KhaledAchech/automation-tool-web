@@ -3,6 +3,14 @@
     [skipsDiagramUpdate]='state.skipsDiagramUpdate' (modelChange)='diagramModelChange($event)'
     [divClassName]='diagramDivClassName'>
 </gojs-diagram>
+
+<br>
+
+<div class="btn-div">
+<button class="btn btn-outline-primary space" id="saveModel" [disabled]='isChanged'>Save</button>
+<button class="btn btn-outline-primary space" (click)="clickLoad()">Load</button>
+</div>
+
 <!-- 
 <gojs-palette [initPalette]='initPalette' [nodeDataArray]='state.paletteNodeData' [divClassName]='paletteDivClassName'>
 </gojs-palette> -->

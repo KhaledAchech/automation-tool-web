@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import * as go from 'gojs';
 
 @Component({
@@ -8,20 +8,21 @@ import * as go from 'gojs';
   encapsulation: ViewEncapsulation.None
 })
 export class EditorComponent {
- // Big object that holds app-level state data
-// As of gojs-angular 2.0, immutability is required of state for change detection
+
+isChanged = false;
+
 public state = {
   // Diagram state props
-diagramNodeData: [
-{"key":"1", "text":"Switch 23", "type":"S2", "loc":"195 225"},
-{"key":"2", "text":"Machine 17", "type":"M4", "loc":"183.5 94"},
-{"key":"3", "text":"Panel 7", "type":"P2", "loc":"75 211.5"},
-{"key":"4", "text":"Switch 24", "type":"S3", "loc":"306 225"},
-{"key":"5", "text":"Machine 18", "type":"M5", "loc":"288.5 95"},
-{"key":"6", "text":"Panel 9", "type":"P1", "loc":"426 211"},
-{"key":"7", "text":"Instr 3", "type":"I1", "loc":"-50 218"} ],
+  diagramNodeData: [
+  {"key":"1", "text":"Switch 23", "type":"S2", "loc":"195 225", "hostname":"S23"},
+  {"key":"2", "text":"Machine 17", "type":"M4", "loc":"183.5 94", "hostname":"S23"},
+  {"key":"3", "text":"Panel 7", "type":"P2", "loc":"75 211.5", "hostname":"S23"},
+  {"key":"4", "text":"Switch 24", "type":"S3", "loc":"306 225", "hostname":"S23"},
+  {"key":"5", "text":"Machine 18", "type":"M5", "loc":"288.5 95", "hostname":"S23"},
+  {"key":"6", "text":"Panel 9", "type":"P1", "loc":"426 211", "hostname":"S23"},
+  {"key":"7", "text":"Instr 3", "type":"I1", "loc":"-50 218", "hostname":"S23"} ],
   diagramLinkData:  [
-  {key: -1, from:'1', to: '2'},
+  {key: -1, from:'1',  to: '2'},
   {key: -2, from:"1",  to:"3"},
   {key: -3, from:"1",  to:"4"},
   {key: -4, from:"4",  to:"5"},
@@ -42,8 +43,10 @@ diagramNodeData: [
 public diagramDivClassName: string = 'myDiagramDiv';
 public paletteDivClassName = 'myPaletteDiv';
 
+
 // initialize diagram / templates
 public initDiagram(): go.Diagram {
+
   const $ = go.GraphObject.make;
   const dia = $(go.Diagram, 
     {
@@ -52,8 +55,6 @@ public initDiagram(): go.Diagram {
         linkKeyProperty: 'key'  // this should always be set when using a GraphLinksModel
       })
     });
-
-
    function nodeTypeImage(type:any) {
         switch (type) {                                         // Image sizes
           case "S2": return "assets/images/voice atm switch.jpg";      // 55x55
@@ -175,6 +176,26 @@ public initDiagram(): go.Diagram {
               $(go.Shape, { stroke : "blue", strokeWidth:2})
             );
 
+        
+        //handle unsaved state 
+        dia.addDiagramListener("Modified", e => {
+        var button = document.getElementById("saveModel");
+        if (button) this.isChanged = !dia.isModified;
+        console.log(button);
+        var idx = document.title.indexOf("*");
+        if (dia.isModified) {
+          if (idx < 0) document.title += "*";
+        } else {
+          if (idx >= 0) document.title = document.title.substr(0, idx);
+        }
+      });
+
+      // dia.addModelChangedListener((evt) => {
+      //   if (evt) this.isChanged = true;
+      //   console.log(this.isChanged);
+      // });
+
+
   return dia;
 }
 
@@ -183,14 +204,28 @@ public initDiagram(): go.Diagram {
  * This method should iterate over thoe changes and update state to keep in sync with the FoJS model.
  * This can be done with any preferred state management method, as long as immutability is preserved.
  */
-public diagramModelChange = function(changes: go.IncrementalData) {
-  console.info(changes.modifiedNodeData?.forEach( e => {
-    console.log(e)
-  }));
-  // return "test true" }));
+clickLoad()
+{
+  console.log(this.state.diagramNodeData[0].hostname);
+}
 
+public diagramModelChange = function(changes: go.IncrementalData) {
+
+  // console.info(changes.modifiedNodeData?.forEach( e => {
+  // //   console.log(e)
+  // }));
+  // return "test true" }));
   // see gojs-angular-basic for an example model changed handler that preserves immutability
   // when setting state, be sure to set skipsDiagramUpdate: true since GoJS already has this update
+
+  // if (changes)
+  // {
+  //   console.log(true);
+  // }
+  // else
+  // {
+  //  console.log(false);
+  // }
 };
 
 // public initPalette(): go.Palette {
