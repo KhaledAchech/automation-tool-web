@@ -1,13 +1,26 @@
-/* app.component.css */
 .myDiagramDiv {
   background: whitesmoke;
-  width: 100%;
+  width: 85%;
   height: 90%;
   border: 1px solid black;
+  margin: 10px;
+  float:left;
 }
 
+.myPaletteDiv {
+  background: whitesmoke;
+  width: 10%;
+  height: 90%;
+  border: 1px solid black;
+  margin: 10px;
+  float:left;
+}
+
+
 .btn-div {
-  margin-top: 10px;
+  left: 0;
+  bottom: 0;
+  margin: 5px;
 }
 .space{
   margin-left: 5px;

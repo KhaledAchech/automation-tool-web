@@ -1,5 +1,9 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import * as go from 'gojs';
+import { DiagramComponent } from 'gojs-angular';
+import * as $ from "jquery";
+import * as bootstrap from "bootstrap";
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'app-editor',
@@ -9,19 +13,27 @@ import * as go from 'gojs';
 })
 export class EditorComponent {
 
-isChanged = false;
+  modalTitle:string = '';
+  activateAddEditDeviceComponent:boolean = false;
+  device:any;
 
-public state = {
-  // Diagram state props
-  diagramNodeData: [
+  saveModelJson:any = null;
+
+  keys:string[] = [];
+
+  constructor(private route:ActivatedRoute,private router:Router) { }
+
+isChanged = false;
+dataArray = [
   {"key":"1", "text":"Switch 23", "type":"S2", "loc":"195 225", "hostname":"S23"},
   {"key":"2", "text":"Machine 17", "type":"M4", "loc":"183.5 94", "hostname":"S23"},
   {"key":"3", "text":"Panel 7", "type":"P2", "loc":"75 211.5", "hostname":"S23"},
   {"key":"4", "text":"Switch 24", "type":"S3", "loc":"306 225", "hostname":"S23"},
   {"key":"5", "text":"Machine 18", "type":"M5", "loc":"288.5 95", "hostname":"S23"},
   {"key":"6", "text":"Panel 9", "type":"P1", "loc":"426 211", "hostname":"S23"},
-  {"key":"7", "text":"Instr 3", "type":"I1", "loc":"-50 218", "hostname":"S23"} ],
-  diagramLinkData:  [
+  {"key":"7", "text":"Instr 3", "type":"I1", "loc":"-50 218", "hostname":"S23"} ];
+
+linkArray = [
   {key: -1, from:'1',  to: '2'},
   {key: -2, from:"1",  to:"3"},
   {key: -3, from:"1",  to:"4"},
@@ -29,7 +41,12 @@ public state = {
   {key: -5, from:"4",  to:"6"},
   {key: -6, from:"7",  to:"2"},
   {key: -7, from:"7",  to:"3"}
- ],
+ ];
+
+public state = {
+  // Diagram state props
+  diagramNodeData: this.dataArray,
+  diagramLinkData:  this.linkArray,
   diagramModelData: { prop: 'value' },
   skipsDiagramUpdate: false,
 
@@ -46,7 +63,7 @@ public paletteDivClassName = 'myPaletteDiv';
 
 // initialize diagram / templates
 public initDiagram(): go.Diagram {
-
+  const editor:EditorComponent=this;
   const $ = go.GraphObject.make;
   const dia = $(go.Diagram, 
     {
@@ -98,17 +115,27 @@ public initDiagram(): go.Diagram {
         return "green";
       }
 
-      function nodeClicked(e : any, obj1: any) {  // executed by click and doubleclick handlers
-      var evt = e.copy();
-      var node1 = obj1.part;
-      var type = evt.clickCount === 2 ? "Double-Clicked: " : "Clicked: ";
-      var msg = type + node1.data.key + ". ";
-      console.log(msg);
-    }
+    //   function nodeClicked(e : any, obj1: any) {  // executed by click and doubleclick handlers
+    //   var evt = e.copy();
+    //   var node1 = obj1.part;
+    //   var type = evt.clickCount === 2 ? "Double-Clicked: " : "Clicked: ";
+    //   var msg = type + node1.data.key + ". ";
+    //   console.log(msg);
+    // }
+
+    
+    // function deviceClicked(e : any, obj1: any) {  // executed by click and doubleclick handlers
+    //   var evt = e.copy();
+    //   var node1 = obj1.part;
+    //   var type = evt.clickCount === 2 ? "Double-Clicked: " : "Clicked: ";
+    //   var msg = type + node1.data.key + ". ";
+    //   console.log(msg);
+    // }
+
   // define the Node template
   dia.nodeTemplate =
  $(go.Node, "Vertical",
-          {  
+          { 
              locationObjectName: "ICON" },
           new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
           $(go.Panel, "Spot",
@@ -139,11 +166,26 @@ public initDiagram(): go.Diagram {
               new go.AnimationTrigger('fill'))
           ),  // end Spot Panel
           $(go.TextBlock,
-            new go.Binding("text"))
+            new go.Binding("text")),
+          {
+            toolTip:                       // define a tooltip for each node
+                  $(go.Adornment, "Spot",      // that has several labels around it
+                    { background: "transparent" },  // avoid hiding tooltip when mouse moves
+                    $(go.Placeholder, { padding: 5 }),
+                    $(go.TextBlock,
+                      { alignment: go.Spot.Top, alignmentFocus: go.Spot.Bottom, stroke: "blue" },
+                      new go.Binding("text", "key", function(s) { return "key: " + s; })),
+                    $(go.TextBlock, "Bottom",
+                      { alignment: go.Spot.Bottom, alignmentFocus: go.Spot.Top, stroke: "blue" },
+                      new go.Binding("text", "text", function(s) { return "text: " + s; })),
+                    $(go.TextBlock, "Bottom",
+                      { alignment: go.Spot.Right, alignmentFocus: go.Spot.Left, stroke: "blue" },
+                      new go.Binding("text", "type", function(s) { return "type: " + s; }))
+                  )  // end Adornment
+          }
         );  // end Node
         
         //Handling the link
-      
       function linkProblemConverter(msg: any) {
         if (msg) return "red";
         return "gray";
@@ -178,35 +220,230 @@ public initDiagram(): go.Diagram {
 
         
         //handle unsaved state 
-        dia.addDiagramListener("Modified", e => {
+      //   dia.addDiagramListener("Modified", e => {
+      //   var button = document.getElementById("saveModel");
+      //   if (button) this.isChanged = !dia.isModified;
+      //   var idx = document.title.indexOf("*");
+      //   if (dia.isModified) {
+      //     if (idx < 0) document.title += "*";
+      //   } else {
+      //     if (idx >= 0) document.title = document.title.substr(0, idx);
+      //   }
+      // });
+
+      //Handle double click update or add or simply display details:
+      dia.addDiagramListener("ObjectSingleClicked",
+        function(e) {
+          var part = e.subject.part;
+          if (!(part instanceof go.Link)) console.log("Clicked on " + part.data.key);
+        });
+
+      // dia.addDiagramListener("ObjectDoubleClicked",
+      //     function(e){
+      //             var part = e.subject.part;
+      //               if (!(part instanceof go.Link)) 
+      //               {
+      //                   return part;
+      //               }
+      //     });
+      
+      
+      // dia.addDiagramListener("ObjectDoubleClicked",
+      //       (e:any)=>{
+      //           var part = e.subject.part;
+      //               if (!(part instanceof go.Link)) 
+      //                 {
+      //                   console.log("am here");
+      //                   //this.addDevice();
+      //                 }
+      //           });
+        
+      // dia.addModelChangedListener((evt) => {
+      //   if (evt) this.isChanged = true;
+      //   console.log(this.isChanged);
+      // });
+
+      //side nav / palette thing 
+      var myPalette =
+                $(go.Palette, "myPaletteDiv",
+                        {
+                            nodeTemplateMap: dia.nodeTemplateMap,
+                            layout:
+                                $(go.GridLayout,
+                                    {
+                                        cellSize: new go.Size(2, 2),
+                                        isViewportSized: true
+                                    })
+                        }
+                    );
+                
+                myPalette.model.nodeDataArray = [
+                  {"key":"1", "text":"<double click to define this new device>","type":"S2"},
+                  {"key":"2", "text":"<double click to define this new device>","type":"M4"},
+                  {"key":"3", "text":"<double click to define this new device>","type":"P2"},
+                  {"key":"4", "text":"<double click to define this new device>","type":"S3"},
+                  {"key":"5", "text":"<double click to define this new device>","type":"M5"},
+                  {"key":"6", "text":"<double click to define this new device>","type":"P1"},
+                  {"key":"7", "text":"<double click to define this new device>","type":"I1"} ]
+                
+
+                // remove cursors on all ports in the Palette
+                // make TextBlocks invisible, to reduce size of Nodes
+                myPalette.nodes.each(node => {
+                    node.ports.each(port => port.cursor = "");
+                    node.elements.each(tb => {
+                        if (tb instanceof go.TextBlock) tb.visible = false;
+                    });
+                });
+
+                
+                
+  return dia;
+}
+
+@ViewChild('myDiag', {static: false}) myDiag!: DiagramComponent;
+
+ngAfterViewInit() {
+  const $ = go.GraphObject.make;
+  const editor: EditorComponent = this;
+
+  //Context menu and update
+  this.myDiag.diagram.nodeTemplate.contextMenu = 
+    $('ContextMenu',  "Spot",
+    $(go.Placeholder, { padding: 5 }),
+      $('ContextMenuButton',
+      {
+        "ButtonBorder.fill": "yellow",
+        "_buttonFillOver": "cyan",
+        "_buttonFillPressed": "lime"
+      },
+        $(go.TextBlock, 'Update'),
+        {  alignment: go.Spot.Top, alignmentFocus: go.Spot.Bottom,
+          click: (e, obj) => {
+            editor.updateDevice(e, obj);
+          }
+        }),
+         $('ContextMenuButton',
+          {
+            "ButtonBorder.fill": "yellow",
+            "_buttonFillOver": "cyan",
+            "_buttonFillPressed": "lime"
+          },
+            $(go.TextBlock, 'View Details'),
+            {   alignment: go.Spot.Right, alignmentFocus: go.Spot.Left,
+              click: (e, obj) => {
+                console.log("to be added spooonnn ")
+              }
+            })
+    );
+    
+    //set up keys array
+    this.state.diagramNodeData.map((node)=> {
+      this.keys.push(node.key);});
+
+    //handle add
+    this.myDiag.diagram.nodeTemplate.doubleClick=(e:go.InputEvent, obj:go.GraphObject) => {
+              console.log(this.myDiag.diagram.model)
+              editor.addDevice(e,obj);
+            };
+    
+    //handle unsaved state 
+    this.myDiag.diagram.addDiagramListener("Modified", e => {
         var button = document.getElementById("saveModel");
-        if (button) this.isChanged = !dia.isModified;
-        console.log(button);
+        if (button) this.isChanged = !this.myDiag.diagram.isModified;
         var idx = document.title.indexOf("*");
-        if (dia.isModified) {
+        if (this.myDiag.diagram.isModified) {
           if (idx < 0) document.title += "*";
         } else {
           if (idx >= 0) document.title = document.title.substr(0, idx);
         }
       });
 
-      // dia.addModelChangedListener((evt) => {
-      //   if (evt) this.isChanged = true;
-      //   console.log(this.isChanged);
-      // });
+      this.myDiag.diagram.addModelChangedListener((e) => {
+        // ignore unimportant Transaction events
+        if (!e.isTransactionFinished) return;
+        //var json = e.model?.toIncrementalJson(e);
+        var data = e.model?.toIncrementalData(e);
+        //console.log(editor.saveModelJson);
+        //console.log(json);
 
+        console.log(data?.modifiedNodeData);
+        //console.log(editor.dataArray);
+      });
+  }
 
-  return dia;
+addDevice(e:any, obj:any)
+{
+  if (obj) {
+      if (this.keys.includes(obj.part.data.key))
+      {
+       return;
+      }
+      else{
+        this.device = {
+                    id:0,
+                    name:null,
+                    os:null,
+                    status:'Down'
+                  }
+        this.modalTitle = "Add Device";
+        this.activateAddEditDeviceComponent = true;
+        obj.part.data.text = "banana";
+        this.openModal();
+      }
+  }
+}  
+
+updateDevice(e:any, obj:any) {
+
+  console.log('e2: ', obj.part.data.key);
+  if (obj)
+  {
+    if (!this.keys.includes(obj.part.data.key))
+      {
+       console.error("this device is not found in the db to be updated");
+      }
+    else
+      {
+        //this.device = obj.part.data; ==> when we update the model in the back end
+        this.device = {
+                    id:1,
+                    name:'test',
+                    os:'test update',
+                    status:'Down'
+                  }
+        this.modalTitle = "Edit Device";
+        this.activateAddEditDeviceComponent = true;
+        
+        this.openModal();
+      }
+  }
+  //  Ref :
+  //   this.dataArray.push({"key":"8", "text":"Instr 8", "type":"I1", "loc":"-50 218", "hostname":"S288"});
+  //   this.state.diagramNodeData = this.dataArray;
 }
 
-/**
- * Handle GoJS model changes, which output an object of data changes via Mode.toIncrementalData.
- * This method should iterate over thoe changes and update state to keep in sync with the FoJS model.
- * This can be done with any preferred state management method, as long as immutability is preserved.
- */
+clickSave() {
+  this.saveModelJson = this.myDiag.diagram.model.toJson();
+  this.myDiag.diagram.isModified = false;
+}
+
+// testing custom fields
 clickLoad()
 {
-  console.log(this.state.diagramNodeData[0].hostname);
+//   this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+//     this.router.navigate(['/editor']);
+// }); 
+//  window.location.reload();
+    this.myDiag.diagram.model = go.Model.fromJson(this.saveModelJson);
+}
+
+modalClose() {
+    this.activateAddEditDeviceComponent = false;
+  }
+
+openModal() {
+    jQuery('#staticBackdrop').modal('toggle');
 }
 
 public diagramModelChange = function(changes: go.IncrementalData) {
@@ -215,38 +452,6 @@ public diagramModelChange = function(changes: go.IncrementalData) {
   // //   console.log(e)
   // }));
   // return "test true" }));
-  // see gojs-angular-basic for an example model changed handler that preserves immutability
-  // when setting state, be sure to set skipsDiagramUpdate: true since GoJS already has this update
-
-  // if (changes)
-  // {
-  //   console.log(true);
-  // }
-  // else
-  // {
-  //  console.log(false);
-  // }
 };
 
-// public initPalette(): go.Palette {
-//   const $ = go.GraphObject.make;
-//   const palette = $(go.Palette);
-
-//   // define the Node template
-//   palette.nodeTemplate =
-//     $(go.Node, 'Auto',
-//       $(go.Shape, 'RoundedRectangle', { stroke: null },
-//         new go.Binding('fill', 'color')
-//       ),
-//       $(go.TextBlock, { margin: 8 },
-//         new go.Binding('text', 'key'))
-//     );
-
-//   palette.model = new go.GraphLinksModel(
-//     {
-//       linkKeyProperty: 'key'  // IMPORTANT! must be defined for merges and data sync when using GraphLinksModel
-//     });
-
-//   return palette;
-// }
 }
