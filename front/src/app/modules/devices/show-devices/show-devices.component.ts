@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DeviceService } from 'src/app/services/network/device.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-show-devices',
@@ -12,7 +14,8 @@ export class ShowDevicesComponent implements OnInit {
   dataSource$!:  Observable<any[]>; 
   protocols!: any[];
 
-  constructor(private service:DeviceService) { }
+  constructor(private service:DeviceService,
+              private router: Router) { }
 
   ngOnInit(): void {
     this.protocols = ['ssh','smtp'];
@@ -42,7 +45,10 @@ export class ShowDevicesComponent implements OnInit {
     this.modalTitle = "Edit Device";
     this.activateAddEditDeviceComponent = true;
   }
-
+  
+  deviceDetails(id:any) {
+    this.router.navigate(['devices/details', id]);
+  }
   modalConfigure() {
     this.modalTitle = "Device Configuration";
     this.activateConfigureDeviceComponent = true;

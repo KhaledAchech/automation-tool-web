@@ -15,6 +15,10 @@ export class DeviceService {
     return this.http.get<any>(this.deviceUrl);
   }
 
+  getDeviceById(id:number|string){
+    return this.http.get(this.deviceUrl + `/${id}`);
+  }
+
   addDevice(data:any) {
     return this.http.post(this.deviceUrl, data);
   }

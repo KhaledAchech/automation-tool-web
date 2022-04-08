@@ -88,6 +88,30 @@ td {
   }
 }
 
+.btn-outline-configuration {
+  .mat-icon {
+    vertical-align: middle;
+  }
+
+  color: #4ad345;
+
+  &:hover {
+    color: #36a83c;
+  }
+}
+
+.btn-outline-details {
+  .mat-icon {
+    vertical-align: middle;
+  }
+
+  color: #2e9797;
+
+  &:hover {
+    color: #1a6969;
+  }
+}
+
 .btn-outline-interface {
   .mat-icon {
     vertical-align: middle;

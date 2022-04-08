@@ -62,6 +62,9 @@
                                     d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                             </svg>
                         </button>
+                        <button class="btn btn-outline-info me-2 mb-1" (click)="deviceDetails(item.id)">
+                            <mat-icon class="btn-outline-details icon-display" >assignment</mat-icon>
+                        </button>
                         <button class="btn btn-outline-success me-2 mb-1" (click)="modalConfigure()" data-bs-toggle="modal"
                             data-bs-target="#staticBackdrop">
                             <mat-icon class="btn-outline-configuration icon-display" >settings</mat-icon>

@@ -440,8 +440,22 @@ clickLoad()
 
 modalClose() {
     this.activateAddEditDeviceComponent = false;
-  }
+}
 
+checkChanges()
+{
+  if (this.myDiag.diagram.isModified)
+  {
+    if(confirm("You have unsaved changes, are you sure you want to go back ?"))
+    {
+      this.router.navigate(['topologies']);
+    }
+  }
+  else
+  {
+    this.router.navigate(['topologies']);
+  }
+}
 openModal() {
     jQuery('#staticBackdrop').modal('toggle');
 }

@@ -4,6 +4,7 @@ import { DefaultComponent } from './layouts/default/default.component';
 import { ConfigurationsComponent } from './modules/configurations/configurations.component';
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { DevicesComponent } from './modules/devices/devices.component';
+import { ShowDeviceDetailsComponent } from './modules/devices/show-device-details/show-device-details.component';
 import { InterfacesComponent } from './modules/interfaces/interfaces.component';
 import { ProtocolsComponent } from './modules/protocols/protocols.component';
 import { TenantsComponent } from './modules/tenants/tenants.component';
@@ -26,6 +27,10 @@ const routes: Routes = [{
     path:'devices',
     component: DevicesComponent
   }, {
+    path:'devices/details/:id',
+    component: ShowDeviceDetailsComponent
+  },
+   {
     path:'configurations',
     component: ConfigurationsComponent
   }, {
