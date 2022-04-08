@@ -431,11 +431,20 @@ clickSave() {
 // testing custom fields
 clickLoad()
 {
-//   this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-//     this.router.navigate(['/editor']);
-// }); 
-//  window.location.reload();
-    this.myDiag.diagram.model = go.Model.fromJson(this.saveModelJson);
+    if (this.myDiag.diagram.isModified)
+      {
+        if(confirm("You have unsaved changes, are you sure you want to reload ?"))
+        {
+          if (this.saveModelJson)
+          {
+            this.myDiag.diagram.model = go.Model.fromJson(this.saveModelJson);
+          }
+          else
+          {
+             window.location.reload();
+          }
+        }
+      }
 }
 
 modalClose() {
@@ -456,6 +465,7 @@ checkChanges()
     this.router.navigate(['topologies']);
   }
 }
+
 openModal() {
     jQuery('#staticBackdrop').modal('toggle');
 }
