@@ -284,7 +284,10 @@ public initDiagram(): go.Diagram {
                   {"key":"4", "text":"<double click to define this new device>","type":"S3"},
                   {"key":"5", "text":"<double click to define this new device>","type":"M5"},
                   {"key":"6", "text":"<double click to define this new device>","type":"P1"},
-                  {"key":"7", "text":"<double click to define this new device>","type":"I1"} ]
+                  {"key":"7", "text":"<double click to define this new device>","type":"P1"},
+                  {"key":"8", "text":"<double click to define this new device>","type":"P1"},
+                  {"key":"9", "text":"<double click to define this new device>","type":"P1"},
+                  {"key":"10", "text":"<double click to define this new device>","type":"I1"} ]
                 
 
                 // remove cursors on all ports in the Palette
@@ -346,6 +349,14 @@ ngAfterViewInit() {
               console.log(this.myDiag.diagram.model)
               editor.addDevice(e,obj);
             };
+    
+    this.myDiag.diagram.addDiagramListener("ExternalObjectsDropped", e => {
+      var sel = e.diagram.selection;
+      var elem = sel.first();
+      var selectShape = elem?.findObject("ICON"); // Name of the Shape.
+      if (selectShape?.part?.canCopy())
+        selectShape.part.copyable = false;
+      }); 
     
     //handle unsaved state 
     this.myDiag.diagram.addDiagramListener("Modified", e => {
