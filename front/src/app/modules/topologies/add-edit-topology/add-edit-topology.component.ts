@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TopologyService } from 'src/app/services/network/topology.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-edit-topology',
@@ -13,7 +14,9 @@ export class AddEditTopologyComponent implements OnInit {
   name: string = "";
   type: string = "";
 
-  constructor(private service:TopologyService) { }
+  constructor(
+    private service:TopologyService,
+    private router: Router) { }
 
   ngOnInit(): void {
     this.id = this.topology.id;
@@ -42,6 +45,7 @@ export class AddEditTopologyComponent implements OnInit {
         }
       }, 4000);
     })
+     this.router.navigateByUrl('/editor');
   }
 
   updateTopology() {

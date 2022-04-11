@@ -1,5 +1,7 @@
 package com.clevory.back.controller.network;
 
+import com.clevory.back.dto.network.response.TopologyResponseDto;
+import com.clevory.back.model.network.Device;
 import com.clevory.back.model.network.Topology;
 import com.clevory.back.service.network.itf.TopologyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,4 +44,13 @@ public class TopologyController {
 
     @DeleteMapping("/{id}")
     public List<Topology> deleteById(@PathVariable("id") long id) {return topologyService.deleteTopology(id);}
+
+    @GetMapping("/devices")
+    public List<TopologyResponseDto> getTopologiesWithDevices()
+    {
+        return topologyService.getTopologiesWithDevices();
+    }
+
+    @PostMapping("/{id}/addDevice")
+    public TopologyResponseDto addDevice (@PathVariable("id") long id,@RequestBody Device device) {return topologyService.addDeviceToTopology(id, device);}
 }

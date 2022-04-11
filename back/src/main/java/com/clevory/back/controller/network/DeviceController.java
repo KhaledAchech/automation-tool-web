@@ -1,6 +1,11 @@
 package com.clevory.back.controller.network;
 
+import com.clevory.back.dto.network.response.DeviceResponseDto;
+import com.clevory.back.dto.network.response.TenantResponseDto;
+import com.clevory.back.dto.network.response.TopologyResponseDto;
 import com.clevory.back.model.network.Device;
+import com.clevory.back.model.network.Interface;
+import com.clevory.back.model.network.Protocol;
 import com.clevory.back.service.network.itf.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,4 +47,16 @@ public class DeviceController {
 
     @DeleteMapping("/{id}")
     public List<Device> deleteById(@PathVariable("id") long id) {return deviceService.deleteDevice(id);}
+
+    @GetMapping("/details")
+    public List<DeviceResponseDto> getDetails ()
+    {
+        return deviceService.getDeviceWithDetails();
+    }
+
+    @PostMapping("/{id}/addInterface")
+    public DeviceResponseDto addInterface (@PathVariable("id") long id, @RequestBody Interface anInterface) {return deviceService.addInterfaceToDevice(id, anInterface);}
+
+    @PostMapping("/{id}/addProtocol")
+    public DeviceResponseDto addProtocol (@PathVariable("id") long id, @RequestBody Protocol protocol) {return deviceService.addProtocolToDevice(id, protocol);}
 }

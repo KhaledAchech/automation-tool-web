@@ -1,0 +1,52 @@
+<a mat-list-item class="goback" (click)="checkChanges()">
+    <mat-icon>keyboard_return</mat-icon>
+</a>
+<br>
+<div id="myPaletteDiv" class="myPaletteDiv" >
+</div>
+<gojs-diagram #myDiag [initDiagram]='initDiagram' [nodeDataArray]='state.diagramNodeData'
+        [linkDataArray]='state.diagramLinkData' [modelData]='state.diagramModelData'
+        [skipsDiagramUpdate]='state.skipsDiagramUpdate' (modelChange)='diagramModelChange($event)'
+        [divClassName]='diagramDivClassName'>
+</gojs-diagram>
+
+<div class="btn-div">
+    <button class="btn btn-outline-primary space" id="saveModel" [disabled]='isChanged' (click)="clickSave()">Save</button>
+    <button class="btn btn-outline-primary space" (click)="clickLoad()">Load</button>
+</div>
+<mat-divider></mat-divider>
+<br>
+<div>
+    <p>User guide : </p>
+    <ul>
+        <li>Select a device with the left mouse button.</li>
+        <li>Move a device arround using your mouse.</li>
+        <li>You can change the link destination by moving the blue diamond shape towards another device.</li>
+        <li>You can undo changes using Ctrl+z.</li>
+        <li>You can redo changes using Ctrl+y.</li>
+        <li>You can add a new device by draging it from the palette and droping into the canvas.</li>
+        <li>Double click over the added device to specify it attributs.</li>
+        <li>Update a device by using your right mouse button.</li>
+        <li>See a device in full details by using your right mouse button.</li>
+        <li>Hover over a device to see it details.</li>
+    </ul>
+</div>
+<!-- <gojs-palette [divClassName]='paletteDivClassName'>
+</gojs-palette> -->
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">{{modalTitle}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="modalClose()" id="add-edit-modal-close"></button>
+            </div>
+            <div class="modal-body">
+                <app-add-edit-device [device]="device" *ngIf="activateAddEditDeviceComponent">
+                </app-add-edit-device>
+            </div>
+        </div>
+    </div>
+</div>

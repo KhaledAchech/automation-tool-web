@@ -8,7 +8,8 @@ import java.sql.Date;
 
 @Entity
 @Table(name = "CONFIGURATION")
-@Getter @Setter
+@Getter
+@Setter
 public class Configuration {
 
     @Id

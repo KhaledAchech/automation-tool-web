@@ -38,7 +38,9 @@ import { AssignConfigurationComponent } from 'src/app/modules/configurations/ass
 import { ShowTenantsComponent } from 'src/app/modules/tenants/show-tenants/show-tenants.component';
 import { ShowTenantTopologiesComponent } from 'src/app/modules/tenants/show-tenant-topologies/show-tenant-topologies.component';
 import { AddEditTenantComponent } from 'src/app/modules/tenants/add-edit-tenant/add-edit-tenant.component';
-
+import { EditorComponent } from 'src/app/modules/topologies/editor/editor.component';
+import { GojsAngularModule } from 'gojs-angular';
+import { ShowDeviceDetailsComponent } from 'src/app/modules/devices/show-device-details/show-device-details.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,8 @@ import { AddEditTenantComponent } from 'src/app/modules/tenants/add-edit-tenant/
     ShowTenantsComponent,
     ShowTenantTopologiesComponent,
     AddEditTenantComponent,
+    EditorComponent,
+    ShowDeviceDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -84,6 +88,7 @@ import { AddEditTenantComponent } from 'src/app/modules/tenants/add-edit-tenant/
     NgbModule,
     MatProgressBarModule,
     MatListModule,
+    GojsAngularModule
   ]
 })
 export class DefaultModule { }

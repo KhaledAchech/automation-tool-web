@@ -1,5 +1,6 @@
 package com.clevory.back.model.network;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,10 +33,12 @@ public class Device {
 //    private User user;
 
     //Belongs to :
+    @JsonIgnore
     @ManyToMany(mappedBy = "topologyDevices")
     Set<Topology> topologies;
 
     //Have :
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "device_interface",
@@ -44,6 +47,7 @@ public class Device {
     Set<Interface> deviceInterfaces;
 
     //Run on:
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "device_protocols",

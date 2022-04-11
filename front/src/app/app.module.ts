@@ -17,7 +17,7 @@ import { ProtocolService } from './services/network/protocol.service';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
