@@ -1,19 +1,16 @@
-package com.clevory.back.database.rethinkDb;
+package com.clevory.back.database.rethinkDb.configuration;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.env.Environment;
+
 
 import javax.annotation.PostConstruct;
 
 @Configuration
 public class RethinkDBConfiguration {
 
-    @Autowired
-    private Environment env;
-
-    public static String DBHOST = "localhost";
+    public static String DBHOST = "localhost" ;
 
     @PostConstruct
     public void init() {

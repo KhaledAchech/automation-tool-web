@@ -1,4 +1,4 @@
-package com.clevory.back.database.rethinkDb;
+package com.clevory.back.database.rethinkDb.configuration;
 
 import com.rethinkdb.RethinkDB;
 import com.rethinkdb.net.Connection;

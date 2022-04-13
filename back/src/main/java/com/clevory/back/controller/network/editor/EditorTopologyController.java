@@ -1,7 +1,9 @@
 package com.clevory.back.controller.network.editor;
 
-import com.clevory.back.database.rethinkDb.RethinkDBConnectionFactory;
-import com.clevory.back.database.rethinkDb.RethinkDBInitializer;
+import com.clevory.back.database.rethinkDb.configuration.RethinkDBConnectionFactory;
+import com.clevory.back.database.rethinkDb.configuration.RethinkDBInitializer;
+import com.clevory.back.database.rethinkDb.context.RethinkDBContext;
+import com.clevory.back.model.network.TestTopology;
 import com.rethinkdb.RethinkDB;
 import com.rethinkdb.net.Cursor;
 import org.slf4j.Logger;
@@ -28,24 +30,25 @@ public class EditorTopologyController {
     @Autowired
     private RethinkDBInitializer rethinkDBInitializer;
 
-    @RequestMapping(method = RequestMethod.POST)
-    public Object insertTopology(@RequestBody Object topology) throws TimeoutException {
-        Object run = r.db(rethinkDBInitializer.getDbName()).table("topology").insert(topology)
-                .run(connectionFactory.createConnection());
+    @Autowired
+    private RethinkDBContext rethinkDBContext;
 
-        log.info("Insert {}", run);
-        return topology;
+    @RequestMapping(method = RequestMethod.POST)
+    public Object insertTopology(@RequestBody TestTopology topology) throws TimeoutException {
+        return rethinkDBContext.create(topology);
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Object> getTopologies() throws TimeoutException {
-        System.out.println("Get Request starts here : ");
+
         List<Object> topologies = new ArrayList<>();
         Cursor cursor = r.db(rethinkDBInitializer.getDbName()).table("topology").run(connectionFactory.createConnection());
+
         for (Object doc : cursor) {
-            System.out.println(doc);
+
             topologies.add(doc);
         }
+        System.out.println(r.getClass().getSimpleName());
         return topologies;
     }
 }
