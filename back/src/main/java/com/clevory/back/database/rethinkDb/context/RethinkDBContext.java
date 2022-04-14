@@ -4,13 +4,15 @@ import com.clevory.back.database.rethinkDb.configuration.RethinkDBConnectionFact
 import com.clevory.back.database.rethinkDb.configuration.RethinkDBInitializer;
 import com.rethinkdb.RethinkDB;
 import com.rethinkdb.gen.ast.Db;
+import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeoutException;
 
-@Component
+@Getter
+@Setter
 public class RethinkDBContext {
 
     protected final Logger log = LoggerFactory.getLogger(RethinkDBContext.class);
@@ -24,20 +26,22 @@ public class RethinkDBContext {
 
     public RethinkDBContext (
             RethinkDBConnectionFactory rethinkDBConnectionFactory,
-            RethinkDBInitializer rethinkDBInitializer
+            RethinkDBInitializer rethinkDBInitializer,
+            String table
     )
     {
         this.rethinkDBConnectionFactory = rethinkDBConnectionFactory;
         this.rethinkDBInitializer = rethinkDBInitializer;
 
         this.database = r.db(this.rethinkDBInitializer.getDbName());
-        this.table = this.getClass().getSimpleName().toLowerCase();
+        this.table = table;
         try {
             this.rethinkDBInitializer.createTable(this.table);
         } catch (TimeoutException e) {
             e.printStackTrace();
         }
     }
+
 
     public Object create(Object object) throws TimeoutException
     {
