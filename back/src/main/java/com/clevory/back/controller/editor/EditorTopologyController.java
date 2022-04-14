@@ -1,4 +1,4 @@
-package com.clevory.back.controller.network.editor;
+package com.clevory.back.controller.editor;
 
 import com.clevory.back.database.rethinkDb.context.RethinkDBContext;
 import com.clevory.back.database.rethinkDb.context.RethinkDBContextFactory;
