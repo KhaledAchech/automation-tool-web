@@ -15,12 +15,27 @@ public class TestTopologyServiceImpl implements TestTopologyService {
     private TestTopologyRepository testTopologyRepository;
 
     @Override
-    public List<TestTopology> getTestTopologies() {
-        return null;
+    public List<Object> getAll() {
+        return testTopologyRepository.getAll();
     }
 
     @Override
     public TestTopology save(TestTopology testTopology) {
         return testTopologyRepository.create(testTopology);
+    }
+
+    @Override
+    public Object getById(String id) {
+        return testTopologyRepository.getById(id);
+    }
+
+    @Override
+    public Object update(String id, TestTopology testTopology) {
+        return testTopologyRepository.update(id,testTopology);
+    }
+
+    @Override
+    public Object delete(String id) {
+        return testTopologyRepository.delete(id);
     }
 }

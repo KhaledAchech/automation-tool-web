@@ -6,6 +6,10 @@ import com.clevory.back.model.network.TestTopology;
 import java.util.List;
 
 public interface TestTopologyService {
-    List<TestTopology> getTestTopologies();
+    List<Object> getAll();
     TestTopology save(TestTopology testTopology);
+    Object getById (String id);
+    Object update(String id, TestTopology testTopology);
+    Object delete (String id);
+
 }

@@ -4,10 +4,7 @@ import com.clevory.back.database.rethinkDb.context.RethinkDBContext;
 import com.clevory.back.database.rethinkDb.context.RethinkDBContextFactory;
 import com.clevory.back.model.network.TestTopology;
 import com.clevory.back.service.editor.itf.TestTopologyService;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,17 +34,24 @@ public class EditorTopologyController {
         return testTopologyService.save(topology);
     }
 
-    /*@RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public List<Object> getTopologies() throws TimeoutException {
+        return testTopologyService.getAll();
+    }
 
-        List<Object> topologies = new ArrayList<>();
-        Cursor cursor = r.db(rethinkDBInitializer.getDbName()).table("topology").run(connectionFactory.createConnection());
+    @GetMapping("/{id}")
+    public Object getTopology(@PathVariable String id) throws TimeoutException {
+        return testTopologyService.getById(id);
+    }
 
-        for (Object doc : cursor) {
+    @PutMapping("/{id}")
+    public Object updateTopology(@PathVariable String id,@RequestBody TestTopology topology) throws TimeoutException {
+        return testTopologyService.update(id,topology);
+    }
 
-            topologies.add(doc);
-        }
-        System.out.println(r.getClass().getSimpleName());
-        return topologies;
-    }*/
+    @DeleteMapping("/{id}")
+    public Object deleteTopology(@PathVariable String id) throws TimeoutException
+    {
+        return testTopologyService.delete(id);
+    }
 }

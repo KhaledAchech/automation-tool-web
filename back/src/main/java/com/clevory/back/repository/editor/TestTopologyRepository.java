@@ -6,6 +6,7 @@ import com.clevory.back.model.network.TestTopology;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 @Repository
@@ -21,10 +22,50 @@ public class TestTopologyRepository{
         this.dbContext = this.dbContextFactory.createMyDBContext(table);
     }
 
+    public List<Object> getAll()
+    {
+        try {
+            return dbContext.getAll();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public TestTopology create (TestTopology testTopology)
     {
         try {
             return (TestTopology)dbContext.create(testTopology);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Object getById(String id)
+    {
+        try {
+            return dbContext.getByID(id);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Object update(String id, TestTopology testTopology)
+    {
+        try {
+            return dbContext.update(id,testTopology);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Object delete(String id)
+    {
+        try {
+            return dbContext.delete(id);
         } catch (TimeoutException e) {
             e.printStackTrace();
         }
