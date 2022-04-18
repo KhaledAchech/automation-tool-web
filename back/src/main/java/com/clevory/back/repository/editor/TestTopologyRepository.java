@@ -2,7 +2,7 @@ package com.clevory.back.repository.editor;
 
 import com.clevory.back.database.rethinkDb.context.RethinkDBContext;
 import com.clevory.back.database.rethinkDb.context.RethinkDBContextFactory;
-import com.clevory.back.model.network.TestTopology;
+import com.clevory.back.model.editor.TestTopology;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

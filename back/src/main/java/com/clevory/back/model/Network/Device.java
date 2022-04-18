@@ -19,8 +19,17 @@ public class Device {
     @Column(length = 50)
     private String name;
 
+    @Enumerated(EnumType.STRING)
+    private Type type;
+
+    @Column(length = 50)
+    private String hostname;
+
     @Column(length = 50)
     private String os;
+
+    @Column(length = 50)
+    private String vendor;
 
     private String status;
 
@@ -55,4 +64,7 @@ public class Device {
             inverseJoinColumns = @JoinColumn(name = "protocol_id"))
     Set<Protocol> deviceProtocols;
 
+    private enum Type {
+        ROUTER, SWITCH, SERVER, PC, HUB, GATEWAY, CLOUD;
+    }
 }

@@ -61,9 +61,21 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public Device update(long id, Device device) {
         Device thisDevice = this.getDeviceById(id);
-        thisDevice.setName(device.getName());
-        thisDevice.setOs(device.getOs());
-        thisDevice.setStatus(device.getStatus());
+
+        if (device.getName()!=null)
+            thisDevice.setName(device.getName());
+        if (device.getOs()!= null)
+            thisDevice.setOs(device.getOs());
+        if (device.getStatus()!=null)
+            thisDevice.setStatus(device.getStatus());
+        if (device.getHostname()!=null)
+            thisDevice.setHostname(device.getHostname());
+        if (device.getType()!=null)
+            thisDevice.setType(device.getType());
+        if (device.getVendor()!=null)
+            thisDevice.setVendor(device.getVendor());
+        if (device.getConfiguration()!=null)
+            thisDevice.setConfiguration(device.getConfiguration());
 
         deviceRepository.save(thisDevice);
         return thisDevice;

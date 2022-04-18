@@ -2,11 +2,10 @@ package com.clevory.back.controller.editor;
 
 import com.clevory.back.database.rethinkDb.context.RethinkDBContext;
 import com.clevory.back.database.rethinkDb.context.RethinkDBContextFactory;
-import com.clevory.back.model.network.TestTopology;
+import com.clevory.back.model.editor.TestTopology;
 import com.clevory.back.service.editor.itf.TestTopologyService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 

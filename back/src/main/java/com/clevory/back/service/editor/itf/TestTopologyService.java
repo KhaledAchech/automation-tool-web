@@ -1,7 +1,7 @@
 package com.clevory.back.service.editor.itf;
 
 
-import com.clevory.back.model.network.TestTopology;
+import com.clevory.back.model.editor.TestTopology;
 
 import java.util.List;
 

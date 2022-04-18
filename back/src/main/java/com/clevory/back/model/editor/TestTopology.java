@@ -1,4 +1,4 @@
-package com.clevory.back.model.network;
+package com.clevory.back.model.editor;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +7,5 @@ import lombok.Setter;
 @Setter
 public class TestTopology {
 
-    private String type;
-    private String name;
+    private Diagram diagram;
 }

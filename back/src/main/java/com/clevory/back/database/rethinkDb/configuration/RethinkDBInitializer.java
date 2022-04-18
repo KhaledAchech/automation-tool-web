@@ -19,7 +19,7 @@ public class RethinkDBInitializer implements InitializingBean {
 
     private static final RethinkDB r = RethinkDB.r;
 
-    private String dbName = "network";
+    private String dbName = "editor";
 
     @Override
     public void afterPropertiesSet() throws Exception {

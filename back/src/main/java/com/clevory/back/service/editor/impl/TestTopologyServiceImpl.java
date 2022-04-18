@@ -1,6 +1,6 @@
 package com.clevory.back.service.editor.impl;
 
-import com.clevory.back.model.network.TestTopology;
+import com.clevory.back.model.editor.TestTopology;
 import com.clevory.back.repository.editor.TestTopologyRepository;
 import com.clevory.back.service.editor.itf.TestTopologyService;
 import lombok.AllArgsConstructor;
