@@ -15,11 +15,12 @@ public class TestTopologyRepository{
     private final String table = TestTopology.class.getSimpleName().toLowerCase();
     private final RethinkDBContextFactory dbContextFactory;
     private final RethinkDBContext dbContext;
+    private TestTopology testTopology = new TestTopology();
 
     @Autowired
     public TestTopologyRepository(RethinkDBContextFactory dbContextFactory) {
         this.dbContextFactory = dbContextFactory;
-        this.dbContext = this.dbContextFactory.createMyDBContext(table);
+        this.dbContext = this.dbContextFactory.createMyDBContext(table,testTopology);
     }
 
     public List<Object> getAll()
@@ -71,4 +72,6 @@ public class TestTopologyRepository{
         }
         return null;
     }
+
+
 }

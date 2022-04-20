@@ -8,6 +8,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class Diagram {
+    private String name;
     private Set<Node> nodes;
     private Set<Link> links;
 }

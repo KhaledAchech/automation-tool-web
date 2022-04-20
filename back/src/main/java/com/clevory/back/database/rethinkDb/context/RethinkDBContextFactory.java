@@ -21,8 +21,8 @@ public class RethinkDBContextFactory {
         this.rethinkDBInitializer = rethinkDBInitializer;
     }
 
-    public RethinkDBContext createMyDBContext(String table)
+    public RethinkDBContext createMyDBContext(String table, Object forEntity)
     {
-        return new RethinkDBContext(this.rethinkDBConnectionFactory, this.rethinkDBInitializer, table);
+        return new RethinkDBContext(this.rethinkDBConnectionFactory, this.rethinkDBInitializer, table, forEntity);
     }
 }

@@ -1,7 +1,5 @@
 package com.clevory.back.controller.editor;
 
-import com.clevory.back.database.rethinkDb.context.RethinkDBContext;
-import com.clevory.back.database.rethinkDb.context.RethinkDBContextFactory;
 import com.clevory.back.model.editor.TestTopology;
 import com.clevory.back.service.editor.itf.TestTopologyService;
 import org.springframework.web.bind.annotation.*;
@@ -10,46 +8,42 @@ import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 @RestController
-@RequestMapping("/editor")
+@RequestMapping("/editor/test")
 public class EditorTopologyController {
-
-    private RethinkDBContextFactory dbContextFactory;
 
     private TestTopologyService testTopologyService;
 
-    private RethinkDBContext dbContext;
-
-    public EditorTopologyController(
-            RethinkDBContextFactory dbContextFactory,
-            TestTopologyService testTopologyService
-    )
+    public EditorTopologyController(TestTopologyService testTopologyService)
     {
-        this.dbContextFactory = dbContextFactory;
         this.testTopologyService = testTopologyService;
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public TestTopology insertTopology(@RequestBody TestTopology topology) throws TimeoutException {
-        return testTopologyService.save(topology);
+    public TestTopology insertTopology(@RequestBody TestTopology testTopology)
+    {
+        return testTopologyService.save(testTopology);
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public List<Object> getTopologies() throws TimeoutException {
+    public List<Object> getTopologies()
+    {
         return testTopologyService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Object getTopology(@PathVariable String id) throws TimeoutException {
+    public Object getTopology(@PathVariable String id)
+    {
         return testTopologyService.getById(id);
     }
 
     @PutMapping("/{id}")
-    public Object updateTopology(@PathVariable String id,@RequestBody TestTopology topology) throws TimeoutException {
+    public Object updateTopology(@PathVariable String id,@RequestBody TestTopology topology)
+    {
         return testTopologyService.update(id,topology);
     }
 
     @DeleteMapping("/{id}")
-    public Object deleteTopology(@PathVariable String id) throws TimeoutException
+    public Object deleteTopology(@PathVariable String id)
     {
         return testTopologyService.delete(id);
     }

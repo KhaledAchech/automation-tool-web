@@ -1,9 +1,10 @@
-import { Component, Input, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import * as go from 'gojs';
 import { DiagramComponent } from 'gojs-angular';
 import * as $ from "jquery";
 import * as bootstrap from "bootstrap";
 import {ActivatedRoute, Router} from '@angular/router';
+import { TestService } from 'src/app/services/editor/test.service';
 
 @Component({
   selector: 'app-editor',
@@ -11,7 +12,7 @@ import {ActivatedRoute, Router} from '@angular/router';
   styleUrls: ['./editor.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class EditorComponent {
+export class EditorComponent implements OnInit{
 
   modalTitle:string = '';
   activateAddEditDeviceComponent:boolean = false;
@@ -21,7 +22,15 @@ export class EditorComponent {
 
   keys:string[] = [];
 
-  constructor(private route:ActivatedRoute,private router:Router) { }
+
+  //dataArray = [];
+  //linkArray = []
+
+  constructor(private route:ActivatedRoute,private router:Router, private service: TestService) { }
+
+  ngOnInit(): void {
+    //this.dataArray = this.service.getDiagramById("98d1315c-cb27-4015-9fa6-62765bc1f946").;
+  }
 
 isChanged = false;
 dataArray = [

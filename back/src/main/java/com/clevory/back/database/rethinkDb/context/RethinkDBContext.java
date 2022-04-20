@@ -27,16 +27,20 @@ public class RethinkDBContext {
     private Db database;
     private String table;
 
+    private Object forEntity;
+
     public RethinkDBContext (
             RethinkDBConnectionFactory rethinkDBConnectionFactory,
             RethinkDBInitializer rethinkDBInitializer,
-            String table
+            String table,
+            Object forEntity
     )
     {
         this.rethinkDBConnectionFactory = rethinkDBConnectionFactory;
         this.rethinkDBInitializer = rethinkDBInitializer;
 
         this.database = r.db(this.rethinkDBInitializer.getDbName());
+        this.forEntity = forEntity;
         this.table = table;
         try {
             this.rethinkDBInitializer.createTable(this.table);
@@ -74,7 +78,6 @@ public class RethinkDBContext {
     {
         Object object = this.database.table(this.table).get(id)
                 .run(rethinkDBConnectionFactory.createConnection());
-
         log.info("Read {}", object);
         return object;
     }

@@ -14,6 +14,7 @@ import { DeviceService } from './services/network/device.service';
 import { InterfaceService } from './services/network/interface.service';
 import { ConfigurationService } from './services/network/configuration.service';
 import { ProtocolService } from './services/network/protocol.service';
+import { TestService } from './services/editor/test.service';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { ProtocolService } from './services/network/protocol.service';
     DeviceService,
     InterfaceService,
     ConfigurationService,
-    ProtocolService
+    ProtocolService,
+    TestService
 ],
   bootstrap: [AppComponent]
 })

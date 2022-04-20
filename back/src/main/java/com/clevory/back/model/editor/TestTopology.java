@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class TestTopology {
 
-    private Diagram diagram;
+    //private Diagram diagram;
 }
