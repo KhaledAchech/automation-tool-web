@@ -44,4 +44,20 @@ public class RethinkDBInitializer implements InitializingBean {
             r.db(dbName).tableCreate(name).run(connection);
         }
     }
+
+    public void createOneToManyRelation(String motherEntity, String childEntity, String motherID) throws TimeoutException
+    {
+        Connection connection = connectionFactory.createConnection();
+
+        createTable(motherEntity);
+        createTable(childEntity);
+
+        boolean isJoined = false;
+
+        if (r.db(dbName).table(childEntity).getField(motherID).run(connection) != null)
+            isJoined = true;
+
+        if (!isJoined)
+            r.db(dbName).table(childEntity).eqJoin(motherID, r.table(motherEntity)).run(connection);
+    }
 }

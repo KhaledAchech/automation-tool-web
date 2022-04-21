@@ -26,6 +26,8 @@ public class RethinkDBContext {
 
     private Db database;
     private String table;
+    private String child;
+    private String tableID;
 
     private Object forEntity;
 
@@ -33,8 +35,32 @@ public class RethinkDBContext {
             RethinkDBConnectionFactory rethinkDBConnectionFactory,
             RethinkDBInitializer rethinkDBInitializer,
             String table,
-            Object forEntity
+            Object forEntity,
+            String child,
+            String tableID
     )
+    {
+        this.rethinkDBConnectionFactory = rethinkDBConnectionFactory;
+        this.rethinkDBInitializer = rethinkDBInitializer;
+
+        this.database = r.db(this.rethinkDBInitializer.getDbName());
+        this.forEntity = forEntity;
+        this.table = table;
+        this.child = child;
+        this.tableID = tableID;
+        try {
+            this.rethinkDBInitializer.createTable(this.table);
+            this.rethinkDBInitializer.createOneToManyRelation(this.table,this.child, this.tableID);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public RethinkDBContext(
+            RethinkDBConnectionFactory rethinkDBConnectionFactory,
+            RethinkDBInitializer rethinkDBInitializer,
+            String table,
+            Object forEntity)
     {
         this.rethinkDBConnectionFactory = rethinkDBConnectionFactory;
         this.rethinkDBInitializer = rethinkDBInitializer;

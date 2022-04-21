@@ -25,4 +25,9 @@ public class RethinkDBContextFactory {
     {
         return new RethinkDBContext(this.rethinkDBConnectionFactory, this.rethinkDBInitializer, table, forEntity);
     }
+
+    public RethinkDBContext createMyDBContextWithRelation(String table, Object forEntity, String child, String tableID)
+    {
+        return new RethinkDBContext(this.rethinkDBConnectionFactory, this.rethinkDBInitializer, table, forEntity, child, tableID);
+    }
 }

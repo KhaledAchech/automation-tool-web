@@ -1,12 +1,12 @@
 package com.clevory.back.controller.editor;
 
 import com.clevory.back.model.editor.Diagram;
-import com.clevory.back.model.network.Configuration;
+import com.clevory.back.model.editor.Node;
 import com.clevory.back.service.editor.itf.DiagramService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -46,5 +46,11 @@ public class DiagramController {
     public Object deleteDiagram(@PathVariable String id)
     {
         return diagramService.delete(id);
+    }
+
+    @GetMapping("/nodes/{id}")
+    public ArrayList<Node> getNodes(@PathVariable String id)
+    {
+        return diagramService.getNodes(id);
     }
 }

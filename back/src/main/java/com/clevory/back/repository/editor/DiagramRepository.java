@@ -7,7 +7,6 @@ import com.clevory.back.model.editor.Diagram;
 import com.clevory.back.model.editor.Link;
 import com.clevory.back.model.editor.Node;
 import com.rethinkdb.RethinkDB;
-import com.rethinkdb.model.MapObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -81,6 +80,7 @@ public class DiagramRepository {
 
         for (Node node: diagram.getNodes())
         {
+
             nodes.add(
                     r.hashMap("key", node.getKey())
                             .with("text", node.getText())
@@ -112,4 +112,20 @@ public class DiagramRepository {
         return "Diagram was not created, an error has been detected.";
     }
 
+    public ArrayList<Node> getDiagramNodes(String id)
+    {
+        try {
+            ArrayList nodes = this.dbContext.getDatabase().table(table).get(id).
+                    getField("nodes")
+                    .coerceTo("array")
+                    .run(this.rethinkDBConnectionFactory.createConnection());
+
+            this.dbContext.getLog().info("read {}", nodes.get(0));
+
+            return (ArrayList<Node>) nodes.get(0);
+        } catch (TimeoutException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }

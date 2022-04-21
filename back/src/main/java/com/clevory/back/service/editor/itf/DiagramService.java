@@ -1,7 +1,9 @@
 package com.clevory.back.service.editor.itf;
 
 import com.clevory.back.model.editor.Diagram;
+import com.clevory.back.model.editor.Node;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public interface DiagramService {
@@ -10,5 +12,7 @@ public interface DiagramService {
     Object getById (String id);
     Object update(String id, Diagram diagram);
     Object delete (String id);
+
+    ArrayList<Node> getNodes(String id);
 
 }

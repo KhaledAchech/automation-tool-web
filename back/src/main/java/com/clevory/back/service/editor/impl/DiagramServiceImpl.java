@@ -1,11 +1,13 @@
 package com.clevory.back.service.editor.impl;
 
 import com.clevory.back.model.editor.Diagram;
+import com.clevory.back.model.editor.Node;
 import com.clevory.back.repository.editor.DiagramRepository;
 import com.clevory.back.service.editor.itf.DiagramService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,5 +39,10 @@ public class DiagramServiceImpl implements DiagramService {
     @Override
     public Object delete(String id) {
         return diagramRepository.delete(id);
+    }
+
+    @Override
+    public ArrayList<Node> getNodes(String id) {
+        return diagramRepository.getDiagramNodes(id);
     }
 }

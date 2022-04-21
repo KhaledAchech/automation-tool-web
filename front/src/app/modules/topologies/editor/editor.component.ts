@@ -5,6 +5,7 @@ import * as $ from "jquery";
 import * as bootstrap from "bootstrap";
 import {ActivatedRoute, Router} from '@angular/router';
 import { TestService } from 'src/app/services/editor/test.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-editor',
@@ -22,14 +23,14 @@ export class EditorComponent implements OnInit{
 
   keys:string[] = [];
 
-
+  //dataArray!:  any[];
   //dataArray = [];
   //linkArray = []
 
   constructor(private route:ActivatedRoute,private router:Router, private service: TestService) { }
 
   ngOnInit(): void {
-    //this.dataArray = this.service.getDiagramById("98d1315c-cb27-4015-9fa6-62765bc1f946").;
+    //this.dataArray = this.service.getDiagramNodesById('8a5499fd-5129-4b1c-a40d-f646a3bd7306');
   }
 
 isChanged = false;
