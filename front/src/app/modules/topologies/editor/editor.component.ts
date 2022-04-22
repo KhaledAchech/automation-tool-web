@@ -5,7 +5,7 @@ import * as $ from "jquery";
 import * as bootstrap from "bootstrap";
 import {ActivatedRoute, Router} from '@angular/router';
 import { TestService } from 'src/app/services/editor/test.service';
-import { Observable } from 'rxjs';
+import { Node } from 'src/app/common/interfaces/Node';
 
 @Component({
   selector: 'app-editor',
@@ -23,18 +23,13 @@ export class EditorComponent implements OnInit{
 
   keys:string[] = [];
 
-  //dataArray!:  any[];
-  //dataArray = [];
+  dataArray: Node[] = [];
   //linkArray = []
 
-  constructor(private route:ActivatedRoute,private router:Router, private service: TestService) { }
-
-  ngOnInit(): void {
-    //this.dataArray = this.service.getDiagramNodesById('8a5499fd-5129-4b1c-a40d-f646a3bd7306');
-  }
-
+  
 isChanged = false;
-dataArray = [
+
+/*dataArray = [
   {"key":"1", "text":"Switch 23", "type":"S2", "loc":"195 225", "hostname":"S23"},
   {"key":"2", "text":"Machine 17", "type":"M4", "loc":"183.5 94", "hostname":"S23"},
   {"key":"3", "text":"Panel 7", "type":"P2", "loc":"75 211.5", "hostname":"S23"},
@@ -42,7 +37,7 @@ dataArray = [
   {"key":"5", "text":"Machine 18", "type":"M5", "loc":"288.5 95", "hostname":"S23"},
   {"key":"6", "text":"Panel 9", "type":"P1", "loc":"426 211", "hostname":"S23"},
   {"key":"7", "text":"Instr 3", "type":"I1", "loc":"-50 218", "hostname":"S23"} ];
-
+*/
 linkArray = [
   {key: -1, from:'1',  to: '2'},
   {key: -2, from:"1",  to:"3"},
@@ -52,6 +47,27 @@ linkArray = [
   {key: -6, from:"7",  to:"2"},
   {key: -7, from:"7",  to:"3"}
  ];
+
+  constructor(private route:ActivatedRoute,private router:Router, private service: TestService) { }
+
+  ngOnInit(): void {
+    this.service.getDiagramNodesById('c65fc577-cdb5-4469-8d9f-ca975184b44b').subscribe(
+      data => {
+        data.forEach(node => {
+          this.dataArray.push(
+            {
+              "key": node.key,
+              "text": node.text,
+              "type": node.type,
+              "loc":node.loc,
+              "hostname": node.text
+            }
+          )
+        });;
+      }
+    )
+  }
+
 
 public state = {
   // Diagram state props
@@ -84,26 +100,26 @@ public initDiagram(): go.Diagram {
     });
    function nodeTypeImage(type:any) {
         switch (type) {                                         // Image sizes
-          case "S2": return "assets/images/voice atm switch.jpg";      // 55x55
-          case "S3": return "assets/images/server switch.jpg";         // 55x55
-          case "P1": return "assets/images/general processor.jpg";     // 60x85
-          case "P2": return "assets/images/storage array.jpg";         // 55x80
-          case "M4": return "assets/images/iptv broadcast server.jpg"; // 80x50
-          case "M5": return "assets/images/content engine.jpg";        // 90x65
-          case "I1": return "assets/images/pc.jpg";                    // 80x70
+          case "switch": return "assets/images/voice atm switch.jpg";      // 55x55
+          case "router": return "assets/images/server switch.jpg";         // 55x55
+          case "processor": return "assets/images/general processor.jpg";     // 60x85
+          case "server": return "assets/images/storage array.jpg";         // 55x80
+          case "hub": return "assets/images/iptv broadcast server.jpg"; // 80x50
+          case "gateway": return "assets/images/content engine.jpg";        // 90x65
+          case "pc": return "assets/images/pc.jpg";                    // 80x70
           default: return "assets/images/pc.jpg";                      // 80x70
         }
       }
 
       function nodeTypeSize(type:any) {
         switch (type) {
-          case "S2": return new go.Size(55, 55);
-          case "S3": return new go.Size(55, 55);
-          case "P1": return new go.Size(60, 85);
-          case "P2": return new go.Size(55, 80);
-          case "M4": return new go.Size(80, 50);
-          case "M5": return new go.Size(90, 65);
-          case "I1": return new go.Size(80, 70);
+          case "switch": return new go.Size(55, 55);
+          case "router": return new go.Size(55, 55);
+          case "processor": return new go.Size(60, 85);
+          case "server": return new go.Size(55, 80);
+          case "hub": return new go.Size(80, 50);
+          case "gateway": return new go.Size(90, 65);
+          case "pc": return new go.Size(80, 70);
           default: return new go.Size(80, 70);
         }
       }
@@ -126,15 +142,6 @@ public initDiagram(): go.Diagram {
       }
 
     //   function nodeClicked(e : any, obj1: any) {  // executed by click and doubleclick handlers
-    //   var evt = e.copy();
-    //   var node1 = obj1.part;
-    //   var type = evt.clickCount === 2 ? "Double-Clicked: " : "Clicked: ";
-    //   var msg = type + node1.data.key + ". ";
-    //   console.log(msg);
-    // }
-
-    
-    // function deviceClicked(e : any, obj1: any) {  // executed by click and doubleclick handlers
     //   var evt = e.copy();
     //   var node1 = obj1.part;
     //   var type = evt.clickCount === 2 ? "Double-Clicked: " : "Clicked: ";
@@ -176,24 +183,7 @@ public initDiagram(): go.Diagram {
               new go.AnimationTrigger('fill'))
           ),  // end Spot Panel
           $(go.TextBlock,
-            new go.Binding("text")),
-          {
-            toolTip:                       // define a tooltip for each node
-                  $(go.Adornment, "Spot",      // that has several labels around it
-                    { background: "transparent" },  // avoid hiding tooltip when mouse moves
-                    $(go.Placeholder, { padding: 5 }),
-                    $(go.TextBlock,
-                      { alignment: go.Spot.Top, alignmentFocus: go.Spot.Bottom, stroke: "blue" },
-                      new go.Binding("text", "key", function(s) { return "key: " + s; })),
-                    $(go.TextBlock, "Bottom",
-                      { alignment: go.Spot.Bottom, alignmentFocus: go.Spot.Top, stroke: "blue" },
-                      new go.Binding("text", "text", function(s) { return "text: " + s; })),
-                    $(go.TextBlock, "Bottom",
-                      { alignment: go.Spot.Right, alignmentFocus: go.Spot.Left, stroke: "blue" },
-                      new go.Binding("text", "type", function(s) { return "type: " + s; }))
-                  )  // end Adornment
-          }
-        );  // end Node
+            new go.Binding("text")));  // end Node
         
         //Handling the link
       function linkProblemConverter(msg: any) {
@@ -229,17 +219,6 @@ public initDiagram(): go.Diagram {
             );
 
         
-        //handle unsaved state 
-      //   dia.addDiagramListener("Modified", e => {
-      //   var button = document.getElementById("saveModel");
-      //   if (button) this.isChanged = !dia.isModified;
-      //   var idx = document.title.indexOf("*");
-      //   if (dia.isModified) {
-      //     if (idx < 0) document.title += "*";
-      //   } else {
-      //     if (idx >= 0) document.title = document.title.substr(0, idx);
-      //   }
-      // });
 
       //Handle double click update or add or simply display details:
       dia.addDiagramListener("ObjectSingleClicked",
@@ -247,26 +226,6 @@ public initDiagram(): go.Diagram {
           var part = e.subject.part;
           if (!(part instanceof go.Link)) console.log("Clicked on " + part.data.key);
         });
-
-      // dia.addDiagramListener("ObjectDoubleClicked",
-      //     function(e){
-      //             var part = e.subject.part;
-      //               if (!(part instanceof go.Link)) 
-      //               {
-      //                   return part;
-      //               }
-      //     });
-      
-      
-      // dia.addDiagramListener("ObjectDoubleClicked",
-      //       (e:any)=>{
-      //           var part = e.subject.part;
-      //               if (!(part instanceof go.Link)) 
-      //                 {
-      //                   console.log("am here");
-      //                   //this.addDevice();
-      //                 }
-      //           });
         
       // dia.addModelChangedListener((evt) => {
       //   if (evt) this.isChanged = true;
@@ -286,15 +245,15 @@ public initDiagram(): go.Diagram {
                                     })
                         }
                     );
-                
+
                 myPalette.model.nodeDataArray = [
-                  {"key":"1", "text":"<double click to define this new device>","type":"S2"},
-                  {"key":"2", "text":"<double click to define this new device>","type":"M4"},
-                  {"key":"3", "text":"<double click to define this new device>","type":"P2"},
-                  {"key":"4", "text":"<double click to define this new device>","type":"S3"},
-                  {"key":"5", "text":"<double click to define this new device>","type":"M5"},
-                  {"key":"6", "text":"<double click to define this new device>","type":"P1"},
-                  {"key":"7", "text":"<double click to define this new device>","type":"I1"} ]
+                  {"key":"1", "text":"<double click to define this new device>","type":"switch"},
+                  {"key":"2", "text":"<double click to define this new device>","type":"router"},
+                  {"key":"3", "text":"<double click to define this new device>","type":"processor"},
+                  {"key":"4", "text":"<double click to define this new device>","type":"server"},
+                  {"key":"5", "text":"<double click to define this new device>","type":"hub"},
+                  {"key":"6", "text":"<double click to define this new device>","type":"gateway"},
+                  {"key":"7", "text":"<double click to define this new device>","type":"pc"} ]
                 
 
                 // remove cursors on all ports in the Palette
@@ -321,18 +280,6 @@ ngAfterViewInit() {
   this.myDiag.diagram.nodeTemplate.contextMenu = 
     $('ContextMenu',  "Spot",
     $(go.Placeholder, { padding: 5 }),
-      $('ContextMenuButton',
-      {
-        "ButtonBorder.fill": "yellow",
-        "_buttonFillOver": "cyan",
-        "_buttonFillPressed": "lime"
-      },
-        $(go.TextBlock, 'Update'),
-        {  alignment: go.Spot.Top, alignmentFocus: go.Spot.Bottom,
-          click: (e, obj) => {
-            editor.updateDevice(e, obj);
-          }
-        }),
          $('ContextMenuButton',
           {
             "ButtonBorder.fill": "yellow",
@@ -353,8 +300,8 @@ ngAfterViewInit() {
 
     //handle add
     this.myDiag.diagram.nodeTemplate.doubleClick=(e:go.InputEvent, obj:go.GraphObject) => {
-              console.log(this.myDiag.diagram.model)
-              editor.addDevice(e,obj);
+              console.log(obj.part?.data.key)
+              //editor.addDevice(e,obj);
             };
     
     //handle unsaved state 
@@ -382,6 +329,8 @@ ngAfterViewInit() {
       });
   }
 
+// We don't need the add and update am just going to keep them for references 
+/**************************************************************************
 addDevice(e:any, obj:any)
 {
   if (obj) {
@@ -415,7 +364,6 @@ updateDevice(e:any, obj:any) {
       }
     else
       {
-        //this.device = obj.part.data; ==> when we update the model in the back end
         this.device = {
                     id:1,
                     name:'test',
@@ -428,11 +376,8 @@ updateDevice(e:any, obj:any) {
         this.openModal();
       }
   }
-  //  Ref :
-  //   this.dataArray.push({"key":"8", "text":"Instr 8", "type":"I1", "loc":"-50 218", "hostname":"S288"});
-  //   this.state.diagramNodeData = this.dataArray;
 }
-
+**************************************************************************/
 clickSave() {
   this.saveModelJson = this.myDiag.diagram.model.toJson();
   this.myDiag.diagram.isModified = false;

@@ -11,5 +11,5 @@ public class Node {
     private String text; //hostname of the device
     private String type; //type of the device
     private String loc;
-    private String diagram_id;
+    private int diagramId;
 }

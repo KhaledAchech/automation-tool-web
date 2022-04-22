@@ -10,5 +10,5 @@ public class Link {
     private long key;   // need to be decremented each time starting from -1
     private String from; // from node id
     private String to;  // to node id
-    private String diagram_id;
+    private int diagramId;
 }

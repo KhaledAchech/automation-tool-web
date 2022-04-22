@@ -8,7 +8,8 @@ import java.util.ArrayList;
 @Getter
 @Setter
 public class Diagram {
-    private String name;
+    private int diagramId; // topology id
+    private String name; // topology name
     private ArrayList<Node> nodes;
     private ArrayList<Link> links;
 }

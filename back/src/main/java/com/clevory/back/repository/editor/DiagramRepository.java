@@ -84,7 +84,9 @@ public class DiagramRepository {
             nodes.add(
                     r.hashMap("key", node.getKey())
                             .with("text", node.getText())
-                            .with("type", node.getType()));
+                            .with("type", node.getType())
+                            .with("loc", "0 0")
+                            .with("diagramId", diagram.getDiagramId()));
         }
 
         for (Link link : diagram.getLinks())
@@ -92,7 +94,8 @@ public class DiagramRepository {
             links.add(
                     r.hashMap("key", link.getKey())
                             .with("from", link.getFrom())
-                            .with("to", link.getTo()));
+                            .with("to", link.getTo())
+                            .with("diagramId", diagram.getDiagramId()));
         }
 
 
