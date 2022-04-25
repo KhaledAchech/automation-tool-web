@@ -1,6 +1,7 @@
 package com.clevory.back.service.editor.impl;
 
 import com.clevory.back.model.editor.Diagram;
+import com.clevory.back.model.editor.Link;
 import com.clevory.back.model.editor.Node;
 import com.clevory.back.repository.editor.DiagramRepository;
 import com.clevory.back.service.editor.itf.DiagramService;
@@ -44,5 +45,10 @@ public class DiagramServiceImpl implements DiagramService {
     @Override
     public ArrayList<Node> getNodes(String id) {
         return diagramRepository.getDiagramNodes(id);
+    }
+
+    @Override
+    public ArrayList<Link> getLinks(String id) {
+        return diagramRepository.getDiagramLinks(id);
     }
 }

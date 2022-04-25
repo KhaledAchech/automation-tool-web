@@ -1,6 +1,7 @@
 package com.clevory.back.service.editor.itf;
 
 import com.clevory.back.model.editor.Diagram;
+import com.clevory.back.model.editor.Link;
 import com.clevory.back.model.editor.Node;
 
 import java.util.ArrayList;
@@ -14,5 +15,6 @@ public interface DiagramService {
     Object delete (String id);
 
     ArrayList<Node> getNodes(String id);
+    ArrayList<Link> getLinks(String id);
 
 }

@@ -2,8 +2,8 @@
     <mat-icon>keyboard_return</mat-icon>
 </a>
 <br>
-<div id="myPaletteDiv" class="myPaletteDiv" >
-</div>
+<gojs-palette [initPalette]='initPalette' [nodeDataArray]='state.paletteNodeData' [divClassName]='paletteDivClassName'>
+</gojs-palette>
 <gojs-diagram #myDiag [initDiagram]='initDiagram' [nodeDataArray]='state.diagramNodeData'
         [linkDataArray]='state.diagramLinkData' [modelData]='state.diagramModelData'
         [skipsDiagramUpdate]='state.skipsDiagramUpdate' (modelChange)='diagramModelChange($event)'

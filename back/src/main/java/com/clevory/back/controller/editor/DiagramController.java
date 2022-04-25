@@ -1,6 +1,7 @@
 package com.clevory.back.controller.editor;
 
 import com.clevory.back.model.editor.Diagram;
+import com.clevory.back.model.editor.Link;
 import com.clevory.back.model.editor.Node;
 import com.clevory.back.service.editor.itf.DiagramService;
 import org.springframework.web.bind.annotation.*;
@@ -52,5 +53,11 @@ public class DiagramController {
     public ArrayList<Node> getNodes(@PathVariable String id)
     {
         return diagramService.getNodes(id);
+    }
+
+    @GetMapping("/links/{id}")
+    public ArrayList<Link> getLinks(@PathVariable String id)
+    {
+        return diagramService.getLinks(id);
     }
 }

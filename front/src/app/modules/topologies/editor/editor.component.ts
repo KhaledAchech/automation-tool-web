@@ -4,8 +4,10 @@ import { DiagramComponent } from 'gojs-angular';
 import * as $ from "jquery";
 import * as bootstrap from "bootstrap";
 import {ActivatedRoute, Router} from '@angular/router';
-import { TestService } from 'src/app/services/editor/test.service';
-import { Node } from 'src/app/common/interfaces/Node';
+import { Node } from 'src/app/common/interfaces/node';
+import { Palette } from 'src/app/common/interfaces/palette';
+import { Link } from 'src/app/common/interfaces/link';
+import { DiagramService } from 'src/app/services/editor/diagram.service';
 
 @Component({
   selector: 'app-editor',
@@ -24,50 +26,21 @@ export class EditorComponent implements OnInit{
   keys:string[] = [];
 
   dataArray: Node[] = [];
-  //linkArray = []
+  paletteArray: Palette[] = [];
+
+  linkArray: Link[] = [];
 
   
 isChanged = false;
 
-/*dataArray = [
-  {"key":"1", "text":"Switch 23", "type":"S2", "loc":"195 225", "hostname":"S23"},
-  {"key":"2", "text":"Machine 17", "type":"M4", "loc":"183.5 94", "hostname":"S23"},
-  {"key":"3", "text":"Panel 7", "type":"P2", "loc":"75 211.5", "hostname":"S23"},
-  {"key":"4", "text":"Switch 24", "type":"S3", "loc":"306 225", "hostname":"S23"},
-  {"key":"5", "text":"Machine 18", "type":"M5", "loc":"288.5 95", "hostname":"S23"},
-  {"key":"6", "text":"Panel 9", "type":"P1", "loc":"426 211", "hostname":"S23"},
-  {"key":"7", "text":"Instr 3", "type":"I1", "loc":"-50 218", "hostname":"S23"} ];
-*/
-linkArray = [
-  {key: -1, from:'1',  to: '2'},
-  {key: -2, from:"1",  to:"3"},
-  {key: -3, from:"1",  to:"4"},
-  {key: -4, from:"4",  to:"5"},
-  {key: -5, from:"4",  to:"6"},
-  {key: -6, from:"7",  to:"2"},
-  {key: -7, from:"7",  to:"3"}
- ];
 
-  constructor(private route:ActivatedRoute,private router:Router, private service: TestService) { }
+  constructor(private route:ActivatedRoute,private router:Router, private service: DiagramService) { }
 
   ngOnInit(): void {
-    this.service.getDiagramNodesById('c65fc577-cdb5-4469-8d9f-ca975184b44b').subscribe(
-      data => {
-        data.forEach(node => {
-          this.dataArray.push(
-            {
-              "key": node.key,
-              "text": node.text,
-              "type": node.type,
-              "loc":node.loc,
-              "hostname": node.text
-            }
-          )
-        });;
-      }
-    )
-  }
 
+      //loading backend data
+      this.load();
+  }
 
 public state = {
   // Diagram state props
@@ -76,11 +49,8 @@ public state = {
   diagramModelData: { prop: 'value' },
   skipsDiagramUpdate: false,
 
-  // Palette state props
-  paletteNodeData: [
-    { key: 'PaletteNode1', color: 'firebrick' },
-    { key: 'PaletteNode2', color: 'blueviolet' }
-  ]
+  paletteNodeData: this.paletteArray
+
 }; // end state object
 
 public diagramDivClassName: string = 'myDiagramDiv';
@@ -227,47 +197,98 @@ public initDiagram(): go.Diagram {
           if (!(part instanceof go.Link)) console.log("Clicked on " + part.data.key);
         });
         
-      // dia.addModelChangedListener((evt) => {
-      //   if (evt) this.isChanged = true;
-      //   console.log(this.isChanged);
-      // });
-
-      //side nav / palette thing 
-      var myPalette =
-                $(go.Palette, "myPaletteDiv",
-                        {
-                            nodeTemplateMap: dia.nodeTemplateMap,
-                            layout:
-                                $(go.GridLayout,
-                                    {
-                                        cellSize: new go.Size(2, 2),
-                                        isViewportSized: true
-                                    })
-                        }
-                    );
-
-                myPalette.model.nodeDataArray = [
-                  {"key":"1", "text":"<double click to define this new device>","type":"switch"},
-                  {"key":"2", "text":"<double click to define this new device>","type":"router"},
-                  {"key":"3", "text":"<double click to define this new device>","type":"processor"},
-                  {"key":"4", "text":"<double click to define this new device>","type":"server"},
-                  {"key":"5", "text":"<double click to define this new device>","type":"hub"},
-                  {"key":"6", "text":"<double click to define this new device>","type":"gateway"},
-                  {"key":"7", "text":"<double click to define this new device>","type":"pc"} ]
-                
-
-                // remove cursors on all ports in the Palette
-                // make TextBlocks invisible, to reduce size of Nodes
-                myPalette.nodes.each(node => {
-                    node.ports.each(port => port.cursor = "");
-                    node.elements.each(tb => {
-                        if (tb instanceof go.TextBlock) tb.visible = false;
-                    });
-                });
-
-                
-                
   return dia;
+}
+
+public initPalette(): go.Palette {
+  const $ = go.GraphObject.make;
+  const palette = $(go.Palette);
+
+   function nodeTypeImage(type:any) {
+        switch (type) {                                         // Image sizes
+          case "switch": return "assets/images/voice atm switch.jpg";      // 55x55
+          case "router": return "assets/images/server switch.jpg";         // 55x55
+          case "processor": return "assets/images/general processor.jpg";     // 60x85
+          case "server": return "assets/images/storage array.jpg";         // 55x80
+          case "hub": return "assets/images/iptv broadcast server.jpg"; // 80x50
+          case "gateway": return "assets/images/content engine.jpg";        // 90x65
+          case "pc": return "assets/images/pc.jpg";                    // 80x70
+          default: return "assets/images/pc.jpg";                      // 80x70
+        }
+      }
+
+      function nodeTypeSize(type:any) {
+        switch (type) {
+          case "switch": return new go.Size(55, 55);
+          case "router": return new go.Size(55, 55);
+          case "processor": return new go.Size(60, 85);
+          case "server": return new go.Size(55, 80);
+          case "hub": return new go.Size(80, 50);
+          case "gateway": return new go.Size(90, 65);
+          case "pc": return new go.Size(80, 70);
+          default: return new go.Size(80, 70);
+        }
+      }
+
+      function nodeProblemConverter(msg:any) {
+        if (msg) return "red";
+        return null;
+      }
+
+      function nodeOperationConverter(s:any) {
+        if (s >= 2) return "TriangleDown";
+        if (s >= 1) return "Rectangle";
+        return "Circle";
+      }
+
+      function nodeStatusConverter(s:any) {
+        if (s >= 2) return "red";
+        if (s >= 1) return "yellow";
+        return "green";
+      }
+
+  // define the Node template
+  palette.nodeTemplate =
+    $(go.Node, "Vertical",
+          { 
+             locationObjectName: "ICON" },
+          new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+          $(go.Panel, "Spot",
+            $(go.Panel, "Auto",
+              { name: "ICON" },
+              $(go.Shape,
+                { fill: null, stroke: null },
+                 { fill:"blue" , portId: "", fromLinkable: true, toLinkable: true, cursor: "pointer", strokeWidth:2 },
+                new go.Binding("background", "problem", nodeProblemConverter),
+                new go.AnimationTrigger('background')),
+              $(go.Picture,
+                { margin: 5 },
+                new go.Binding("source", "type", nodeTypeImage),
+                new go.Binding("desiredSize", "type", nodeTypeSize))
+            ),  // end Auto Panel
+            $(go.Shape, "Circle",
+              {
+                alignment: go.Spot.TopLeft, alignmentFocus: go.Spot.TopLeft,
+                width: 12, height: 12, fill: "orange"
+              },
+              new go.Binding("figure", "operation", nodeOperationConverter)),
+            $(go.Shape, "Triangle",
+              {
+                alignment: go.Spot.TopRight, alignmentFocus: go.Spot.TopRight,
+                width: 12, height: 12, fill: "blue"
+              },
+              new go.Binding("fill", "status", nodeStatusConverter),
+              new go.AnimationTrigger('fill'))
+          ),  // end Spot Panel
+          $(go.TextBlock,
+            new go.Binding("text"))); 
+
+  palette.model = new go.GraphLinksModel(
+    {
+      linkKeyProperty: 'key'  // IMPORTANT! must be defined for merges and data sync when using GraphLinksModel
+    });
+
+  return palette;
 }
 
 @ViewChild('myDiag', {static: false}) myDiag!: DiagramComponent;
@@ -276,7 +297,7 @@ ngAfterViewInit() {
   const $ = go.GraphObject.make;
   const editor: EditorComponent = this;
 
-  //Context menu and update
+  //Context menu for details
   this.myDiag.diagram.nodeTemplate.contextMenu = 
     $('ContextMenu',  "Spot",
     $(go.Placeholder, { padding: 5 }),
@@ -300,7 +321,7 @@ ngAfterViewInit() {
 
     //handle add
     this.myDiag.diagram.nodeTemplate.doubleClick=(e:go.InputEvent, obj:go.GraphObject) => {
-              console.log(obj.part?.data.key)
+              console.log( this.linkArray);
               //editor.addDevice(e,obj);
             };
     
@@ -317,15 +338,15 @@ ngAfterViewInit() {
       });
 
       this.myDiag.diagram.addModelChangedListener((e) => {
-        // ignore unimportant Transaction events
         if (!e.isTransactionFinished) return;
-        //var json = e.model?.toIncrementalJson(e);
-        var data = e.model?.toIncrementalData(e);
-        //console.log(editor.saveModelJson);
-        //console.log(json);
 
+        var data = e.model?.toIncrementalData(e);
+
+        //detect new links
+        console.log(data?.modifiedLinkData);
+
+        //detect new nodes from palette
         console.log(data?.modifiedNodeData);
-        //console.log(editor.dataArray);
       });
   }
 
@@ -423,6 +444,44 @@ checkChanges()
 
 openModal() {
     jQuery('#staticBackdrop').modal('toggle');
+}
+
+load()
+{
+    this.service.getDiagramNodesById('c65fc577-cdb5-4469-8d9f-ca975184b44b').subscribe(
+      data => {
+        data.forEach(node => {
+          this.dataArray.push(
+            {
+              "key": node.key,
+              "text": node.text,
+              "type": node.type,
+              "loc":node.loc,
+              "hostname": node.text
+            }
+          );
+          this.paletteArray.push(
+            {
+              "key": node.key,
+              "text":node.text,
+              "type":node.type
+            }
+          )
+        });;
+      }
+    )
+    this.service.getDiagramLinksById('41debeab-7b14-459c-ab82-c5df42536fbc').subscribe(
+        data => {
+        data.forEach(link => {
+          this.linkArray.push(
+            {
+              "key": link.key,
+              "from": link.from,
+              "to": link.to
+            }
+          )})});
+
+          console.log(this.linkArray)
 }
 
 public diagramModelChange = function(changes: go.IncrementalData) {

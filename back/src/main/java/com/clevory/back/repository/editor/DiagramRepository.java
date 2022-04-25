@@ -131,4 +131,20 @@ public class DiagramRepository {
         }
         return null;
     }
+    public ArrayList<Link> getDiagramLinks(String id)
+    {
+        try {
+            ArrayList links = this.dbContext.getDatabase().table(table).get(id).
+                    getField("links")
+                    .coerceTo("array")
+                    .run(this.rethinkDBConnectionFactory.createConnection());
+            
+            this.dbContext.getLog().info("read {}", links.get(0));
+
+            return (ArrayList<Link>) links.get(0);
+        } catch (TimeoutException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
 }
