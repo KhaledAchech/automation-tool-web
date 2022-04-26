@@ -73,7 +73,7 @@
                             </svg>
                         </button>
                         <button class="btn btn-outline-info me-2 mb-1" (click)="showModal(item)" data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop">
+                            data-bs-target="#staticBackdrop" >
                             <mat-icon class="btn-outline-details icon-display">assignment</mat-icon>
                         </button>
                         <button class="btn btn-outline-success me-2 mb-1" (click)="modalConfigure()" data-bs-toggle="modal"
@@ -96,7 +96,9 @@
                         </button>
                     </td>
                     <td>
-                        <button class="btn btn-outline-success me-2 mb-1"  *ngIf="!item.assigned; else elseBlock" > Assign to topology</button>
+                        <button class="btn btn-outline-success me-2 mb-1"  *ngIf="!item.assigned; else elseBlock" 
+                        (click)="modalAssign()"  data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop"> Assign to topology</button>
                         <ng-template #elseBlock><h3>Assigned</h3></ng-template>
                     </td>
                 </tr>
@@ -121,6 +123,7 @@
                 <app-show-brief-device [device]="device" *ngIf="activateShowDeviceDetailsComponent"></app-show-brief-device>
                 <app-show-device-configuration *ngIf="activateConfigureDeviceComponent">
                 </app-show-device-configuration>
+                <app-assign-device *ngIf="activateAssignDeviceComponent"></app-assign-device>
                 <app-show-device-interfaces [data]="data" *ngIf="activateDeviceInterfacesComponent"></app-show-device-interfaces>
             </div>
         </div>

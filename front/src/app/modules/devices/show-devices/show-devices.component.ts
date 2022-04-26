@@ -27,6 +27,7 @@ export class ShowDevicesComponent implements OnInit {
   activateConfigureDeviceComponent:boolean = false;
   activateDeviceInterfacesComponent:boolean = false;
   activateShowDeviceDetailsComponent:boolean = false;
+  activateAssignDeviceComponent:boolean = false;
   device:any;
   data!: Observable<any[]>; 
 
@@ -56,6 +57,11 @@ export class ShowDevicesComponent implements OnInit {
   modalConfigure() {
     this.modalTitle = "Device Configuration";
     this.activateConfigureDeviceComponent = true;
+  }
+
+  modalAssign(){
+    this.modalTitle = "Assign Device";
+    this.activateAssignDeviceComponent = true;
   }
   modalDeviceInterface(item:any) {
     this.data = this.service.getDeviceInterfaces(item.id);
@@ -89,6 +95,7 @@ export class ShowDevicesComponent implements OnInit {
     this.activateConfigureDeviceComponent = false;
     this.activateDeviceInterfacesComponent = false;
     this.activateShowDeviceDetailsComponent = false;
+    this.activateAssignDeviceComponent = false;
     this.dataSource$ = this.service.getDevices();
   }
 

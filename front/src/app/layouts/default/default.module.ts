@@ -42,6 +42,7 @@ import { EditorComponent } from 'src/app/modules/topologies/editor/editor.compon
 import { GojsAngularModule } from 'gojs-angular';
 import { ShowBriefDeviceComponent } from 'src/app/modules/devices/show-brief-device/show-brief-device.component';
 import { ShowDeviceDetailsComponent } from 'src/app/modules/devices/show-device-details/show-device-details.component';
+import { AssignDeviceComponent } from 'src/app/modules/devices/assign-device/assign-device.component';
 
 
 @NgModule({
@@ -72,7 +73,8 @@ import { ShowDeviceDetailsComponent } from 'src/app/modules/devices/show-device-
     AddEditTenantComponent,
     EditorComponent,
     ShowDeviceDetailsComponent,
-    ShowBriefDeviceComponent
+    ShowBriefDeviceComponent,
+    AssignDeviceComponent
   ],
   imports: [
     CommonModule,
