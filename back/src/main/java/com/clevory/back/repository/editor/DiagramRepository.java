@@ -32,6 +32,16 @@ public class DiagramRepository {
         this.rethinkDBConnectionFactory = rethinkDBConnectionFactory;
     }
 
+    public Object save(Diagram diagram)
+    {
+        try {
+            return dbContext.create(diagram);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public List<Object> getAll()
     {
         try {

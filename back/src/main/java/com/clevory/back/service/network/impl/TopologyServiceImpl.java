@@ -2,9 +2,11 @@ package com.clevory.back.service.network.impl;
 
 import com.clevory.back.dto.mapper.itf.NetworkStructMapper;
 import com.clevory.back.dto.network.response.TopologyResponseDto;
+import com.clevory.back.model.editor.Diagram;
 import com.clevory.back.model.network.Device;
 import com.clevory.back.model.network.Tenant;
 import com.clevory.back.model.network.Topology;
+import com.clevory.back.repository.editor.DiagramRepository;
 import com.clevory.back.repository.network.DeviceRepository;
 import com.clevory.back.repository.network.TopologyRepository;
 import com.clevory.back.service.network.itf.TopologyService;
@@ -18,16 +20,19 @@ public class TopologyServiceImpl implements TopologyService {
 
     private TopologyRepository topologyRepository;
     private DeviceRepository deviceRepository;
+    private DiagramRepository diagramRepository;
     private NetworkStructMapper networkStructMapper;
 
     public TopologyServiceImpl (
             TopologyRepository topologyRepository,
             DeviceRepository deviceRepository,
+            DiagramRepository diagramRepository,
             NetworkStructMapper networkStructMapper
     )
     {
         this.topologyRepository = topologyRepository;
         this.deviceRepository = deviceRepository;
+        this.diagramRepository = diagramRepository;
         this.networkStructMapper = networkStructMapper;
     }
 
@@ -53,7 +58,10 @@ public class TopologyServiceImpl implements TopologyService {
     @Override
     public Topology save(Topology topology) {
         topologyRepository.save(topology);
-        System.out.println(topology.getId());
+        Diagram diagram = new Diagram();
+        diagram.setDiagramId(topology.getId());
+        diagram.setName(topology.getName() + " " + "Diagram");
+        diagramRepository.save(diagram);
         return topology;
     }
 
