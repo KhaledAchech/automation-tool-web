@@ -111,14 +111,6 @@ public initDiagram(): go.Diagram {
         return "green";
       }
 
-    //   function nodeClicked(e : any, obj1: any) {  // executed by click and doubleclick handlers
-    //   var evt = e.copy();
-    //   var node1 = obj1.part;
-    //   var type = evt.clickCount === 2 ? "Double-Clicked: " : "Clicked: ";
-    //   var msg = type + node1.data.key + ". ";
-    //   console.log(msg);
-    // }
-
   // define the Node template
   dia.nodeTemplate =
  $(go.Node, "Vertical",

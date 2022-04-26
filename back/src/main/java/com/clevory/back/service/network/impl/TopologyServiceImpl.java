@@ -53,6 +53,7 @@ public class TopologyServiceImpl implements TopologyService {
     @Override
     public Topology save(Topology topology) {
         topologyRepository.save(topology);
+        System.out.println(topology.getId());
         return topology;
     }
 
@@ -71,10 +72,14 @@ public class TopologyServiceImpl implements TopologyService {
     }
 
     @Override
-    public TopologyResponseDto addDeviceToTopology(long id, Device device) {
+    public TopologyResponseDto addDeviceToTopology(long id, long deviceID) {
 
         Topology topology = topologyRepository.findById(id).get();
 
+        Device device = deviceRepository.findById(deviceID).get();
+        if (device.isAssigned())
+            return null;
+        device.setAssigned(true);
         device = deviceRepository.save(device);
 
         topology.getTopologyDevices().add(device);

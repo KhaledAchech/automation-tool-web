@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -59,4 +60,16 @@ public class DeviceController {
 
     @PostMapping("/{id}/addProtocol")
     public DeviceResponseDto addProtocol (@PathVariable("id") long id, @RequestBody Protocol protocol) {return deviceService.addProtocolToDevice(id, protocol);}
+
+    @GetMapping("/protocols/{id}")
+    public Set<Protocol> getDeviceProtocols (@PathVariable("id") long id)
+    {
+        return deviceService.getDeviceProtocols(id);
+    }
+
+    @GetMapping("/interfaces/{id}")
+    public Set<Interface> getDeviceInterface (@PathVariable("id") long id)
+    {
+        return deviceService.getDeviceInterfaces(id);
+    }
 }

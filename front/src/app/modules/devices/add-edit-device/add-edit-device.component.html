@@ -4,8 +4,29 @@
         <input type="text" class="form-control" [(ngModel)]="name" name="name">
     </div>
     <div class="mb-3">
+        <label for="Hostname" class="form-label">Hostname</label>
+        <input type="text" class="form-control" [(ngModel)]="hostname" name="hostname">
+    </div>
+    <div class="mb-3">
+        <label for="Type" class="form-label">Type</label>
+        <select class="form-select" aria-label="Device Types" (change)="selectType($event)">
+            <option selected [(ngModel)]="type" name="type">{{device.type}}</option>
+            <option value="ROUTER">ROUTER</option>
+            <option value="SWITCH">SWITCH</option>
+            <option value="SERVER">SERVER</option>
+            <option value="HUB">HUB</option>
+            <option value="PC">PC</option>
+            <option value="GATEWAY">GATEWAY</option>
+            <option value="CLOUD">CLOUD</option>
+        </select>
+    </div>
+    <div class="mb-3">
         <label for="os" class="form-label">OS</label>
         <input type="text" class="form-control" [(ngModel)]="os" name="os">
+    </div>
+    <div class="mb-3">
+        <label for="Vendor" class="form-label">Vendor</label>
+        <input type="text" class="form-control" [(ngModel)]="vendor" name="vendor">
     </div>
     <button (click)="addDevice()" *ngIf="device.id==0" class="btn btn-primary">
         Add

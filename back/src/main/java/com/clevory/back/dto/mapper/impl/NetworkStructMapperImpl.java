@@ -190,8 +190,14 @@ public class NetworkStructMapperImpl implements NetworkStructMapper {
 
         deviceToDeviceResponseDto.setId( device.getId() );
         deviceToDeviceResponseDto.setName( device.getName() );
+        deviceToDeviceResponseDto.setHostname( device.getHostname() );
+        deviceToDeviceResponseDto.setType( device.getType() );
+        deviceToDeviceResponseDto.setOs( device.getOs() );
+        deviceToDeviceResponseDto.setVendor( device.getVendor() );
+        deviceToDeviceResponseDto.setAssigned( device.isAssigned() );
+        deviceToDeviceResponseDto.setStatus( device.getStatus() );
 
-        deviceToDeviceResponseDto.setTopologies( topologiesToTopologySlimDtosSet( device.getTopologies()) );
+        //deviceToDeviceResponseDto.setTopologies( topologiesToTopologySlimDtosSet( device.getTopologies()) );
         deviceToDeviceResponseDto.setInterfaces( interfacesToInterfaceSlimDtos( device.getDeviceInterfaces()) );
         deviceToDeviceResponseDto.setProtocols( protoclsToProtocolSlimDtos( device.getDeviceProtocols()) );
 

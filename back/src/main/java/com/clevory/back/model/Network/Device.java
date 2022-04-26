@@ -1,5 +1,6 @@
 package com.clevory.back.model.network;
 
+import com.clevory.back.commun.Type;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +34,8 @@ public class Device {
 
     private String status;
 
+    private boolean isAssigned; // => isAssigned attribute will help us determine if this device is added to a topology or not.
+
     //Have :
     @OneToOne
     private Configuration configuration;
@@ -64,7 +67,4 @@ public class Device {
             inverseJoinColumns = @JoinColumn(name = "protocol_id"))
     Set<Protocol> deviceProtocols;
 
-    private enum Type {
-        ROUTER, SWITCH, SERVER, PC, HUB, GATEWAY, CLOUD;
-    }
 }

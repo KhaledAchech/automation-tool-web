@@ -15,8 +15,20 @@ export class DeviceService {
     return this.http.get<any>(this.deviceUrl);
   }
 
+  getDevicesDetailed():Observable<any[]>{
+    return this.http.get<any>(this.deviceUrl + '/details');
+  }
+
   getDeviceById(id:number|string){
     return this.http.get(this.deviceUrl + `/${id}`);
+  }
+
+  getDeviceInterfaces(id:number|string):Observable<any[]>{
+    return this.http.get<any>(this.deviceUrl + `/interfaces/${id}`)
+  }
+
+  getDeviceProtocols(id:number|string):Observable<any[]>{
+    return this.http.get<any>(this.deviceUrl + `/protocols/${id}`)
   }
 
   addDevice(data:any) {

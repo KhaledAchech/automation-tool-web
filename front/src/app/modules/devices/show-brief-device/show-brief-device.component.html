@@ -1,0 +1,29 @@
+<mat-card class="example-card">
+    <mat-card-title>Details</mat-card-title>
+    <mat-card-content>
+        <br>
+        <div>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20" class="stat">
+            <h3 fxFlex="25"> Device Id : <b>{{device.id}}</b> </h3>
+            <h3 fxFlex="75"> Device Hostname : <b>{{device.hostname}}</b> </h3>
+        </div>
+            <mat-divider inset></mat-divider>
+        <br>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20" class="stat">
+            <h3 fxFlex="30"> Device OS : <b>{{device.os}}</b> </h3>
+            <h3 fxFlex="70"> Device Type : <b>{{device.type}}</b> </h3>
+        </div>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20" class="stat">
+            <h3 fxFlex="100"> Device Vendor : <b>{{device.vendor}}</b> </h3>
+        </div>
+        </div>
+        <div>
+            <a mat-list-item routerLink="/devices/details/{{device.id}}" >View in full details</a>
+        </div>
+    </mat-card-content>
+    <mat-divider inset></mat-divider>
+   
+    <mat-card-footer>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+</mat-card>

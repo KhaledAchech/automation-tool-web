@@ -138,7 +138,7 @@ public class DiagramRepository {
                     getField("links")
                     .coerceTo("array")
                     .run(this.rethinkDBConnectionFactory.createConnection());
-            
+
             this.dbContext.getLog().info("read {}", links.get(0));
 
             return (ArrayList<Link>) links.get(0);

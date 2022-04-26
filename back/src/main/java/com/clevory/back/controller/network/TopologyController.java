@@ -52,5 +52,5 @@ public class TopologyController {
     }
 
     @PostMapping("/{id}/addDevice")
-    public TopologyResponseDto addDevice (@PathVariable("id") long id,@RequestBody Device device) {return topologyService.addDeviceToTopology(id, device);}
+    public TopologyResponseDto addDevice (@PathVariable("id") long id,@RequestBody Device device) {return topologyService.addDeviceToTopology(id, device.getId());}
 }

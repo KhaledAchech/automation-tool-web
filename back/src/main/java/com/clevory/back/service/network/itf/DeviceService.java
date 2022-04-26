@@ -8,6 +8,7 @@ import com.clevory.back.model.network.Interface;
 import com.clevory.back.model.network.Protocol;
 
 import java.util.List;
+import java.util.Set;
 
 public interface DeviceService {
     List<Device> getDevices();
@@ -20,8 +21,13 @@ public interface DeviceService {
     List<DeviceResponseDto> getDeviceWithDetails ();
 
     //Add an interface to a device
-   DeviceResponseDto addInterfaceToDevice (long id, Interface anInterface);
+    DeviceResponseDto addInterfaceToDevice (long id, Interface anInterface);
     //Add a protocol to a device
     DeviceResponseDto addProtocolToDevice (long id, Protocol protocol);
 
+    Set<Interface> getDeviceInterfaces (long id);
+
+    Set<Protocol> getDeviceProtocols (long id);
+
+    Device getDeviceFullDetails(long id);
 }

@@ -40,7 +40,9 @@ import { ShowTenantTopologiesComponent } from 'src/app/modules/tenants/show-tena
 import { AddEditTenantComponent } from 'src/app/modules/tenants/add-edit-tenant/add-edit-tenant.component';
 import { EditorComponent } from 'src/app/modules/topologies/editor/editor.component';
 import { GojsAngularModule } from 'gojs-angular';
+import { ShowBriefDeviceComponent } from 'src/app/modules/devices/show-brief-device/show-brief-device.component';
 import { ShowDeviceDetailsComponent } from 'src/app/modules/devices/show-device-details/show-device-details.component';
+
 
 @NgModule({
   declarations: [
@@ -69,7 +71,8 @@ import { ShowDeviceDetailsComponent } from 'src/app/modules/devices/show-device-
     ShowTenantTopologiesComponent,
     AddEditTenantComponent,
     EditorComponent,
-    ShowDeviceDetailsComponent
+    ShowDeviceDetailsComponent,
+    ShowBriefDeviceComponent
   ],
   imports: [
     CommonModule,

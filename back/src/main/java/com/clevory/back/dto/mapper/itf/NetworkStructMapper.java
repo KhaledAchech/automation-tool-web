@@ -31,6 +31,7 @@ public interface NetworkStructMapper {
     TopologyResponseDto topologyToTopologyResponseDto (Topology topology);
     List<TopologyResponseDto> getAllTopologyDtos (List<Topology> topologies);
 
+
     //Post/Put request DTO
 
 }

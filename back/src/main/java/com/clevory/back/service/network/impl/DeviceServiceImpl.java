@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class DeviceServiceImpl implements DeviceService {
@@ -108,6 +109,23 @@ public class DeviceServiceImpl implements DeviceService {
         deviceRepository.save(device);
 
         return networkStructMapper.deviceToDeviceResponseDto(device);
+    }
+
+    @Override
+    public Set<Interface> getDeviceInterfaces(long id) {
+        Device device = deviceRepository.findById(id).get();
+        return device.getDeviceInterfaces();
+    }
+
+    @Override
+    public Set<Protocol> getDeviceProtocols(long id) {
+        Device device = deviceRepository.findById(id).get();
+        return device.getDeviceProtocols();
+    }
+
+    @Override
+    public Device getDeviceFullDetails(long id) {
+        return null;
     }
 
 }
