@@ -21,10 +21,18 @@ public class DiagramController {
         this.diagramService=diagramService;
     }
 
+    //initialize an empty diagram
+    @PostMapping("/init")
+    public Object save (@RequestBody Diagram diagram)
+    {
+        return diagramService.save(diagram);
+    }
+
+    //Create a diagram with nodes and links
     @PostMapping
     public String create (@RequestBody Diagram diagram)
     {
-        return diagramService.save(diagram);
+        return diagramService.create(diagram);
     }
     @PutMapping("/{id}")
     public Object update (@PathVariable("id") String id, @RequestBody  Diagram diagram) {
@@ -50,13 +58,13 @@ public class DiagramController {
     }
 
     @GetMapping("/nodes/{id}")
-    public ArrayList<Node> getNodes(@PathVariable String id)
+    public ArrayList<Node> getNodes(@PathVariable long id)
     {
         return diagramService.getNodes(id);
     }
 
     @GetMapping("/links/{id}")
-    public ArrayList<Link> getLinks(@PathVariable String id)
+    public ArrayList<Link> getLinks(@PathVariable long id)
     {
         return diagramService.getLinks(id);
     }

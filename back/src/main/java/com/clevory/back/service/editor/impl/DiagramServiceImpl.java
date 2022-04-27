@@ -23,7 +23,12 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public String save(Diagram diagram) {
+    public Object save(Diagram diagram) {
+        return diagramRepository.save(diagram);
+    }
+
+    @Override
+    public String create(Diagram diagram) {
         return diagramRepository.create(diagram);
     }
 
@@ -43,12 +48,12 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public ArrayList<Node> getNodes(String id) {
+    public ArrayList<Node> getNodes(long id) {
         return diagramRepository.getDiagramNodes(id);
     }
 
     @Override
-    public ArrayList<Link> getLinks(String id) {
+    public ArrayList<Link> getLinks(long id) {
         return diagramRepository.getDiagramLinks(id);
     }
 }

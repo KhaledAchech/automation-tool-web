@@ -8,6 +8,7 @@ import { Node } from 'src/app/common/interfaces/node';
 import { Palette } from 'src/app/common/interfaces/palette';
 import { Link } from 'src/app/common/interfaces/link';
 import { DiagramService } from 'src/app/services/editor/diagram.service';
+import { DeviceService } from 'src/app/services/network/device.service';
 
 @Component({
   selector: 'app-editor',
@@ -18,7 +19,7 @@ import { DiagramService } from 'src/app/services/editor/diagram.service';
 export class EditorComponent implements OnInit{
 
   modalTitle:string = '';
-  activateAddEditDeviceComponent:boolean = false;
+  activateShowDeviceDetailsComponent:boolean = false;
   device:any;
 
   saveModelJson:any = null;
@@ -31,13 +32,15 @@ export class EditorComponent implements OnInit{
   linkArray: Link[] = [];
 
   
-isChanged = false;
+  isChanged = false;
+  id:any = null;
 
-
-  constructor(private route:ActivatedRoute,private router:Router, private service: DiagramService) { }
+  constructor(private route:ActivatedRoute,private router:Router,
+               private service: DiagramService,
+               private deviceService: DeviceService) { }
 
   ngOnInit(): void {
-
+      this.id = this.route.snapshot.params['id'];
       //loading backend data
       this.load();
   }
@@ -302,7 +305,7 @@ ngAfterViewInit() {
             $(go.TextBlock, 'View Details'),
             {   alignment: go.Spot.Right, alignmentFocus: go.Spot.Left,
               click: (e, obj) => {
-                console.log("to be added spooonnn ")
+                editor.showDetails(e,obj)
               }
             })
     );
@@ -311,10 +314,9 @@ ngAfterViewInit() {
     this.state.diagramNodeData.map((node)=> {
       this.keys.push(node.key);});
 
-    //handle add
+    //handle double click => show details 
     this.myDiag.diagram.nodeTemplate.doubleClick=(e:go.InputEvent, obj:go.GraphObject) => {
-              console.log( this.linkArray);
-              //editor.addDevice(e,obj);
+              editor.showDetails(e,obj)
             };
     
     //handle unsaved state 
@@ -342,7 +344,19 @@ ngAfterViewInit() {
       });
   }
 
-// We don't need the add and update am just going to keep them for references 
+showDetails(e:any, obj:any) {
+
+  this.deviceService.getDeviceById(Number(obj.part.data.key)).subscribe(res => {
+      this.device = res;
+    });
+  
+  this.modalTitle = "Device Details";
+  this.activateShowDeviceDetailsComponent = true;
+        
+  this.openModal();   
+}
+
+// We don't need the add, am just going to keep them for references 
 /**************************************************************************
 addDevice(e:any, obj:any)
 {
@@ -366,30 +380,6 @@ addDevice(e:any, obj:any)
   }
 }  
 
-updateDevice(e:any, obj:any) {
-
-  console.log('e2: ', obj.part.data.key);
-  if (obj)
-  {
-    if (!this.keys.includes(obj.part.data.key))
-      {
-       console.error("this device is not found in the db to be updated");
-      }
-    else
-      {
-        this.device = {
-                    id:1,
-                    name:'test',
-                    os:'test update',
-                    status:'Down'
-                  }
-        this.modalTitle = "Edit Device";
-        this.activateAddEditDeviceComponent = true;
-        
-        this.openModal();
-      }
-  }
-}
 **************************************************************************/
 clickSave() {
   this.saveModelJson = this.myDiag.diagram.model.toJson();
@@ -416,7 +406,7 @@ clickLoad()
 }
 
 modalClose() {
-    this.activateAddEditDeviceComponent = false;
+    this.activateShowDeviceDetailsComponent = false;
 }
 
 checkChanges()
@@ -440,7 +430,7 @@ openModal() {
 
 load()
 {
-    this.service.getDiagramNodesById('c65fc577-cdb5-4469-8d9f-ca975184b44b').subscribe(
+    this.service.getDiagramNodesById(this.id).subscribe(
       data => {
         data.forEach(node => {
           this.dataArray.push(
@@ -462,7 +452,7 @@ load()
         });;
       }
     )
-    this.service.getDiagramLinksById('41debeab-7b14-459c-ab82-c5df42536fbc').subscribe(
+    this.service.getDiagramLinksById(this.id).subscribe(
         data => {
         data.forEach(link => {
           this.linkArray.push(
@@ -472,8 +462,6 @@ load()
               "to": link.to
             }
           )})});
-
-          console.log(this.linkArray)
 }
 
 public diagramModelChange = function(changes: go.IncrementalData) {

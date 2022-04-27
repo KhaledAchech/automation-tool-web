@@ -18,7 +18,7 @@ export class ShowDevicesComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
-    this.dataSource$ = this.service.getDevicesDetailed();
+    this.load();
   }
 
 
@@ -30,6 +30,7 @@ export class ShowDevicesComponent implements OnInit {
   activateAssignDeviceComponent:boolean = false;
   device:any;
   data!: Observable<any[]>; 
+  deviceId!:number;
 
   modalAdd() {
     this.device = {
@@ -59,8 +60,9 @@ export class ShowDevicesComponent implements OnInit {
     this.activateConfigureDeviceComponent = true;
   }
 
-  modalAssign(){
+  modalAssign(item:any){
     this.modalTitle = "Assign Device";
+    this.deviceId = item.id;
     this.activateAssignDeviceComponent = true;
   }
   modalDeviceInterface(item:any) {
@@ -96,7 +98,13 @@ export class ShowDevicesComponent implements OnInit {
     this.activateDeviceInterfacesComponent = false;
     this.activateShowDeviceDetailsComponent = false;
     this.activateAssignDeviceComponent = false;
-    this.dataSource$ = this.service.getDevices();
+    this.load();
   }
 
+
+  //load data from the back end 
+  load()
+  {
+    this.dataSource$ = this.service.getDevicesDetailed();
+  }
 }

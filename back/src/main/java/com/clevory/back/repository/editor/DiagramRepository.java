@@ -9,6 +9,8 @@ import com.clevory.back.model.editor.Node;
 import com.rethinkdb.RethinkDB;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import com.rethinkdb.model.MapObject;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,12 +26,19 @@ public class DiagramRepository {
     private static final RethinkDB r = RethinkDB.r;
     private RethinkDBConnectionFactory rethinkDBConnectionFactory;
 
+    private NodeRepository nodeRepository;
+    private LinkRepository linkRepository;
+
     @Autowired
     public DiagramRepository(RethinkDBContextFactory dbContextFactory,
-                             RethinkDBConnectionFactory rethinkDBConnectionFactory) {
+                             RethinkDBConnectionFactory rethinkDBConnectionFactory,
+                             NodeRepository nodeRepository,
+                             LinkRepository linkRepository) {
         this.dbContextFactory = dbContextFactory;
         this.dbContext = this.dbContextFactory.createMyDBContext(table,diagram);
         this.rethinkDBConnectionFactory = rethinkDBConnectionFactory;
+        this.nodeRepository = nodeRepository;
+        this.linkRepository = linkRepository;
     }
 
     public Object save(Diagram diagram)
@@ -90,17 +99,18 @@ public class DiagramRepository {
 
         for (Node node: diagram.getNodes())
         {
-
+            nodeRepository.save(node);
             nodes.add(
                     r.hashMap("key", node.getKey())
                             .with("text", node.getText())
-                            .with("type", node.getType())
+                            .with("type", node.getType().name())
                             .with("loc", "0 0")
                             .with("diagramId", diagram.getDiagramId()));
         }
 
         for (Link link : diagram.getLinks())
         {
+            linkRepository.save(link);
             links.add(
                     r.hashMap("key", link.getKey())
                             .with("from", link.getFrom())
@@ -108,12 +118,11 @@ public class DiagramRepository {
                             .with("diagramId", diagram.getDiagramId()));
         }
 
-
         try {
             Object run = this.dbContext.getDatabase().table(table).insert(r.array(
                     r.hashMap("diagram name", diagram.getName())
-                            .with("nodes",r.array(nodes))
-                            .with("links",r.array(links))
+                            .with("nodes",nodes)
+                            .with("links",links)
             )).run(this.rethinkDBConnectionFactory.createConnection());
 
             this.dbContext.getLog().info("insert {}", run);
@@ -125,11 +134,38 @@ public class DiagramRepository {
         return "Diagram was not created, an error has been detected.";
     }
 
-    public ArrayList<Node> getDiagramNodes(String id)
+    public String addNode (Node node, Long diagramID)
     {
         try {
-            ArrayList nodes = this.dbContext.getDatabase().table(table).get(id).
-                    getField("nodes")
+            node.setDiagramId(diagramID);
+            nodeRepository.save(node);
+
+            MapObject newNode = r.hashMap("diagramId", diagramID)
+                                    .with("key", node.getKey())
+                                    .with("text", node.getText())
+                                    .with("type", node.getType().name());
+
+            Object run = this.dbContext.getDatabase().table(table)
+                    .filter(row -> row.g("diagramId").eq(diagramID))
+                    .update(row -> r.hashMap
+                            ("nodes",row.g("nodes").append(newNode))
+                    ).run(this.rethinkDBConnectionFactory.createConnection());
+
+            this.dbContext.getLog().info("update {}", run);
+            return "Node Assigned successfully !";
+
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        return "Node wasn't added, an error has been detected.";
+    }
+
+    public ArrayList<Node> getDiagramNodes(long id)
+    {
+        try {
+            ArrayList nodes = this.dbContext.getDatabase().table(table)
+                    .filter(row -> row.g("diagramId").eq(id))
+                    .getField("nodes")
                     .coerceTo("array")
                     .run(this.rethinkDBConnectionFactory.createConnection());
 
@@ -141,11 +177,12 @@ public class DiagramRepository {
         }
         return null;
     }
-    public ArrayList<Link> getDiagramLinks(String id)
+    public ArrayList<Link> getDiagramLinks(long id)
     {
         try {
-            ArrayList links = this.dbContext.getDatabase().table(table).get(id).
-                    getField("links")
+            ArrayList links = this.dbContext.getDatabase().table(table)
+                    .filter(row -> row.g("diagramId").eq(id))
+                    .getField("links")
                     .coerceTo("array")
                     .run(this.rethinkDBConnectionFactory.createConnection());
 

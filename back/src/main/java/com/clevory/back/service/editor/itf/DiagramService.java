@@ -9,12 +9,13 @@ import java.util.List;
 
 public interface DiagramService {
     List<Object> getAll();
-    String save(Diagram diagram);
+    Object save(Diagram diagram);// initialize an empty diagram with the creation of a topology.
+    String create(Diagram diagram);
     Object getById (String id);
     Object update(String id, Diagram diagram);
     Object delete (String id);
 
-    ArrayList<Node> getNodes(String id);
-    ArrayList<Link> getLinks(String id);
+    ArrayList<Node> getNodes(long id);
+    ArrayList<Link> getLinks(long id);
 
 }

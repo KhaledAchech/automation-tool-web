@@ -40,7 +40,7 @@ const routes: Routes = [{
     path:'interfaces',
     component: InterfacesComponent
   }, {
-    path : 'editor',
+    path : 'editor/:id',
     component: EditorComponent
   }
 ]

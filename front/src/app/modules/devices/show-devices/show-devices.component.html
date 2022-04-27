@@ -96,10 +96,11 @@
                         </button>
                     </td>
                     <td>
-                        <button class="btn btn-outline-success me-2 mb-1"  *ngIf="!item.assigned; else elseBlock" 
-                        (click)="modalAssign()"  data-bs-toggle="modal"
-                            data-bs-target="#staticBackdrop"> Assign to topology</button>
-                        <ng-template #elseBlock><h3>Assigned</h3></ng-template>
+                        <button class="btn btn-outline-success me-2 mb-1"  *ngIf="item.isAssigned; else elseBlock" 
+                         data-bs-toggle="modal" data-bs-target="#staticBackdrop" disabled> Assigned </button>
+                        <ng-template #elseBlock><button class="btn btn-outline-success me-2 mb-1"  (click)="modalAssign(item)"  data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop">Assign to topology</button>
+                        </ng-template>
                     </td>
                 </tr>
             </tbody>
@@ -123,7 +124,7 @@
                 <app-show-brief-device [device]="device" *ngIf="activateShowDeviceDetailsComponent"></app-show-brief-device>
                 <app-show-device-configuration *ngIf="activateConfigureDeviceComponent">
                 </app-show-device-configuration>
-                <app-assign-device *ngIf="activateAssignDeviceComponent"></app-assign-device>
+                <app-assign-device [deviceId]="deviceId" *ngIf="activateAssignDeviceComponent"></app-assign-device>
                 <app-show-device-interfaces [data]="data" *ngIf="activateDeviceInterfacesComponent"></app-show-device-interfaces>
             </div>
         </div>

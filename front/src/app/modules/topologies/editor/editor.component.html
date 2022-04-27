@@ -29,9 +29,6 @@
         <li>See a device in full details by using your right mouse button.</li>
     </ul>
 </div>
-<!-- <gojs-palette [divClassName]='paletteDivClassName'>
-</gojs-palette> -->
-
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -42,8 +39,7 @@
                     (click)="modalClose()" id="add-edit-modal-close"></button>
             </div>
             <div class="modal-body">
-                <app-add-edit-device [device]="device" *ngIf="activateAddEditDeviceComponent">
-                </app-add-edit-device>
+                <app-show-brief-device [device]="device" *ngIf="activateShowDeviceDetailsComponent"></app-show-brief-device>
             </div>
         </div>
     </div>

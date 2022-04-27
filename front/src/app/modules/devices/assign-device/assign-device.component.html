@@ -3,18 +3,16 @@
     <mat-card-content>
         <br>
         <div>
-            <h3>Device Id : 1</h3>
+            <h3>Device ID : <b>{{deviceId}}</b></h3>
         </div>
         <div>
-        <select class="form-select" aria-label="topologies">
+        <select class="form-select" aria-label="topologies" (change)="selectTopology($event)">
             <option selected>Available topologies</option>
-            <option value="1">1 : Data Transfert</option>
-            <option value="2">2 : Internal Messaging service</option>
-            <option value="3">3 : External Data access</option>
+            <option value="{{item.id}}" *ngFor = "let item of dataSource$|async">{{item.id}} : {{item.name}} : {{item.type}}</option>
         </select>
         </div>
         <br>
-        <button class="btn btn-primary">
+        <button class="btn btn-primary" (click)="assignDevice()">
             Save
         </button>
     </mat-card-content>
