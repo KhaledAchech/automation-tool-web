@@ -25,6 +25,7 @@ export class EditorComponent implements OnInit{
   saveModelJson:any = null;
 
   keys:string[] = [];
+  hostnames:string[]=[];
 
   dataArray: Node[] = [];
   paletteArray: Palette[] = [];
@@ -71,28 +72,28 @@ public initDiagram(): go.Diagram {
         linkKeyProperty: 'key'  // this should always be set when using a GraphLinksModel
       })
     });
-   function nodeTypeImage(type:any) {
+      function nodeTypeImage(type:any) {
         switch (type) {                                         // Image sizes
-          case "switch": return "assets/images/voice atm switch.jpg";      // 55x55
-          case "router": return "assets/images/server switch.jpg";         // 55x55
-          case "processor": return "assets/images/general processor.jpg";     // 60x85
-          case "server": return "assets/images/storage array.jpg";         // 55x80
-          case "hub": return "assets/images/iptv broadcast server.jpg"; // 80x50
-          case "gateway": return "assets/images/content engine.jpg";        // 90x65
-          case "pc": return "assets/images/pc.jpg";                    // 80x70
+          case "SWITCH": return "assets/images/voice atm switch.jpg";      // 55x55
+          case "ROUTER": return "assets/images/server switch.jpg";         // 55x55
+          case "PROCESSOR": return "assets/images/general processor.jpg";     // 60x85
+          case "SERVER": return "assets/images/storage array.jpg";         // 55x80
+          case "HUB": return "assets/images/iptv broadcast server.jpg"; // 80x50
+          case "GATEWAY": return "assets/images/content engine.jpg";        // 90x65
+          case "PC": return "assets/images/pc.jpg";                    // 80x70
           default: return "assets/images/pc.jpg";                      // 80x70
         }
       }
 
       function nodeTypeSize(type:any) {
         switch (type) {
-          case "switch": return new go.Size(55, 55);
-          case "router": return new go.Size(55, 55);
-          case "processor": return new go.Size(60, 85);
-          case "server": return new go.Size(55, 80);
-          case "hub": return new go.Size(80, 50);
-          case "gateway": return new go.Size(90, 65);
-          case "pc": return new go.Size(80, 70);
+          case "SWITCH": return new go.Size(55, 55);
+          case "ROUTER": return new go.Size(55, 55);
+          case "PROCESSOR": return new go.Size(60, 85);
+          case "SERVER": return new go.Size(55, 80);
+          case "HUB": return new go.Size(80, 50);
+          case "GATEWAY": return new go.Size(90, 65);
+          case "PC": return new go.Size(80, 70);
           default: return new go.Size(80, 70);
         }
       }
@@ -201,26 +202,26 @@ public initPalette(): go.Palette {
 
    function nodeTypeImage(type:any) {
         switch (type) {                                         // Image sizes
-          case "switch": return "assets/images/voice atm switch.jpg";      // 55x55
-          case "router": return "assets/images/server switch.jpg";         // 55x55
-          case "processor": return "assets/images/general processor.jpg";     // 60x85
-          case "server": return "assets/images/storage array.jpg";         // 55x80
-          case "hub": return "assets/images/iptv broadcast server.jpg"; // 80x50
-          case "gateway": return "assets/images/content engine.jpg";        // 90x65
-          case "pc": return "assets/images/pc.jpg";                    // 80x70
+          case "SWITCH": return "assets/images/voice atm switch.jpg";      // 55x55
+          case "ROUTER": return "assets/images/server switch.jpg";         // 55x55
+          case "PROCESSOR": return "assets/images/general processor.jpg";     // 60x85
+          case "SERVER": return "assets/images/storage array.jpg";         // 55x80
+          case "HUB": return "assets/images/iptv broadcast server.jpg"; // 80x50
+          case "GATEWAY": return "assets/images/content engine.jpg";        // 90x65
+          case "PC": return "assets/images/pc.jpg";                    // 80x70
           default: return "assets/images/pc.jpg";                      // 80x70
         }
       }
 
       function nodeTypeSize(type:any) {
         switch (type) {
-          case "switch": return new go.Size(55, 55);
-          case "router": return new go.Size(55, 55);
-          case "processor": return new go.Size(60, 85);
-          case "server": return new go.Size(55, 80);
-          case "hub": return new go.Size(80, 50);
-          case "gateway": return new go.Size(90, 65);
-          case "pc": return new go.Size(80, 70);
+          case "SWITCH": return new go.Size(55, 55);
+          case "ROUTER": return new go.Size(55, 55);
+          case "PROCESSOR": return new go.Size(60, 85);
+          case "SERVER": return new go.Size(55, 80);
+          case "HUB": return new go.Size(80, 50);
+          case "GATEWAY": return new go.Size(90, 65);
+          case "PC": return new go.Size(80, 70);
           default: return new go.Size(80, 70);
         }
       }
@@ -313,6 +314,9 @@ ngAfterViewInit() {
     //set up keys array
     this.state.diagramNodeData.map((node)=> {
       this.keys.push(node.key);});
+          //set up keys array
+    this.state.diagramNodeData.map((node)=> {
+      this.hostnames.push(node.text);});
 
     //handle double click => show details 
     this.myDiag.diagram.nodeTemplate.doubleClick=(e:go.InputEvent, obj:go.GraphObject) => {
@@ -331,7 +335,20 @@ ngAfterViewInit() {
         }
       });
 
-      this.myDiag.diagram.addModelChangedListener((e) => {
+    //hundle duplicates from palette 
+    this.myDiag.diagram.addDiagramListener("ExternalObjectsDropped", e =>{
+      var newnode = this.myDiag.diagram.selection.first();
+      var hostname = newnode?.data.text;
+      var deviceExists = editor.exist(hostname);
+      // device exists in the diagram, remove the duplicate node
+      if (deviceExists)
+      {
+        alert("Device already exists, removing the device from the main diagram ...");
+        this.myDiag.diagram.commandHandler.deleteSelection();
+      }
+    })
+
+    this.myDiag.diagram.addModelChangedListener((e) => {
         if (!e.isTransactionFinished) return;
 
         var data = e.model?.toIncrementalData(e);
@@ -354,6 +371,19 @@ showDetails(e:any, obj:any) {
   this.activateShowDeviceDetailsComponent = true;
         
   this.openModal();   
+}
+
+exist(hostname:string)
+{
+  if (this.hostnames.includes(hostname))
+  {
+    return true;
+  }
+  else
+  {
+    this.hostnames.push(hostname);
+    return false;
+  }
 }
 
 // We don't need the add, am just going to keep them for references 
@@ -433,7 +463,9 @@ load()
     this.service.getDiagramNodesById(this.id).subscribe(
       data => {
         data.forEach(node => {
-          this.dataArray.push(
+          if (node.loc)
+          {
+            this.dataArray.push(
             {
               "key": node.key,
               "text": node.text,
@@ -441,17 +473,20 @@ load()
               "loc":node.loc,
               "hostname": node.text
             }
-          );
-          this.paletteArray.push(
+            );
+          }
+          else
+          {
+            this.paletteArray.push(
             {
               "key": node.key,
               "text":node.text,
               "type":node.type
-            }
-          )
-        });;
-      }
-    )
+            })
+          }
+          });
+      });
+
     this.service.getDiagramLinksById(this.id).subscribe(
         data => {
         data.forEach(link => {
