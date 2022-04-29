@@ -11,10 +11,23 @@ export class DiagramService {
 
   constructor(private http:HttpClient) { }
 
-  getDiagramNodesById(id:number|string):Observable<any[]>{
+
+  getDiagramByDiagramID(id:number|string)
+  {
+    return this.http.get<any>(this.editorUrl + `/details/${id}`)
+  }
+  getDiagramNodesById(id:number|string){
     return this.http.get<any>(this.editorUrl + `/nodes/${id}`)
   }
   getDiagramLinksById(id:number|string):Observable<any[]>{
     return this.http.get<any>(this.editorUrl + `/links/${id}`)
+  }
+  
+  getDiagramNameById(id:number|string){
+    return this.http.get(this.editorUrl + `/name/${id}`)
+  }
+
+  updateDiagramById(id:number|string, data:any){
+    return this.http.put(this.editorUrl + `/update/${id}`, data)
   }
 }

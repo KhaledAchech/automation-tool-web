@@ -7,6 +7,7 @@ import com.clevory.back.model.editor.Diagram;
 import com.clevory.back.model.editor.Link;
 import com.clevory.back.model.editor.Node;
 import com.rethinkdb.RethinkDB;
+import com.rethinkdb.net.Cursor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.rethinkdb.model.MapObject;
@@ -92,6 +93,40 @@ public class DiagramRepository {
         return null;
     }
 
+    public Object getDiagramByDiagramId(long diagramID)
+    {
+        try {
+            ArrayList diagram = this.dbContext.getDatabase().table(table)
+                    .filter(row -> row.g("diagramId").eq(diagramID))
+                    .coerceTo("array")
+                    .run(this.rethinkDBConnectionFactory.createConnection());
+
+            this.dbContext.getLog().info("read {}", diagram.get(0));
+
+            return diagram.get(0);
+        } catch (TimeoutException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+    public String getDiagramNameByDiagramId(long diagramID)
+    {
+        try {
+            ArrayList name = this.dbContext.getDatabase().table(table)
+                    .filter(row -> row.g("diagramId").eq(diagramID))
+                    .getField("name")
+                    .coerceTo("array")
+                    .run(this.rethinkDBConnectionFactory.createConnection());
+
+            this.dbContext.getLog().info("read {}", name.get(0));
+
+            return (String) name.get(0);
+        } catch (TimeoutException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     public String create (Diagram diagram)
     {
         List nodes = new ArrayList<>();
@@ -160,6 +195,7 @@ public class DiagramRepository {
         return "Node wasn't added, an error has been detected.";
     }
 
+
     public ArrayList<Node> getDiagramNodes(long id)
     {
         try {
@@ -191,6 +227,51 @@ public class DiagramRepository {
             return (ArrayList<Link>) links.get(0);
         } catch (TimeoutException ex) {
             ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public String replace(long id, Diagram diagram)
+    {
+        try {
+
+            List nodes = new ArrayList<>();
+            List links = new ArrayList<>();
+
+            for (Node node: diagram.getNodes())
+            {
+                nodeRepository.replace(node,id);
+                nodes.add(
+                        r.hashMap("key", node.getKey())
+                                .with("text", node.getText())
+                                .with("type", node.getType().name())
+                                .with("loc", node.getLoc())
+                                .with("diagramId",id));
+            }
+
+            for (Link link : diagram.getLinks())
+            {
+                linkRepository.replace(link,id);
+                links.add(
+                        r.hashMap("key", link.getKey())
+                                .with("from", link.getFrom())
+                                .with("to", link.getTo())
+                                .with("diagramId", id));
+            }
+
+            Object run = this.dbContext.getDatabase().table(table)
+                    .filter(row -> row.g("diagramId").eq(id))
+                    .update(
+                            r.hashMap("diagramId", id)
+                                    .with("nodes", nodes)
+                                    .with("links", links)
+                    )
+                    .run(this.rethinkDBConnectionFactory.createConnection());
+
+            this.dbContext.getLog().info("replace {}", run);
+            return "Diagram updates saved !";
+        } catch (TimeoutException ex) {
+        ex.printStackTrace();
         }
         return null;
     }

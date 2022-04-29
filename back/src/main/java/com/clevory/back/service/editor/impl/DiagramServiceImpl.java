@@ -1,10 +1,12 @@
 package com.clevory.back.service.editor.impl;
 
+import com.clevory.back.commun.wrapper.StringResponse;
 import com.clevory.back.model.editor.Diagram;
 import com.clevory.back.model.editor.Link;
 import com.clevory.back.model.editor.Node;
 import com.clevory.back.repository.editor.DiagramRepository;
 import com.clevory.back.service.editor.itf.DiagramService;
+import jdk.jshell.Diag;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -48,6 +50,11 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
+    public Object getDiagrambyDiagramID(long id) {
+        return diagramRepository.getDiagramByDiagramId(id);
+    }
+
+    @Override
     public ArrayList<Node> getNodes(long id) {
         return diagramRepository.getDiagramNodes(id);
     }
@@ -55,5 +62,25 @@ public class DiagramServiceImpl implements DiagramService {
     @Override
     public ArrayList<Link> getLinks(long id) {
         return diagramRepository.getDiagramLinks(id);
+    }
+
+    @Override
+    public Diagram getDiagramNodesAndLinks(long id) {
+        ArrayList<Node> nodes = this.getNodes(id);
+        ArrayList<Link> links = this.getLinks(id);
+        //Diagram diagram =
+        return null;
+    }
+
+    @Override
+    public StringResponse getDiagramName(long id) {
+        StringResponse response = new StringResponse(diagramRepository.getDiagramNameByDiagramId(id));
+        return response;
+    }
+
+    @Override
+    public StringResponse updateDiagram(long id, Diagram diagram) {
+        StringResponse response = new StringResponse(diagramRepository.replace(id,diagram));
+        return response;
     }
 }

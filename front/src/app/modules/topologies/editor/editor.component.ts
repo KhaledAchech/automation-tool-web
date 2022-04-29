@@ -9,6 +9,7 @@ import { Palette } from 'src/app/common/interfaces/palette';
 import { Link } from 'src/app/common/interfaces/link';
 import { DiagramService } from 'src/app/services/editor/diagram.service';
 import { DeviceService } from 'src/app/services/network/device.service';
+import { Diagram } from 'src/app/common/interfaces/diagram';
 
 @Component({
   selector: 'app-editor',
@@ -18,6 +19,10 @@ import { DeviceService } from 'src/app/services/network/device.service';
 })
 export class EditorComponent implements OnInit{
 
+  diagramName!:any;
+
+  diagramID!:string;
+
   modalTitle:string = '';
   activateShowDeviceDetailsComponent:boolean = false;
   device:any;
@@ -25,22 +30,38 @@ export class EditorComponent implements OnInit{
   saveModelJson:any = null;
 
   keys:string[] = [];
-  hostnames:string[]=[];
+  hostnames:string[] = [];
 
   dataArray: Node[] = [];
   paletteArray: Palette[] = [];
-
   linkArray: Link[] = [];
 
-  
+  diagramNodes: any[] = [];
+  diagramLinks: any[] = [];
+
+  data: Diagram = {
+    nodes: [],
+    links: []
+  };
+  nodes!: any[];
+  links!: any[];
+
   isChanged = false;
   id:any = null;
+
+  addFlag:boolean = true;
+
+  loading:boolean = false;
 
   constructor(private route:ActivatedRoute,private router:Router,
                private service: DiagramService,
                private deviceService: DeviceService) { }
 
   ngOnInit(): void {
+
+      //setup the diagram values 
+      this.nodes = this.state.diagramNodeData;
+      this.links = this.state.diagramLinkData;
       this.id = this.route.snapshot.params['id'];
       //loading backend data
       this.load();
@@ -290,9 +311,19 @@ public initPalette(): go.Palette {
 @ViewChild('myDiag', {static: false}) myDiag!: DiagramComponent;
 
 ngAfterViewInit() {
+  
   const $ = go.GraphObject.make;
   const editor: EditorComponent = this;
 
+    //set up our node diagram data
+    // this.state.diagramNodeData.map((node)=> {
+    // this.keys.push(node.key);
+    // this.hostnames.push(node.text);});
+    // console.log(this.hostnames);
+
+  this.service.getDiagramNameById(this.id).subscribe(data => {
+    editor.diagramName = data;
+  })
   //Context menu for details
   this.myDiag.diagram.nodeTemplate.contextMenu = 
     $('ContextMenu',  "Spot",
@@ -310,13 +341,6 @@ ngAfterViewInit() {
               }
             })
     );
-    
-    //set up keys array
-    this.state.diagramNodeData.map((node)=> {
-      this.keys.push(node.key);});
-          //set up keys array
-    this.state.diagramNodeData.map((node)=> {
-      this.hostnames.push(node.text);});
 
     //handle double click => show details 
     this.myDiag.diagram.nodeTemplate.doubleClick=(e:go.InputEvent, obj:go.GraphObject) => {
@@ -343,8 +367,13 @@ ngAfterViewInit() {
       // device exists in the diagram, remove the duplicate node
       if (deviceExists)
       {
+        this.addFlag = false;
         alert("Device already exists, removing the device from the main diagram ...");
         this.myDiag.diagram.commandHandler.deleteSelection();
+      }
+      else
+      {
+        this.addFlag = true;
       }
     })
 
@@ -353,13 +382,111 @@ ngAfterViewInit() {
 
         var data = e.model?.toIncrementalData(e);
 
-        //detect new links
-        console.log(data?.modifiedLinkData);
-
-        //detect new nodes from palette
-        console.log(data?.modifiedNodeData);
+        editor.manageData(data)
       });
+
+    
   }
+
+manageData(data:any)
+{
+  
+  //add new device from the palette
+  if (data?.insertedNodeKeys)
+    {
+      if (data?.modifiedNodeData) // ==> check nodes changes
+        if(this.addFlag)
+        {
+          this.addNode(data?.modifiedNodeData[0]);  // addNode(node)
+        }
+    }
+
+  //draw new link
+  if (data?.insertedLinkKeys)
+    {
+      if (data?.modifiedLinkData) // ==> check links changes
+        this.addLink(data?.modifiedLinkData[0]);// addLink(link)
+    }
+
+  //update links
+  if (data?.modifiedLinkData && !data?.insertedLinkKeys) // ==> check links changes
+    {
+      this.updateLink(data?.modifiedLinkData[0]); // updateLink(link)
+    }
+  
+  //update nodes
+  if (data?.modifiedNodeData && !data?.insertedNodeKeys) // ==> check nodes changes
+    {
+      this.updateNode(data?.modifiedNodeData[0]); // updateNode(node)
+    }
+
+
+  //delete nodes
+  if (data?.removedNodeKeys)
+    this.deleteNode(data?.removedNodeKeys[0]); // deleteNode(node)
+
+  //delete links
+  if (data?.removedLinkKeys)
+    this.deleteLink(data?.removedLinkKeys[0]) // deletelink(node)
+}
+
+addNode(node: any)
+{
+  this.diagramNodes?.push(node);
+}
+
+addLink(Link: any)
+{
+  this.diagramLinks.push(Link);
+}
+
+updateLink(link:any)
+{
+  this.diagramLinks.forEach((dialink,index)=>{
+    if (dialink.key === link.key)
+    {
+      this.diagramLinks.splice(index,1);
+      this.diagramLinks.push(link);
+    }
+
+  })
+}
+
+updateNode(node:any)
+{
+  this.diagramNodes.forEach((dianode,index)=>{
+    if (dianode.key === node.key)
+    {
+      this.diagramNodes.splice(index,1);
+      this.diagramNodes.push(node);
+    }
+  })
+}
+
+deleteNode(node:any)
+{
+  this.diagramNodes.forEach((dianode,index)=>{
+    if (dianode.key === node)
+    {
+      this.hostnames.forEach((name,index) => {
+        if (name === dianode.text)
+          this.hostnames.splice(index,1)
+      })
+      this.diagramNodes.splice(index,1);
+    }
+  })
+}
+
+deleteLink(link:any)
+{
+  this.diagramLinks.forEach((dialink,index)=>{
+    if (dialink.key === link)
+    {
+      this.diagramLinks.splice(index,1);
+    }
+
+  })
+}
 
 showDetails(e:any, obj:any) {
 
@@ -375,7 +502,7 @@ showDetails(e:any, obj:any) {
 
 exist(hostname:string)
 {
-  if (this.hostnames.includes(hostname))
+  if (this.hostnames?.includes(hostname))
   {
     return true;
   }
@@ -386,34 +513,36 @@ exist(hostname:string)
   }
 }
 
-// We don't need the add, am just going to keep them for references 
-/**************************************************************************
-addDevice(e:any, obj:any)
-{
-  if (obj) {
-      if (this.keys.includes(obj.part.data.key))
-      {
-       return;
-      }
-      else{
-        this.device = {
-                    id:0,
-                    name:null,
-                    os:null,
-                    status:'Down'
-                  }
-        this.modalTitle = "Add Device";
-        this.activateAddEditDeviceComponent = true;
-        obj.part.data.text = "banana";
-        this.openModal();
-      }
-  }
-}  
-
-**************************************************************************/
 clickSave() {
-  this.saveModelJson = this.myDiag.diagram.model.toJson();
-  this.myDiag.diagram.isModified = false;
+
+  this.loading = true;
+  this.paletteArray.forEach(node => {
+    if(!this.nodes.includes(node))
+      this.nodes.push(node);
+  })
+  this.diagramNodes.forEach(node =>{
+    if(!this.nodes.includes(node))
+      this.nodes.push(node);
+  })
+  this.diagramLinks.forEach(link =>{
+    if(!this.links.includes(link))
+      this.links.push(link);
+  })
+  this.data.nodes = this.nodes;
+  this.data.links = this.links;
+
+  this.nodes = [];
+  this.links = [];
+
+  this.service.updateDiagramById(this.id, this.data).subscribe(res => {
+    if (res)
+    {
+      this.loading = false;
+    }
+    this.saveModelJson = this.myDiag.diagram.model.toJson();
+    this.myDiag.diagram.isModified = false;
+  });
+ 
 }
 
 // testing custom fields
@@ -460,11 +589,13 @@ openModal() {
 
 load()
 {
-    this.service.getDiagramNodesById(this.id).subscribe(
-      data => {
-        data.forEach(node => {
+  this.service.getDiagramByDiagramID(this.id).subscribe(data => {
+    
+    //fetching nodes
+    data.nodes.forEach((node:any) => {
           if (node.loc)
-          {
+          {   this.keys.push(node.key);
+              this.hostnames.push(node.text);
             this.dataArray.push(
             {
               "key": node.key,
@@ -484,25 +615,24 @@ load()
               "type":node.type
             })
           }
-          });
-      });
-
-    this.service.getDiagramLinksById(this.id).subscribe(
-        data => {
-        data.forEach(link => {
+  })
+  this.diagramID = data.id;
+  // fetching links
+  data.links.forEach((link:any) => {
           this.linkArray.push(
             {
               "key": link.key,
               "from": link.from,
               "to": link.to
             }
-          )})});
+          )
+  });
+});
 }
-
 public diagramModelChange = function(changes: go.IncrementalData) {
 
   // console.info(changes.modifiedNodeData?.forEach( e => {
-  // //   console.log(e)
+  //  console.log(e['text'])
   // }));
   // return "test true" }));
 };

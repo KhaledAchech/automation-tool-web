@@ -20,8 +20,11 @@
   border-radius: 25px;
   border: 2px solid #73AD21;
 }
-
-
+.floatAboveEverything {
+  z-index: 1000; // or any value higher than your other elements
+  display: flex;
+  justify-content: center;
+}
 .btn-div {
   left: 0;
   bottom: 0;

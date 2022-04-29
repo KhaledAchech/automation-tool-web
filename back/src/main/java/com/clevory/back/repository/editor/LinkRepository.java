@@ -1,8 +1,11 @@
 package com.clevory.back.repository.editor;
 
+import com.clevory.back.database.rethinkDb.configuration.RethinkDBConnectionFactory;
 import com.clevory.back.database.rethinkDb.context.RethinkDBContext;
 import com.clevory.back.database.rethinkDb.context.RethinkDBContextFactory;
 import com.clevory.back.model.editor.Link;
+import com.clevory.back.model.editor.Node;
+import com.rethinkdb.RethinkDB;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,9 +19,16 @@ public class LinkRepository {
     private final RethinkDBContext dbContext;
     private Link link = new Link();
 
-    public LinkRepository(RethinkDBContextFactory dbContextFactory) {
+    private static final RethinkDB r = RethinkDB.r;
+    private RethinkDBConnectionFactory rethinkDBConnectionFactory;
+
+    public LinkRepository(
+            RethinkDBContextFactory dbContextFactory,
+            RethinkDBConnectionFactory rethinkDBConnectionFactory)
+    {
         this.dbContextFactory = dbContextFactory;
         this.dbContext = this.dbContextFactory.createMyDBContext(table,link);
+        this.rethinkDBConnectionFactory = rethinkDBConnectionFactory;
     }
 
 
@@ -67,6 +77,26 @@ public class LinkRepository {
     {
         try {
             return dbContext.delete(id);
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public Object replace(Link link, long DiagramId)
+    {
+        try {
+            Object run = this.dbContext.getDatabase().table(table)
+                    .filter(row -> row.g("key").eq(link.getKey()))
+                    .update(
+                            r.hashMap("key", link.getKey())
+                                    .with("from", link.getFrom())
+                                    .with("to", link.getTo())
+                                    .with("diagramId", DiagramId)
+                    )
+                    .run(this.rethinkDBConnectionFactory.createConnection());
+
+            this.dbContext.getLog().info("replace {}", run);
         } catch (TimeoutException e) {
             e.printStackTrace();
         }

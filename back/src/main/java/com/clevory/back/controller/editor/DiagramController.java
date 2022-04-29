@@ -1,9 +1,11 @@
 package com.clevory.back.controller.editor;
 
+import com.clevory.back.commun.wrapper.StringResponse;
 import com.clevory.back.model.editor.Diagram;
 import com.clevory.back.model.editor.Link;
 import com.clevory.back.model.editor.Node;
 import com.clevory.back.service.editor.itf.DiagramService;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -68,4 +70,29 @@ public class DiagramController {
     {
         return diagramService.getLinks(id);
     }
+    @RequestMapping(value = "/name/{id}", method = RequestMethod.GET,
+            name = MediaType.APPLICATION_JSON_VALUE)
+    public StringResponse getName(@PathVariable long id)
+    {
+        return diagramService.getDiagramName(id);
+    }
+
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT,
+            name = MediaType.APPLICATION_JSON_VALUE)
+    public StringResponse updateDiagram(@PathVariable long id, @RequestBody Diagram diagram)
+    {
+        return diagramService.updateDiagram(id,diagram);
+    }
+    @GetMapping("/nodesAndlinks/{id}")
+    public Object getNodesAndLinks(@PathVariable long id)
+    {
+        return diagramService.getDiagramNodesAndLinks(id);
+    }
+
+    @GetMapping("/details/{id}")
+    public Object getDiagramDetails(@PathVariable long id)
+    {
+        return diagramService.getDiagrambyDiagramID(id);
+    }
+
 }
