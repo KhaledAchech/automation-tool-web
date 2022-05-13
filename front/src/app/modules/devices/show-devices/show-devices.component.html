@@ -98,7 +98,8 @@
                     <td>
                         <button class="btn btn-outline-success me-2 mb-1"  *ngIf="item.isAssigned; else elseBlock" 
                          data-bs-toggle="modal" data-bs-target="#staticBackdrop" disabled> Assigned </button>
-                        <ng-template #elseBlock><button class="btn btn-outline-success me-2 mb-1"  (click)="modalAssign(item)"  data-bs-toggle="modal"
+                        <ng-template #elseBlock>
+                            <button class="btn btn-outline-success me-2 mb-1"  (click)="modalAssign(item)"  data-bs-toggle="modal"
                             data-bs-target="#staticBackdrop">Assign to topology</button>
                         </ng-template>
                     </td>
