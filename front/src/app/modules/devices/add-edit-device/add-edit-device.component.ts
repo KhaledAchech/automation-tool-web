@@ -11,7 +11,7 @@ export class AddEditDeviceComponent implements OnInit {
 
   @Input() device:any;
   id: number = 0;
-  name: string = "";
+  ipAddress: string = "";
   hostname: string="";
   os: string = "";
   type: string = "";
@@ -22,7 +22,7 @@ export class AddEditDeviceComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.device.id;
-    this.name = this.device.name;
+    this.ipAddress = this.device.ipAddress;
     this.os = this.device.os;
     this.hostname = this.device.hostname;
     this.type = this.device.type;
@@ -30,7 +30,7 @@ export class AddEditDeviceComponent implements OnInit {
   }
   addDevice() {
     var device = {
-      name: this.name,
+      ipAddress: this.ipAddress,
       hostname: this.hostname,
       type: this.type,
       os: this.os,
@@ -59,7 +59,7 @@ export class AddEditDeviceComponent implements OnInit {
 
   updateDevice() {
    var device = {
-      name: this.name,
+      ipAddress: this.ipAddress,
       hostname: this.hostname,
       type: this.type,
       os: this.os,

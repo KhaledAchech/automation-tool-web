@@ -19,8 +19,8 @@ public class DeviceResponseDto {
     @JsonProperty("id")
     private Long id;
 
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("ipAddress")
+    private String ipAddress;
 
     @JsonProperty("hostname")
     private String hostname;

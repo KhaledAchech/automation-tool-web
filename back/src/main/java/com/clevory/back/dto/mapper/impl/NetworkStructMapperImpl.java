@@ -96,7 +96,7 @@ public class NetworkStructMapperImpl implements NetworkStructMapper {
         DeviceSlimDto deviceSlimDto = new DeviceSlimDto();
 
         deviceSlimDto.setId(device.getId());
-        deviceSlimDto.setName(device.getName());
+        deviceSlimDto.setIpAddress(device.getIpAddress());
 
         return deviceSlimDto;
     }
@@ -189,7 +189,7 @@ public class NetworkStructMapperImpl implements NetworkStructMapper {
         DeviceResponseDto deviceToDeviceResponseDto = new DeviceResponseDto();
 
         deviceToDeviceResponseDto.setId( device.getId() );
-        deviceToDeviceResponseDto.setName( device.getName() );
+        deviceToDeviceResponseDto.setIpAddress( device.getIpAddress() );
         deviceToDeviceResponseDto.setHostname( device.getHostname() );
         deviceToDeviceResponseDto.setType( device.getType() );
         deviceToDeviceResponseDto.setOs( device.getOs() );

@@ -39,7 +39,7 @@ public class DeviceController {
     }
 
     @PostMapping
-    public Device create (@RequestBody Device device) {return deviceService.save(device);}
+    public DeviceResponseDto create (@RequestBody Device device) {return deviceService.save(device);}
 
     @PutMapping("/{id}")
     public Device update (@PathVariable("id") long id, @RequestBody  Device device) {

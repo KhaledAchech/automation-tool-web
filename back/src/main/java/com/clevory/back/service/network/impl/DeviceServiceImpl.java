@@ -54,17 +54,17 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public Device save(Device device) {
+    public DeviceResponseDto save(Device device) {
         deviceRepository.save(device);
-        return device;
+        return networkStructMapper.deviceToDeviceResponseDto(device);
     }
 
     @Override
     public Device update(long id, Device device) {
         Device thisDevice = this.getDeviceById(id);
 
-        if (device.getName()!=null)
-            thisDevice.setName(device.getName());
+        if (device.getIpAddress()!=null)
+            thisDevice.setIpAddress(device.getIpAddress());
         if (device.getOs()!= null)
             thisDevice.setOs(device.getOs());
         if (device.getStatus()!=null)

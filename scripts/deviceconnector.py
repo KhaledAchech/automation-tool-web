@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function
 
 import paramiko
 from netmiko import ConnectHandler
+import json
 
 
 def connection(os, address, username, password, cmd):
@@ -12,7 +13,15 @@ def connection(os, address, username, password, cmd):
         'username': username,
         'password': password,
     }
-    ssh = ConnectHandler(**net_connect)
-    output = ssh .send_command(cmd)
-    print(output)
+    try:
+        ssh = ConnectHandler(**net_connect)
+        output = ssh.send_command(cmd, use_textfsm=True)
+        print(output)
+    except ConnectionRefusedError as err:
+        print(f"Connection Refused: {err}")
+    except TimeoutError as err:
+        print(f"Connection Refused: {err}")
+    except Exception as err:
+        print(f"Oops! {err}")
+        pass
 

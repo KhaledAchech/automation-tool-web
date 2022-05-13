@@ -14,7 +14,7 @@ public interface DeviceService {
     List<Device> getDevices();
     List<Device> deleteDevice(long id);
     Device getDeviceById(long id);
-    Device save(Device device);
+    DeviceResponseDto save(Device device);
     Device update(long id,Device device);
 
     //DTO Repsonse with list of topologies, interfaces and protocols

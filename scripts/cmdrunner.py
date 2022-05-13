@@ -2,7 +2,6 @@
 from __future__ import absolute_import, division, print_function
 import os
 
-
 from mysqlconnector import connect, fetchData
 from deviceconnector import connection
 
@@ -15,6 +14,7 @@ MY_USER = os.getenv('USER')
 MY_PASS = os.getenv('PASSWORD')
 MY_DB = os.getenv('DBNAME')
 
+devices = []
 
 print ("Connecting to the MySQL Database ... ")
 print(' ')
@@ -27,7 +27,7 @@ if (myinstance):
     tablename = input("Enter table name: ")
     print ("Fetching data ...")
     print(' ')
-    fetchData(myinstance, tablename)
+    devices = fetchData(myinstance, tablename)
 else:
     print("Unable to connect to the database.")
 
@@ -38,13 +38,19 @@ print(' ')
 MY_DEVICE_USERNAME = os.getenv("DEVICE_USERNAME")
 MY_DEVICE_PASSWORD = os.getenv("DEVICE_PASSWORD")
 
-os = input("Enter device os: ")
-address = input("Enter the device address: ")
+#os = input("Enter device os: ")
+#address = input("Enter the device address: ")
 cmd = input("Enter your command: ")
 
 print ("Running the command ... " )
 #connection("cisco_xe", "192.168.1.26",  MY_DEVICE_USERNAME, MY_DEVICE_PASSWORD, "Show cdp neighbors")
 print(' ')
-connection(os, address,  MY_DEVICE_USERNAME, MY_DEVICE_PASSWORD, cmd)
+for device in devices:
+    print("For the device : ", device['hostname'], " with id: ", device['id'])
+    print ("and address of : ", device['ip_address'])
+    connection(device['os'], device['ip_address'],  MY_DEVICE_USERNAME, MY_DEVICE_PASSWORD, cmd)
+    print(' ')
+    print ("-------------------------------------------------------------------------------------------")
+    print(' ')
 print(' ')
 print ("################################################################################################")
