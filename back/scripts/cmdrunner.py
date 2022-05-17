@@ -23,7 +23,9 @@ devices = []
 ######################################################################
 
 function_id = sys.argv[1]
-device_id = sys.argv[2]
+
+if (len(sys.argv) > 2):
+    device_id = sys.argv[2]
 
 print ("starting function: " + function_id)
 

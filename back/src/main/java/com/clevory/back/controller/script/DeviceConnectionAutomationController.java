@@ -28,9 +28,9 @@ public class DeviceConnectionAutomationController {
         this.scriptManager = scriptManager;
     }
     @GetMapping
-    public List<JSONObject> getAllDevicesNeighbors() throws IOException {
+    public List<JSONArray> getAllDevicesNeighbors() throws IOException {
 
-        ArrayList<JSONObject> res = new ArrayList<>();
+        ArrayList<JSONArray> res = new ArrayList<>();
 
         JSONParser jsonParser = new JSONParser();
 
@@ -53,7 +53,7 @@ public class DeviceConnectionAutomationController {
                         Object obj = jsonParser.parse(reader);
 
                         JSONArray neighborsList = (JSONArray) obj;
-                        res = neighborsList;
+                        res.add(neighborsList);
 
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();

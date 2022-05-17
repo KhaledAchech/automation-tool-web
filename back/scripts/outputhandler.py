@@ -9,6 +9,7 @@ import os
 def writeNeighbors(device, neighbors):
     date = datetime.today().strftime('%d-%m-%Y')
     current_directory = os.getcwd()
+    print(current_directory)
     save_directory = current_directory + '/Outputs' 
     path = os.path.join(save_directory, r'show-cdp-neighbors-CMD_Output_' + date + '/')
     # Check whether the specified path exists or not

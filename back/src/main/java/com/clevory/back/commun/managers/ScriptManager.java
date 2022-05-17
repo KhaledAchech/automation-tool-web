@@ -9,7 +9,7 @@ public class ScriptManager {
     {
         try
         {
-            System.out.println("Waiting for the script to finish gathering data ...");
+            System.out.println("Waiting for the show cdp neighbors on all devices result ...");
 
             String command = "cmd.exe /c start /wait python scripts/cmdrunner.py 0";
             Process proc = Runtime.getRuntime().exec(command);
@@ -31,7 +31,7 @@ public class ScriptManager {
     {
         try
         {
-            System.out.println("Waiting for the script to finish gathering data ...");
+            System.out.println("Waiting for the show cdp neighbors on one device result ...");
 
             String command = "cmd.exe /c start /wait python scripts/cmdrunner.py 1 " + device_id;
             Process proc = Runtime.getRuntime().exec(command);
