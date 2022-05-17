@@ -22,10 +22,10 @@ devices = []
 # ** - and running show showCdpNeighbors on them ->               ** #
 ######################################################################
 
-print ('Number of Arguments:', len(sys.argv), 'arguments.')
-print ('Argument List:', str(sys.argv))
 function_id = sys.argv[1]
-print (function_id)
+device_id = sys.argv[2]
+
+print ("starting function: " + function_id)
 
 if (function_id == '0'):
     print ("Connecting to the MySQL Database ... ")
@@ -81,7 +81,6 @@ if (function_id == '1'):
         print(' ')
         #tablename = input("Enter table name: ")
         tablename = 'device'
-        device_id = input("Enter device id: ")
         print ("Fetching data ...")
         print(' ')
         device = fetchdevice(myinstance, tablename, device_id)

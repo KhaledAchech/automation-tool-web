@@ -6,10 +6,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -71,6 +68,51 @@ public class DeviceConnectionAutomationController {
             //String clsPath =  new ClassPathResource(outputDir+"/38_G10_17-05-2022.json").getPath();
 
             //System.out.println(new String(Files.readAllBytes(Path.of(clsPath))));
+
+        }
+
+        return res;
+    }
+
+    @GetMapping("/{id}")
+    public List<JSONObject> getDeviceNeighbors(@PathVariable String id) throws IOException {
+
+        ArrayList<JSONObject> res = new ArrayList<>();
+
+        JSONParser jsonParser = new JSONParser();
+
+        if(this.scriptManager.runDeviceNeighbor(id))
+        {
+            String outputDir = getDir();
+
+            File folder = new File(outputDir);
+            File[] listOfFiles = folder.listFiles();
+
+            for (int i = 0; i < listOfFiles.length; i++)
+            {
+                if (listOfFiles[i].isFile())
+                {
+                    if (listOfFiles[i].getName().indexOf(id)>-1)
+                    {
+                        String clsPath =  new ClassPathResource(outputDir+"/" +listOfFiles[i].getName()).getPath();
+                        try (FileReader reader = new FileReader(clsPath))
+                        {
+                            //Read JSON file
+                            Object obj = jsonParser.parse(reader);
+
+                            JSONArray neighborsList = (JSONArray) obj;
+                            res = neighborsList;
+
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
 
         }
 
