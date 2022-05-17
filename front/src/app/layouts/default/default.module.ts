@@ -28,6 +28,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatListModule} from '@angular/material/list';
+import {MatExpansionModule} from '@angular/material/expansion';
 import { ShowProtocolsComponent } from 'src/app/modules/protocols/show-protocols/show-protocols.component';
 import { AddEditProtocolComponent } from 'src/app/modules/protocols/add-edit-protocol/add-edit-protocol.component';
 import { ShowInterfacesComponent } from 'src/app/modules/interfaces/show-interfaces/show-interfaces.component';
@@ -93,6 +94,7 @@ import { AssignDeviceComponent } from 'src/app/modules/devices/assign-device/ass
     NgbModule,
     MatProgressBarModule,
     MatListModule,
+    MatExpansionModule,
     GojsAngularModule
   ]
 })

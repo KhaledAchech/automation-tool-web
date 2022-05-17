@@ -40,8 +40,8 @@ public class DeviceResponseDto {
     @JsonProperty("isAssigned")
     private boolean isAssigned;
 
-    /*@JsonProperty("topologies")
-    private Set<TopologySlimDto> topologies;*/
+    @JsonProperty("topologyId")
+    private Long topologyId;
 
     @JsonProperty("interfaces")
     private Set<InterfaceSlimDto> interfaces;

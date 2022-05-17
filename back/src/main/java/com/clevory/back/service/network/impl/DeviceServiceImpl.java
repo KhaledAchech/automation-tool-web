@@ -6,11 +6,13 @@ import com.clevory.back.model.network.*;
 import com.clevory.back.repository.network.DeviceRepository;
 import com.clevory.back.repository.network.InterfaceRepository;
 import com.clevory.back.repository.network.ProtocolRepository;
+import com.clevory.back.repository.network.TopologyRepository;
 import com.clevory.back.service.network.itf.DeviceService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -19,12 +21,14 @@ public class DeviceServiceImpl implements DeviceService {
     private DeviceRepository deviceRepository;
     private InterfaceRepository interfaceRepository;
     private ProtocolRepository protocolRepository;
+    private TopologyRepository topologyRepository;
     private NetworkStructMapper networkStructMapper;
 
     public DeviceServiceImpl(
             DeviceRepository deviceRepository,
             InterfaceRepository interfaceRepository,
             ProtocolRepository protocolRepository,
+            TopologyRepository topologyRepository,
             NetworkStructMapper networkStructMapper
     )
     {
@@ -43,6 +47,16 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public List<Device> deleteDevice(long id)
     {
+        Device device = deviceRepository.findById(id).get();
+        if (device.isAssigned())
+        {
+            for (Topology topology : device.getTopologies())
+            {
+                System.out.println(topology.getTopologyDevices());
+                topology.getTopologyDevices().remove(device);
+            }
+        }
+
         deviceRepository.deleteById(id);
         return deviceRepository.findAll();
     }
@@ -126,6 +140,16 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public Device getDeviceFullDetails(long id) {
         return null;
+    }
+
+    @Override
+    public Optional<Topology> getDeviceTopology(long id) {
+        Device device = deviceRepository.findById(id).get();
+        Optional<Topology> topology = null;
+        if (device.isAssigned()) {
+            topology = device.getTopologies().stream().findFirst();
+        }
+        return topology;
     }
 
 }

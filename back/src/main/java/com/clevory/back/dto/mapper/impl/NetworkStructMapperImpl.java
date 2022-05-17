@@ -11,10 +11,7 @@ import com.clevory.back.dto.network.response.slim.TopologySlimDto;
 import com.clevory.back.model.network.*;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public class NetworkStructMapperImpl implements NetworkStructMapper {
@@ -197,7 +194,17 @@ public class NetworkStructMapperImpl implements NetworkStructMapper {
         deviceToDeviceResponseDto.setAssigned( device.isAssigned() );
         deviceToDeviceResponseDto.setStatus( device.getStatus() );
 
-        //deviceToDeviceResponseDto.setTopologies( topologiesToTopologySlimDtosSet( device.getTopologies()) );
+        if (device.isAssigned()) {
+            Optional<Topology> deviceTopology = device.getTopologies().stream().findFirst();
+            if (deviceTopology.isEmpty())
+                deviceToDeviceResponseDto.setTopologyId(null);
+            else
+                deviceToDeviceResponseDto.setTopologyId(deviceTopology.get().getId());
+        }
+        else
+        {
+            deviceToDeviceResponseDto.setTopologyId(null);
+        }
         deviceToDeviceResponseDto.setInterfaces( interfacesToInterfaceSlimDtos( device.getDeviceInterfaces()) );
         deviceToDeviceResponseDto.setProtocols( protoclsToProtocolSlimDtos( device.getDeviceProtocols()) );
 

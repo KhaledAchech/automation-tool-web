@@ -14,6 +14,9 @@ export class TenantService {
   getTenants():Observable<any[]>{
     return this.http.get<any>(this.tenantUrl);
   }
+  getTenantsWithTopologies():Observable<any[]>{
+    return this.http.get<any>(this.tenantUrl + '/withTopologies');
+  }
 
   addTenant(data:any) {
     return this.http.post(this.tenantUrl, data);

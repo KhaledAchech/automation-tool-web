@@ -6,8 +6,10 @@ import com.clevory.back.dto.network.response.TopologyResponseDto;
 import com.clevory.back.model.network.Device;
 import com.clevory.back.model.network.Interface;
 import com.clevory.back.model.network.Protocol;
+import com.clevory.back.model.network.Topology;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface DeviceService {
@@ -30,4 +32,6 @@ public interface DeviceService {
     Set<Protocol> getDeviceProtocols (long id);
 
     Device getDeviceFullDetails(long id);
+
+    Optional<Topology> getDeviceTopology(long id);
 }

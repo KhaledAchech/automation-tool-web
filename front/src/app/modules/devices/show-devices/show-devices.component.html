@@ -96,8 +96,10 @@
                         </button>
                     </td>
                     <td>
-                        <button class="btn btn-outline-success me-2 mb-1"  *ngIf="item.isAssigned; else elseBlock" 
-                         data-bs-toggle="modal" data-bs-target="#staticBackdrop" disabled> Assigned </button>
+                        <div *ngIf="item.isAssigned; else elseBlock">
+                            <button class="btn btn-outline-success me-2 mb-1"disabled> Assigned </button>
+                            <a mat-list-item routerLink="/editor/{{item.topologyId}}">View in topology</a>
+                        </div>
                         <ng-template #elseBlock>
                             <button class="btn btn-outline-success me-2 mb-1"  (click)="modalAssign(item)"  data-bs-toggle="modal"
                             data-bs-target="#staticBackdrop">Assign to topology</button>

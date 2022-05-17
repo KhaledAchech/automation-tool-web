@@ -6,11 +6,13 @@ import com.clevory.back.dto.network.response.TopologyResponseDto;
 import com.clevory.back.model.network.Device;
 import com.clevory.back.model.network.Interface;
 import com.clevory.back.model.network.Protocol;
+import com.clevory.back.model.network.Topology;
 import com.clevory.back.service.network.itf.DeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -71,5 +73,11 @@ public class DeviceController {
     public Set<Interface> getDeviceInterface (@PathVariable("id") long id)
     {
         return deviceService.getDeviceInterfaces(id);
+    }
+
+    @GetMapping("/topologies/{id}")
+    public Optional<Topology> getDeviceTopology (@PathVariable("id") long id)
+    {
+        return deviceService.getDeviceTopology(id);
     }
 }

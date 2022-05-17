@@ -41,7 +41,7 @@
                                     d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                             </svg>
                         </button>
-                        <button class="btn btn-outline-secondary me-2 mb-1" (click)="modalTenantToplogies()"
+                        <button class="btn btn-outline-secondary me-2 mb-1" (click)="modalTenantToplogies(item.topologies)"
                             data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                             <mat-icon class="btn-outline-interface icon-display">device_hub</mat-icon>
                         </button>
@@ -76,7 +76,7 @@
             <div class="modal-body">
                 <app-add-edit-tenant [tenant]="tenant" *ngIf="activateAddEditTenantComponent">
                 </app-add-edit-tenant>
-                <app-show-tenant-topologies *ngIf="activateTenantTopologiesComponent"></app-show-tenant-topologies>
+                <app-show-tenant-topologies [data] = "data" *ngIf="activateTenantTopologiesComponent"></app-show-tenant-topologies>
             </div>
         </div>
     </div>

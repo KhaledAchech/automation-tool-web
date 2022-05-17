@@ -1,22 +1,23 @@
 #!/usr/bin/env python
 from __future__ import absolute_import, division, print_function
 
-import paramiko
 from netmiko import ConnectHandler
-import json
+from outputhandler import writeNeighbors
 
 
-def connection(os, address, username, password, cmd):
+def showCdpNeighbors(device, username, password):
     net_connect = {
-        'device_type': os,
-        'host': address,
+        'device_type': device['os'],
+        'host':  device['ip_address'],
         'username': username,
         'password': password,
     }
     try:
         ssh = ConnectHandler(**net_connect)
-        output = ssh.send_command(cmd, use_textfsm=True)
+        output = ssh.send_command("show cdp neighbors")
         print(output)
+        neighbors = ssh.send_command("show cdp neighbors", use_textfsm=True)
+        writeNeighbors(device, neighbors)
     except ConnectionRefusedError as err:
         print(f"Connection Refused: {err}")
     except TimeoutError as err:

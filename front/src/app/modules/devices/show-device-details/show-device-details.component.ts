@@ -23,6 +23,8 @@ export class ShowDeviceDetailsComponent implements OnInit {
 
   protocols$! : Observable<any[]>; 
 
+  panelOpenState = false;
+
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
 

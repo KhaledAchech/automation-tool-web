@@ -87,7 +87,7 @@ export class ShowDevicesComponent implements OnInit {
           showDeleteSuccess.style.display = "none"
         }
       }, 4000);
-      this.dataSource$ = this.service.getDevices();
+      this.load();
     })
     }
   }
