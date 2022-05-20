@@ -1,13 +1,19 @@
 package com.clevory.back.service.network.impl;
 
+import com.clevory.back.commun.wrapper.ConnectionRequest;
+import com.clevory.back.dto.mapper.itf.DiagramStructMapper;
 import com.clevory.back.dto.mapper.itf.NetworkStructMapper;
 import com.clevory.back.dto.network.response.DeviceResponseDto;
+import com.clevory.back.dto.network.response.TopologyResponseDto;
+import com.clevory.back.model.editor.Node;
 import com.clevory.back.model.network.*;
+import com.clevory.back.repository.editor.DiagramRepository;
 import com.clevory.back.repository.network.DeviceRepository;
 import com.clevory.back.repository.network.InterfaceRepository;
 import com.clevory.back.repository.network.ProtocolRepository;
 import com.clevory.back.repository.network.TopologyRepository;
 import com.clevory.back.service.network.itf.DeviceService;
+import com.clevory.back.service.network.itf.TopologyService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +28,11 @@ public class DeviceServiceImpl implements DeviceService {
     private InterfaceRepository interfaceRepository;
     private ProtocolRepository protocolRepository;
     private TopologyRepository topologyRepository;
+    private DiagramRepository diagramRepository;
+
+    private TopologyService topologyService;
+
+    private DiagramStructMapper diagramStructMapper;
     private NetworkStructMapper networkStructMapper;
 
     public DeviceServiceImpl(
@@ -29,13 +40,20 @@ public class DeviceServiceImpl implements DeviceService {
             InterfaceRepository interfaceRepository,
             ProtocolRepository protocolRepository,
             TopologyRepository topologyRepository,
-            NetworkStructMapper networkStructMapper
+            DiagramRepository diagramRepository,
+            TopologyService topologyService,
+            NetworkStructMapper networkStructMapper,
+            DiagramStructMapper diagramStructMapper
     )
     {
         this.deviceRepository = deviceRepository;
         this.interfaceRepository = interfaceRepository;
         this.protocolRepository = protocolRepository;
+        this.topologyRepository = topologyRepository;
+        this.diagramRepository = diagramRepository;
+        this.topologyService = topologyService;
         this.networkStructMapper = networkStructMapper;
+        this.diagramStructMapper = diagramStructMapper;
     }
 
     @Override
@@ -62,20 +80,32 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public Device getDeviceById(long id)
+    public DeviceResponseDto getDeviceById(long id)
     {
-        return deviceRepository.findById(id).get();
+        Device device = deviceRepository.findById(id).get();
+
+        return networkStructMapper.deviceToDeviceResponseDto(device);
+    }
+
+    @Override
+    public Device getDeviceByHostname(String hostname) {
+        return deviceRepository.findByHostname(hostname);
     }
 
     @Override
     public DeviceResponseDto save(Device device) {
-        deviceRepository.save(device);
+        System.out.println(deviceRepository.findByHostname(device.getHostname()));
+        Device existingDevice = deviceRepository.findByHostname(device.getHostname());
+        if (existingDevice == null)
+            deviceRepository.save(device);
+        else
+            return networkStructMapper.deviceToDeviceResponseDto(existingDevice);
         return networkStructMapper.deviceToDeviceResponseDto(device);
     }
 
     @Override
     public Device update(long id, Device device) {
-        Device thisDevice = this.getDeviceById(id);
+        Device thisDevice = deviceRepository.findById(id).get();
 
         if (device.getIpAddress()!=null)
             thisDevice.setIpAddress(device.getIpAddress());
@@ -138,11 +168,6 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public Device getDeviceFullDetails(long id) {
-        return null;
-    }
-
-    @Override
     public Optional<Topology> getDeviceTopology(long id) {
         Device device = deviceRepository.findById(id).get();
         Optional<Topology> topology = null;
@@ -150,6 +175,49 @@ public class DeviceServiceImpl implements DeviceService {
             topology = device.getTopologies().stream().findFirst();
         }
         return topology;
+    }
+
+    @Override
+    public TopologyResponseDto createConnection(long topologyId, ConnectionRequest connectionRequest) {
+        Topology topology = topologyRepository.findById(topologyId).get();
+        System.out.println(connectionRequest);
+        Device device = deviceRepository.findById(connectionRequest.getMainNodeId()).get();
+
+
+        if (device.isAssigned())
+        {
+            //Assign the neighbor to the same topology of the device
+            topologyService.addDeviceToTopology(topologyId, connectionRequest.getConnectNodeId());
+
+            Device neighbor = deviceRepository.findById(connectionRequest.getConnectNodeId()).get();
+
+            Node node = diagramStructMapper.DeviceToNodeDTO(neighbor);
+
+            //adding the node to the editor with a location so we can connect it
+            node.setLoc("0 0");
+            diagramRepository.addNodeWithLocation(node,topologyId);
+
+            //fetching the main node
+            Node mainNode = diagramRepository.findNodeInDiagram(topologyId, device.getHostname());
+
+            System.out.println(mainNode.toString());
+
+            if (mainNode.getLoc() == null)
+            {
+                mainNode.setLoc("0 0");
+                diagramRepository.addNodeWithLocation(mainNode,topologyId);
+                System.out.println("add link if node loc null");
+                diagramRepository.addLink(topologyId, mainNode.getKey(), node.getKey());
+            }
+            else
+            {
+                System.out.println("add link if node loc not null ");
+                diagramRepository.addLink(topologyId, mainNode.getKey(), node.getKey());
+            }
+        }
+
+
+        return networkStructMapper.topologyToTopologyResponseDto(topology);
     }
 
 }

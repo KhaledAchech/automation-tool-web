@@ -53,7 +53,9 @@ public class TopologyServiceImpl implements TopologyService {
     @Override
     public List<Topology> deleteTopology(long id)
     {
+        this.unAssignDevicesToTopology(id);
         topologyRepository.deleteById(id);
+
         return topologyRepository.findAll();
     }
 
@@ -105,6 +107,21 @@ public class TopologyServiceImpl implements TopologyService {
         topology.getTopologyDevices().add(device);
         topologyRepository.save(topology);
 
+        return networkStructMapper.topologyToTopologyResponseDto(topology);
+    }
+
+    @Override
+    public TopologyResponseDto unAssignDevicesToTopology(long id) {
+        diagramRepository.deleteDiagramData(id);
+
+        Topology topology = topologyRepository.findById(id).get();
+        for (Device device : topology.getTopologyDevices())
+        {
+            device.getTopologies().remove(topology);
+            device.setAssigned(false);
+            deviceRepository.save(device);
+        }
+        topologyRepository.save(topology);
         return networkStructMapper.topologyToTopologyResponseDto(topology);
     }
 }

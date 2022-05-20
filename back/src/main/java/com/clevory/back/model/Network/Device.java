@@ -29,7 +29,7 @@ public class Device {
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @Column(length = 50)
+    @Column(length = 50, unique = true)
     private String hostname;
 
     @Column(length = 50)

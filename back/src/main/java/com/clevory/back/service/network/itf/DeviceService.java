@@ -1,5 +1,6 @@
 package com.clevory.back.service.network.itf;
 
+import com.clevory.back.commun.wrapper.ConnectionRequest;
 import com.clevory.back.dto.network.response.DeviceResponseDto;
 import com.clevory.back.dto.network.response.TenantResponseDto;
 import com.clevory.back.dto.network.response.TopologyResponseDto;
@@ -15,7 +16,8 @@ import java.util.Set;
 public interface DeviceService {
     List<Device> getDevices();
     List<Device> deleteDevice(long id);
-    Device getDeviceById(long id);
+    DeviceResponseDto getDeviceById(long id);
+    Device getDeviceByHostname(String hostname);
     DeviceResponseDto save(Device device);
     Device update(long id,Device device);
 
@@ -31,7 +33,7 @@ public interface DeviceService {
 
     Set<Protocol> getDeviceProtocols (long id);
 
-    Device getDeviceFullDetails(long id);
-
     Optional<Topology> getDeviceTopology(long id);
+
+    TopologyResponseDto createConnection (long topologyId, ConnectionRequest connectionRequest);
 }

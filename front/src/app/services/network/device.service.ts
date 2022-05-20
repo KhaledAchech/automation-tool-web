@@ -46,4 +46,8 @@ export class DeviceService {
     return this.http.delete(this.deviceUrl + `/${id}`)
   }
 
+  connect(id:number|string, data: any){
+    return this.http.post(this.deviceUrl + `/connect/${id}`,data);
+  }
+
 }

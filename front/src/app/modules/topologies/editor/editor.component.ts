@@ -520,10 +520,16 @@ clickSave() {
     if(!this.nodes.includes(node))
       this.nodes.push(node);
   })
-  this.diagramNodes.forEach(node =>{
+  // this.diagramNodes.forEach(node =>{
+  //   if(!this.nodes.includes(node))
+  //     this.nodes.push(node);
+  // })
+
+  this.myDiag.diagram.model.nodeDataArray.forEach(node => {
     if(!this.nodes.includes(node))
       this.nodes.push(node);
   })
+  
   this.diagramLinks.forEach(link =>{
     if(!this.links.includes(link))
       this.links.push(link);
@@ -540,6 +546,7 @@ clickSave() {
       this.loading = false;
     }
     this.saveModelJson = this.myDiag.diagram.model.toJson();
+    console.log(this.myDiag.diagram.model.nodeDataArray)
     this.myDiag.diagram.isModified = false;
   });
  
@@ -618,14 +625,17 @@ load()
   })
   this.diagramID = data.id;
   // fetching links
+   var i = 0;
   data.links.forEach((link:any) => {
+   
           this.linkArray.push(
             {
-              "key": link.key,
+              "key": ((data.links.length * -1) + i),//link.key,
               "from": link.from,
               "to": link.to
             }
           )
+          i++;
   });
 });
 }

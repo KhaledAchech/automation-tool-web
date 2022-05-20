@@ -1,5 +1,6 @@
 package com.clevory.back.controller.network;
 
+import com.clevory.back.commun.wrapper.ConnectionRequest;
 import com.clevory.back.dto.network.response.DeviceResponseDto;
 import com.clevory.back.dto.network.response.TenantResponseDto;
 import com.clevory.back.dto.network.response.TopologyResponseDto;
@@ -35,9 +36,15 @@ public class DeviceController {
     }
 
     @GetMapping("/{id}")
-    public Device getById(@PathVariable long id)
+    public DeviceResponseDto getById(@PathVariable long id)
     {
         return deviceService.getDeviceById(id);
+    }
+
+    @GetMapping("/device/{hostname}")
+    public Device getByHostname(@PathVariable String hostname)
+    {
+        return deviceService.getDeviceByHostname(hostname);
     }
 
     @PostMapping
@@ -79,5 +86,11 @@ public class DeviceController {
     public Optional<Topology> getDeviceTopology (@PathVariable("id") long id)
     {
         return deviceService.getDeviceTopology(id);
+    }
+
+    @PostMapping("/connect/{topology_id}")
+    public TopologyResponseDto connect (@PathVariable("topology_id") long id,  @RequestBody ConnectionRequest connectionRequest)
+    {
+        return deviceService.createConnection(id, connectionRequest);
     }
 }

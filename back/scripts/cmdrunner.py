@@ -36,7 +36,7 @@ if (function_id == '0'):
     if (myinstance):
         print ("Connected!")
         print(' ')
-        print ("################################################################################################")
+        #print ("################################################################################################")
         print(' ')
         #tablename = input("Enter table name: ")
         tablename = 'device'
@@ -45,9 +45,10 @@ if (function_id == '0'):
         devices = fetchData(myinstance, tablename)
     else:
         print("Unable to connect to the database.")
+        exit()
 
-    print(' ')
-    print ("################################################################################################")
+    #print(' ')
+    #print ("################################################################################################")
 
     print(' ')
     MY_DEVICE_USERNAME = os.getenv("DEVICE_USERNAME")
@@ -67,8 +68,8 @@ if (function_id == '0'):
         print(' ')
         print ("-------------------------------------------------------------------------------------------")
         print(' ')
-    print(' ')
-    print ("################################################################################################")
+    #print(' ')
+    #print ("################################################################################################")
 
     exit()
 
@@ -78,8 +79,8 @@ if (function_id == '1'):
     myinstance = connect(MY_LOCALHOST,MY_USER, MY_PASS, MY_DB)
     if (myinstance):
         print ("Connected!")
-        print(' ')
-        print ("################################################################################################")
+        #print(' ')
+        #print ("################################################################################################")
         print(' ')
         #tablename = input("Enter table name: ")
         tablename = 'device'
@@ -88,10 +89,11 @@ if (function_id == '1'):
         device = fetchdevice(myinstance, tablename, device_id)
         print(device)
     else:
-        print("Unable to connect to the database.")
+        print("Unable to connect to the database...")
+        exit()
 
-    print(' ')
-    print ("################################################################################################")
+    #print(' ')
+    #print ("################################################################################################")
 
     print(' ')
     MY_DEVICE_USERNAME = os.getenv("DEVICE_USERNAME")
@@ -109,8 +111,8 @@ if (function_id == '1'):
     showCdpNeighbors(device,  MY_DEVICE_USERNAME, MY_DEVICE_PASSWORD)
     print(' ')
     print ("-------------------------------------------------------------------------------------------")
-    print(' ')
-    print(' ')
-    print ("################################################################################################")
+    #print(' ')
+    #print(' ')
+    #print ("################################################################################################")
 
     exit()

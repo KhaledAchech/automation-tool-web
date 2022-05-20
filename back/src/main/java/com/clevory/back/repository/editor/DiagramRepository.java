@@ -1,5 +1,6 @@
 package com.clevory.back.repository.editor;
 
+import com.clevory.back.commun.Type;
 import com.clevory.back.database.rethinkDb.configuration.RethinkDBConnectionFactory;
 import com.clevory.back.database.rethinkDb.context.RethinkDBContext;
 import com.clevory.back.database.rethinkDb.context.RethinkDBContextFactory;
@@ -14,6 +15,7 @@ import com.rethinkdb.model.MapObject;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
@@ -195,8 +197,36 @@ public class DiagramRepository {
         return "Node wasn't added, an error has been detected.";
     }
 
+    public String addNodeWithLocation (Node node, Long diagramID)
+    {
+        try {
+        node.setDiagramId(diagramID);
+        nodeRepository.save(node);
 
-    public ArrayList<Node> getDiagramNodes(long id)
+        MapObject newNode = r.hashMap("diagramId", diagramID)
+                    .with("key", node.getKey())
+                    .with("text", node.getText())
+                    .with("type", node.getType().name())
+                    .with("loc", node.getLoc());
+
+        Object run = this.dbContext.getDatabase().table(table)
+                    .filter(row -> row.g("diagramId").eq(diagramID))
+                    .update(row -> r.hashMap
+                            ("nodes",row.g("nodes").append(newNode))
+                    ).run(this.rethinkDBConnectionFactory.createConnection());
+
+            this.dbContext.getLog().info("update {}", run);
+            return "Node Assigned successfully !";
+
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        return "Node wasn't added, an error has been detected.";
+
+    }
+
+
+    public ArrayList<HashMap> getDiagramNodes(long id)
     {
         try {
             ArrayList nodes = this.dbContext.getDatabase().table(table)
@@ -207,13 +237,96 @@ public class DiagramRepository {
 
             this.dbContext.getLog().info("read {}", nodes.get(0));
 
-            return (ArrayList<Node>) nodes.get(0);
+            return (ArrayList<HashMap>) nodes.get(0);
         } catch (TimeoutException ex) {
             ex.printStackTrace();
         }
         return null;
     }
-    public ArrayList<Link> getDiagramLinks(long id)
+
+    public Node findNodeInDiagram(long id, String text)
+    {
+        Node resNode = null;
+        ArrayList<HashMap> nodes = this.getDiagramNodes(id);
+        for (HashMap node : nodes)
+        {
+            if (node.get("text").equals(text))
+            {
+                resNode = new Node();
+                resNode.setText((String) node.get("text"));
+                resNode.setDiagramId(id);
+                resNode.setKey((String) node.get("key"));
+                resNode.setType(Type.valueOf(node.get("type").toString()));
+                resNode.setLoc((String) node.get("loc"));
+            }
+        }
+        return resNode;
+    }
+
+    public ArrayList<HashMap> addLink(long id, String from, String to)
+    {
+        Link link = new Link();
+        ArrayList links = this.getDiagramLinks(id);
+
+        if (from == null || to == null)
+        {
+            return links;
+        }
+
+        linkRepository.save(link);
+
+        long key = 0;
+        System.out.println(key);
+        link.setKey(key);
+        link.setFrom(from);
+        link.setTo(to);
+        link.setDiagramId(id);
+
+        MapObject newLink = r.hashMap("diagramId", id)
+                .with("key", link.getKey())
+                .with("from", link.getFrom())
+                .with("to", link.getTo());
+
+
+        links.add(link);
+
+        try {
+            Object run = this.dbContext.getDatabase().table(table)
+                    .filter(row -> row.g("diagramId").eq(id))
+                    .update(row -> r.hashMap
+                                    ("links",row.g("links").append(newLink)))
+                    .run(this.rethinkDBConnectionFactory.createConnection());
+
+            this.dbContext.getLog().info("replace links {}", run);
+
+            return this.getDiagramLinks(id);
+        }
+        catch (TimeoutException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public String deleteDiagramData(long id)
+    {
+        try {
+            Object run = this.dbContext.getDatabase().table(table)
+                    .filter(row -> row.g("diagramId").eq(id))
+                    .delete()
+                    .run(this.rethinkDBConnectionFactory.createConnection());
+
+            this.dbContext.getLog().info("delete links {}", run);
+
+            return "Diagram data deleted!";
+        }
+        catch (TimeoutException ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+
+    public ArrayList<HashMap> getDiagramLinks(long id)
     {
         try {
             ArrayList links = this.dbContext.getDatabase().table(table)
@@ -224,7 +337,7 @@ public class DiagramRepository {
 
             this.dbContext.getLog().info("read {}", links.get(0));
 
-            return (ArrayList<Link>) links.get(0);
+            return (ArrayList<HashMap>) links.get(0);
         } catch (TimeoutException ex) {
             ex.printStackTrace();
         }

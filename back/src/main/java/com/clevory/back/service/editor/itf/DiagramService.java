@@ -6,6 +6,7 @@ import com.clevory.back.model.editor.Link;
 import com.clevory.back.model.editor.Node;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public interface DiagramService {
@@ -17,12 +18,17 @@ public interface DiagramService {
     Object delete (String id);
 
     Object getDiagrambyDiagramID (long id);
-    ArrayList<Node> getNodes(long id);
-    ArrayList<Link> getLinks(long id);
+    ArrayList<HashMap> getNodes(long id);
+    ArrayList<HashMap> getLinks(long id);
     Diagram getDiagramNodesAndLinks(long id);
+
+    Node getNodeFromDiagram(long id, String text);
 
     StringResponse getDiagramName(long id);
 
+    ArrayList<HashMap> addLink(long id, String fromNode, String toNode);
+
     StringResponse updateDiagram(long id, Diagram diagram);
+    StringResponse deleteDiagramData(long id);
 
 }

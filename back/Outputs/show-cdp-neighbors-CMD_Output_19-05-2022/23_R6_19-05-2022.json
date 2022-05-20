@@ -1,0 +1,37 @@
+[
+  {
+    "neighbor": "PE2.lab.ap.com",
+    "local_interface": "Eth 1/0",
+    "capability": "R",
+    "platform": "7206VXR",
+    "neighbor_interface": "Eth 1/0"
+  },
+  {
+    "neighbor": "PE3.lab.ap.com",
+    "local_interface": "Fas 6/0",
+    "capability": "R",
+    "platform": "7206VXR",
+    "neighbor_interface": "Fas 6/0"
+  },
+  {
+    "neighbor": "OOBManagementSW1",
+    "local_interface": "Fas 0/0",
+    "capability": "R S I",
+    "platform": "Linux",
+    "neighbor_interface": "Uni Eth 1/2"
+  },
+  {
+    "neighbor": "P1.lab.ap.com",
+    "local_interface": "Fas 5/0",
+    "capability": "R",
+    "platform": "7206VXR",
+    "neighbor_interface": "Fas 2/0"
+  },
+  {
+    "neighbor": "CPE2.lab.ap.com",
+    "local_interface": "Eth 1/1",
+    "capability": "R",
+    "platform": "7206VXR",
+    "neighbor_interface": "Eth 1/0"
+  }
+]

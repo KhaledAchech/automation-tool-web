@@ -1,7 +1,9 @@
 package com.clevory.back.service.network.impl;
 
+import com.clevory.back.model.network.Device;
 import com.clevory.back.model.network.Interface;
 import com.clevory.back.model.network.Protocol;
+import com.clevory.back.model.network.Topology;
 import com.clevory.back.repository.network.ProtocolRepository;
 import com.clevory.back.service.network.itf.ProtocolService;
 import lombok.AllArgsConstructor;
@@ -24,6 +26,14 @@ public class ProtocolServiceImpl implements ProtocolService {
     @Override
     public List<Protocol> deleteProtocol(long id)
     {
+        Protocol protocol = protocolRepository.findById(id).get();
+
+        for (Device device : protocol.getDevices())
+            {
+                System.out.println(device.getDeviceProtocols());
+                device.getDeviceProtocols().remove(protocol);
+            }
+
         protocolRepository.deleteById(id);
         return protocolRepository.findAll();
     }

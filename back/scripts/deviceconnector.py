@@ -14,8 +14,10 @@ def showCdpNeighbors(device, username, password):
     }
     try:
         ssh = ConnectHandler(**net_connect)
-        output = ssh.send_command("show cdp neighbors")
-        print(output)
+        ####################### For Debug ########################
+        #output = ssh.send_command("show cdp neighbors")        #
+        #print(output)                                          #
+        ##########################################################
         neighbors = ssh.send_command("show cdp neighbors", use_textfsm=True)
         writeNeighbors(device, neighbors)
     except ConnectionRefusedError as err:
