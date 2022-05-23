@@ -126,9 +126,31 @@ export class ShowDeviceDetailsComponent implements OnInit {
     if (this.checkedNeighbors)
     {
       this.checkedNeighbors.forEach(item =>{
+        if (item.includes("PC"))
+         {
+           var deviceType = "PC"
+         }
+         else
+         {
+           if(item.includes("SW"))
+           {
+              var deviceType = "SWITCH"
+           }
+           else
+           {
+            if (item.includes("CP"))
+              {
+                var deviceType = "SERVER"
+              }
+            else
+              {
+                var deviceType = "ROUTER"
+              }
+           }
+         }
          var device = {
           hostname: item.split(".")[0],
-          type: 'ROUTER',
+          type: deviceType,
           os: 'cisco_xe',
           vendor: 'cisco',
           status: 'Up'
@@ -156,18 +178,39 @@ export class ShowDeviceDetailsComponent implements OnInit {
   connect()
   { this.loading = true;
     this.checkedNeighbors.forEach(item =>{
+        if (item.includes("PC"))
+         {
+           var deviceType = "PC"
+         }
+         else
+         {
+           if(item.includes("SW"))
+           {
+              var deviceType = "SWITCH"
+           }
+           else
+           {
+            if (item.includes("CP"))
+              {
+                var deviceType = "SERVER"
+              }
+            else
+              {
+                var deviceType = "ROUTER"
+              }
+           }
+         }
          var device = {
           hostname: item.split(".")[0],
-          type: 'ROUTER',
+          type: deviceType,
           os: 'cisco_xe',
           vendor: 'cisco',
-          status: 'Up'
+          status: 'Connected'
         }
         this.service.addDevice(device).subscribe(res => {
           if(res)
           {
             this.neighbor = res;
-            console.log(this.neighbor);
             this.connectionData  = {
               "mainNodeId" : this.device.id,
               "connectNodeId" : this.neighbor.id
