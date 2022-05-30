@@ -46,7 +46,6 @@ import { ShowDeviceDetailsComponent } from 'src/app/modules/devices/show-device-
 import { AssignDeviceComponent } from 'src/app/modules/devices/assign-device/assign-device.component';
 import { ShowDiscoveredDevicesComponent } from 'src/app/modules/devices/show-discovered-devices/show-discovered-devices.component';
 
-
 @NgModule({
   declarations: [
     DefaultComponent,

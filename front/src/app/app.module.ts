@@ -16,9 +16,12 @@ import { ConfigurationService } from './services/network/configuration.service';
 import { ProtocolService } from './services/network/protocol.service';
 import { DiagramService } from './services/editor/diagram.service';
 import { ScriptService } from './services/network/script.service';
+import { SigninComponent } from './modules/signin/signin.component';
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    SigninComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +30,7 @@ import { ScriptService } from './services/network/script.service';
     DefaultModule,
      HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
   providers: [
     TenantService,

@@ -7,6 +7,7 @@ import { DevicesComponent } from './modules/devices/devices.component';
 import { ShowDeviceDetailsComponent } from './modules/devices/show-device-details/show-device-details.component';
 import { InterfacesComponent } from './modules/interfaces/interfaces.component';
 import { ProtocolsComponent } from './modules/protocols/protocols.component';
+import { SigninComponent } from './modules/signin/signin.component';
 import { TenantsComponent } from './modules/tenants/tenants.component';
 import { EditorComponent } from './modules/topologies/editor/editor.component';
 import { TopologiesComponent } from './modules/topologies/topologies.component';
@@ -17,7 +18,7 @@ const routes: Routes = [{
   children: [{
     path:'',
     component: DashboardComponent
-  }, {
+  },{
     path:'tenants',
     component: TenantsComponent
   }, {
@@ -44,7 +45,12 @@ const routes: Routes = [{
     component: EditorComponent
   }
 ]
-}];
+},
+{
+  path:'signin',
+  component: SigninComponent
+}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
