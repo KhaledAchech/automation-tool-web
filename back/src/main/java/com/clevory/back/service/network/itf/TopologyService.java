@@ -20,5 +20,7 @@ public interface TopologyService {
     List<TopologyResponseDto> getTopologiesWithDevices ();
 
     //Add a device to a topology
-    TopologyResponseDto addDeviceToTopology (long id, Device device);
+    TopologyResponseDto addDeviceToTopology (long id, long deviceID);
+
+    TopologyResponseDto unAssignDevicesToTopology (long id);
 }

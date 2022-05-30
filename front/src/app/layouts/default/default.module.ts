@@ -28,6 +28,7 @@ import {MatChipsModule} from '@angular/material/chips';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatListModule} from '@angular/material/list';
+import {MatExpansionModule} from '@angular/material/expansion';
 import { ShowProtocolsComponent } from 'src/app/modules/protocols/show-protocols/show-protocols.component';
 import { AddEditProtocolComponent } from 'src/app/modules/protocols/add-edit-protocol/add-edit-protocol.component';
 import { ShowInterfacesComponent } from 'src/app/modules/interfaces/show-interfaces/show-interfaces.component';
@@ -40,7 +41,11 @@ import { ShowTenantTopologiesComponent } from 'src/app/modules/tenants/show-tena
 import { AddEditTenantComponent } from 'src/app/modules/tenants/add-edit-tenant/add-edit-tenant.component';
 import { EditorComponent } from 'src/app/modules/topologies/editor/editor.component';
 import { GojsAngularModule } from 'gojs-angular';
+import { ShowBriefDeviceComponent } from 'src/app/modules/devices/show-brief-device/show-brief-device.component';
 import { ShowDeviceDetailsComponent } from 'src/app/modules/devices/show-device-details/show-device-details.component';
+import { AssignDeviceComponent } from 'src/app/modules/devices/assign-device/assign-device.component';
+import { ShowDiscoveredDevicesComponent } from 'src/app/modules/devices/show-discovered-devices/show-discovered-devices.component';
+
 
 @NgModule({
   declarations: [
@@ -69,7 +74,10 @@ import { ShowDeviceDetailsComponent } from 'src/app/modules/devices/show-device-
     ShowTenantTopologiesComponent,
     AddEditTenantComponent,
     EditorComponent,
-    ShowDeviceDetailsComponent
+    ShowDeviceDetailsComponent,
+    ShowBriefDeviceComponent,
+    AssignDeviceComponent,
+    ShowDiscoveredDevicesComponent
   ],
   imports: [
     CommonModule,
@@ -88,6 +96,7 @@ import { ShowDeviceDetailsComponent } from 'src/app/modules/devices/show-device-
     NgbModule,
     MatProgressBarModule,
     MatListModule,
+    MatExpansionModule,
     GojsAngularModule
   ]
 })

@@ -2,8 +2,14 @@
     <mat-icon>keyboard_return</mat-icon>
 </a>
 <br>
-<div id="myPaletteDiv" class="myPaletteDiv" >
+<h3 class="col-xs-8 text-center"><b>{{diagramName?.res}}</b></h3>
+<div class="floatAboveEverything" *ngIf="loading">
+    <div class="spinner-border" role="status">
+        <span class="sr-only" id="loading"></span>
+    </div>
 </div>
+<gojs-palette [initPalette]='initPalette' [nodeDataArray]='state.paletteNodeData' [divClassName]='paletteDivClassName'>
+</gojs-palette>
 <gojs-diagram #myDiag [initDiagram]='initDiagram' [nodeDataArray]='state.diagramNodeData'
         [linkDataArray]='state.diagramLinkData' [modelData]='state.diagramModelData'
         [skipsDiagramUpdate]='state.skipsDiagramUpdate' (modelChange)='diagramModelChange($event)'
@@ -25,15 +31,10 @@
         <li>You can undo changes using Ctrl+z.</li>
         <li>You can redo changes using Ctrl+y.</li>
         <li>You can add a new device by draging it from the palette and droping into the canvas.</li>
-        <li>Double click over the added device to specify it attributs.</li>
-        <li>Update a device by using your right mouse button.</li>
+        <li>Double click over the added device to view it attributs.</li>
         <li>See a device in full details by using your right mouse button.</li>
-        <li>Hover over a device to see it details.</li>
     </ul>
 </div>
-<!-- <gojs-palette [divClassName]='paletteDivClassName'>
-</gojs-palette> -->
-
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -44,8 +45,7 @@
                     (click)="modalClose()" id="add-edit-modal-close"></button>
             </div>
             <div class="modal-body">
-                <app-add-edit-device [device]="device" *ngIf="activateAddEditDeviceComponent">
-                </app-add-edit-device>
+                <app-show-brief-device [device]="device" *ngIf="activateShowDeviceDetailsComponent"></app-show-brief-device>
             </div>
         </div>
     </div>

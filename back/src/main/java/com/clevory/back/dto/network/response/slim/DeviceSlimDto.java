@@ -11,6 +11,6 @@ public class DeviceSlimDto {
     @JsonProperty("id")
     private Long id;
 
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("ipAddress")
+    private String ipAddress;
 }

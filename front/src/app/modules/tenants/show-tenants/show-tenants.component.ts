@@ -14,13 +14,14 @@ export class ShowTenantsComponent implements OnInit {
   constructor(private service:TenantService) { }
 
   ngOnInit(): void {
-    this.dataSource$ = this.service.getTenants();
+    this.load();
   }
 
   modalTitle:string = '';
   activateAddEditTenantComponent:boolean = false;
   activateTenantTopologiesComponent:boolean = false;
   tenant:any;
+  data:any;
 
   modalAdd() {
     this.tenant = {
@@ -37,8 +38,9 @@ export class ShowTenantsComponent implements OnInit {
     this.activateAddEditTenantComponent = true;
   }
 
-  modalTenantToplogies() {
+  modalTenantToplogies(data:any) {
     this.modalTitle = "Tenant list of topologies";
+    this.data = data;
     this.activateTenantTopologiesComponent = true;
   }
 
@@ -58,7 +60,7 @@ export class ShowTenantsComponent implements OnInit {
           showDeleteSuccess.style.display = "none"
         }
       }, 4000);
-      this.dataSource$ = this.service.getTenants();
+      this.load();
       })
     }
   }
@@ -66,6 +68,11 @@ export class ShowTenantsComponent implements OnInit {
   modalClose() {
     this.activateAddEditTenantComponent = false;
     this.activateTenantTopologiesComponent = false;
-    this.dataSource$ = this.service.getTenants();
+    this.load();
+  }
+
+  load()
+  {
+    this.dataSource$ = this.service.getTenantsWithTopologies();
   }
 }

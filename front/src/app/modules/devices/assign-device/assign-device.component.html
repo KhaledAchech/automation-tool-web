@@ -1,0 +1,23 @@
+<mat-card class="example-card">
+    <mat-card-title>Assign to a topology</mat-card-title>
+    <mat-card-content>
+        <br>
+        <div>
+            <h3>Device ID : <b>{{deviceId}}</b></h3>
+        </div>
+        <div>
+        <select class="form-select" aria-label="topologies" (change)="selectTopology($event)">
+            <option selected>Available topologies</option>
+            <option value="{{item.id}}" *ngFor = "let item of dataSource$|async">{{item.id}} : {{item.name}} : {{item.type}}</option>
+        </select>
+        </div>
+        <br>
+        <button class="btn btn-primary" (click)="assignDevice()">
+            Save
+        </button>
+    </mat-card-content>
+    <mat-divider inset></mat-divider>
+    <mat-card-footer>
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+</mat-card>

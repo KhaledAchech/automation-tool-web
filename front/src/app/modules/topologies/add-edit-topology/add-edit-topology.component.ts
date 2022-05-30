@@ -45,7 +45,7 @@ export class AddEditTopologyComponent implements OnInit {
         }
       }, 4000);
     })
-     this.router.navigateByUrl('/editor');
+     //this.router.navigateByUrl('/editor');
   }
 
   updateTopology() {

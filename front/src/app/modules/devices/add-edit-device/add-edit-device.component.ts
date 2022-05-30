@@ -11,22 +11,31 @@ export class AddEditDeviceComponent implements OnInit {
 
   @Input() device:any;
   id: number = 0;
-  name: string = "";
+  ipAddress: string = "";
+  hostname: string="";
   os: string = "";
+  type: string = "";
+  vendor: string ="";
   status: string = "Up";
   
   constructor(private service:DeviceService) { }
 
   ngOnInit(): void {
     this.id = this.device.id;
-    this.name = this.device.name;
+    this.ipAddress = this.device.ipAddress;
     this.os = this.device.os;
+    this.hostname = this.device.hostname;
+    this.type = this.device.type;
+    this.vendor = this.device.vendor;
   }
   addDevice() {
     var device = {
-      name:this.name,
-      os:this.os,
-      status:'Down'
+      ipAddress: this.ipAddress,
+      hostname: this.hostname,
+      type: this.type,
+      os: this.os,
+      vendor: this.vendor,
+      status: 'Down'
     }
     this.service.addDevice(device).subscribe(res => {
       var closeModalBtn = document.getElementById('add-edit-modal-close');
@@ -45,13 +54,16 @@ export class AddEditDeviceComponent implements OnInit {
       }, 4000);
     }
     )}
+  
+
 
   updateDevice() {
    var device = {
-      id : this.id,
-      name:this.name,
-      os:this.os,
-      status:this.status
+      ipAddress: this.ipAddress,
+      hostname: this.hostname,
+      type: this.type,
+      os: this.os,
+      vendor: this.vendor
     }
     var id:number = this.id;
      this.service.updateDevice(id,device).subscribe(res => {
@@ -70,5 +82,12 @@ export class AddEditDeviceComponent implements OnInit {
         }
       }, 4000);
      })
+  }
+
+  selectType(event: Event)
+  {
+     const value = (event.target as HTMLInputElement).value;
+    if(value)
+      this.type = value;
   }
 }

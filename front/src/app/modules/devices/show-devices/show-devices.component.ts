@@ -18,8 +18,7 @@ export class ShowDevicesComponent implements OnInit {
               private router: Router) { }
 
   ngOnInit(): void {
-    this.protocols = ['ssh','smtp'];
-    this.dataSource$ = this.service.getDevices();
+    this.load();
   }
 
 
@@ -27,12 +26,16 @@ export class ShowDevicesComponent implements OnInit {
   activateAddEditDeviceComponent:boolean = false;
   activateConfigureDeviceComponent:boolean = false;
   activateDeviceInterfacesComponent:boolean = false;
+  activateShowDeviceDetailsComponent:boolean = false;
+  activateAssignDeviceComponent:boolean = false;
   device:any;
+  data!: Observable<any[]>; 
+  deviceId!:number;
 
   modalAdd() {
     this.device = {
       id:0,
-      name:null,
+      ipAddress:null,
       os:null,
       status:'Down'
     }
@@ -45,15 +48,25 @@ export class ShowDevicesComponent implements OnInit {
     this.modalTitle = "Edit Device";
     this.activateAddEditDeviceComponent = true;
   }
-  
-  deviceDetails(id:any) {
-    this.router.navigate(['devices/details', id]);
+
+  showModal(item:any) {
+    this.device = item;
+    this.modalTitle = "Device Details";
+    this.activateShowDeviceDetailsComponent = true;
   }
+  
   modalConfigure() {
     this.modalTitle = "Device Configuration";
     this.activateConfigureDeviceComponent = true;
   }
-  modalDeviceInterface() {
+
+  modalAssign(item:any){
+    this.modalTitle = "Assign Device";
+    this.deviceId = item.id;
+    this.activateAssignDeviceComponent = true;
+  }
+  modalDeviceInterface(item:any) {
+    this.data = this.service.getDeviceInterfaces(item.id);
     this.modalTitle = "Device list of interfaces";
     this.activateDeviceInterfacesComponent = true;
   }
@@ -74,7 +87,7 @@ export class ShowDevicesComponent implements OnInit {
           showDeleteSuccess.style.display = "none"
         }
       }, 4000);
-      this.dataSource$ = this.service.getDevices();
+      this.load();
     })
     }
   }
@@ -83,7 +96,15 @@ export class ShowDevicesComponent implements OnInit {
     this.activateAddEditDeviceComponent = false;
     this.activateConfigureDeviceComponent = false;
     this.activateDeviceInterfacesComponent = false;
-    this.dataSource$ = this.service.getDevices();
+    this.activateShowDeviceDetailsComponent = false;
+    this.activateAssignDeviceComponent = false;
+    this.load();
   }
 
+
+  //load data from the back end 
+  load()
+  {
+    this.dataSource$ = this.service.getDevicesDetailed();
+  }
 }

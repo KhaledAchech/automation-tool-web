@@ -23,21 +23,36 @@
         <table>
             <thead>
                 <th>Id</th>
-                <th>Name</th>
+                <th>Ip Address</th>
+                <th>Hostname</th>
+                <th>Type</th>
                 <th>OS</th>
+                <th>Vendor</th>
                 <th>Protocols</th>
                 <th>Status</th>
                 <th>Actions</th>
+                <th>Assign</th>
             </thead>
             <tbody>
                 <tr *ngFor="let item of dataSource$|async">
                     <td>{{item.id}}</td>
-                    <td>{{item.name}}</td>
+                    <td *ngIf="!item.ipAddress">
+                        N/A
+                    </td>
+                    <td *ngIf="item.ipAddress">
+                        {{item.ipAddress}}
+                    </td>
+                    <td>{{item.hostname}}</td>
+                    <td>{{item.type}}</td>
                     <td>{{item.os}}</td>
-                    <td>
-                        <mat-list *ngFor="let protocol of protocols">
-                            <mat-list-item><mat-icon>arrow_right</mat-icon>{{protocol}}</mat-list-item>
+                    <td>{{item.vendor}}</td>
+                    <td *ngIf="item.protocols?.length">
+                        <mat-list  *ngFor="let protocol of item.protocols">
+                            <mat-list-item><mat-icon>arrow_right</mat-icon>{{protocol.name}}</mat-list-item>
                         </mat-list>
+                    </td>
+                    <td *ngIf="!item.protocols?.length">
+                        N/A
                     </td>
                     <td class="connected" *ngIf="item.status == 'Connected'">
                         <mat-icon>check</mat-icon>{{item.status}}
@@ -62,14 +77,15 @@
                                     d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z" />
                             </svg>
                         </button>
-                        <button class="btn btn-outline-info me-2 mb-1" (click)="deviceDetails(item.id)">
-                            <mat-icon class="btn-outline-details icon-display" >assignment</mat-icon>
+                        <button class="btn btn-outline-info me-2 mb-1" (click)="showModal(item)" data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop" >
+                            <mat-icon class="btn-outline-details icon-display">assignment</mat-icon>
                         </button>
                         <button class="btn btn-outline-success me-2 mb-1" (click)="modalConfigure()" data-bs-toggle="modal"
                             data-bs-target="#staticBackdrop">
                             <mat-icon class="btn-outline-configuration icon-display" >settings</mat-icon>
                         </button>
-                        <button class="btn btn-outline-secondary me-2 mb-1" (click)="modalDeviceInterface()" data-bs-toggle="modal"
+                        <button class="btn btn-outline-secondary me-2 mb-1" (click)="modalDeviceInterface(item)" data-bs-toggle="modal"
                             data-bs-target="#staticBackdrop">
                             <mat-icon class="btn-outline-interface icon-display">select_all</mat-icon>
                         </button>
@@ -83,6 +99,16 @@
                                     d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" />
                             </svg>
                         </button>
+                    </td>
+                    <td>
+                        <div *ngIf="item.isAssigned; else elseBlock">
+                            <button class="btn btn-outline-success me-2 mb-1"disabled> Assigned </button>
+                            <a mat-list-item routerLink="/editor/{{item.topologyId}}">View in topology</a>
+                        </div>
+                        <ng-template #elseBlock>
+                            <button class="btn btn-outline-success me-2 mb-1"  (click)="modalAssign(item)"  data-bs-toggle="modal"
+                            data-bs-target="#staticBackdrop">Assign to topology</button>
+                        </ng-template>
                     </td>
                 </tr>
             </tbody>
@@ -103,9 +129,10 @@
             <div class="modal-body">
                 <app-add-edit-device [device]="device" *ngIf="activateAddEditDeviceComponent">
                 </app-add-edit-device>
-                <app-show-device-configuration *ngIf="activateConfigureDeviceComponent">
-                </app-show-device-configuration>
-                <app-show-device-interfaces *ngIf="activateDeviceInterfacesComponent"></app-show-device-interfaces>
+                <app-show-brief-device [device]="device" *ngIf="activateShowDeviceDetailsComponent"></app-show-brief-device>
+                <app-show-device-configuration *ngIf="activateConfigureDeviceComponent"></app-show-device-configuration>
+                <app-assign-device [deviceId]="deviceId" *ngIf="activateAssignDeviceComponent"></app-assign-device>
+                <app-show-device-interfaces [data]="data" *ngIf="activateDeviceInterfacesComponent"></app-show-device-interfaces>
             </div>
         </div>
     </div>

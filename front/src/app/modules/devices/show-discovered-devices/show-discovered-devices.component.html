@@ -1,0 +1,46 @@
+
+    <mat-card-title>Discovered Devices : </mat-card-title>
+    <br>
+    <mat-card-content>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Select Device</th>
+                    <th scope="col">Hostname</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">OS</th>
+                    <th scope="col">Ip Address</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of devices$|async">
+                    <td>
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="customCheck1">
+                        </div>
+                    </td>
+                    <td>{{item.hostname}}</td>
+                    <td>{{item.type}}</td>
+                    <td>{{item.os}}</td>
+                    <td *ngIf="!item.ipAddress">
+                        N/A
+                    </td>
+                    <td *ngIf="item.ipAddress">
+                        {{item.ipAddress}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <mat-divider inset></mat-divider>
+        <br>
+        <div fxLayout="row">
+            <button type="button" class="btn btn-success" fxFlex="70">Establish Connection with all devices</button>
+        </div>
+    </mat-card-content>
+    <mat-divider inset></mat-divider>
+    <br>
+        <div fxLayout="row" fxLayoutGap="10">
+            <button type="button" class="btn btn-primary" fxFlex="20" disabled>Save</button>
+            <button type="button" class="btn btn-success" fxFlex="20" disabled>Connect</button>
+        </div>
+

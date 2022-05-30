@@ -2,21 +2,126 @@
     <mat-icon>keyboard_return</mat-icon>
 </a>
 <br>
+<div class="alert alert-success" role="alert" id="add-success-alert">
+    Device successfully saved!
+</div>
+<div class="alert alert-success" role="alert" id="connection-success-alert">
+   Successfully Connected!
+</div>
+<mat-card class="example-card">
+    <mat-card-subtitle>Actions</mat-card-subtitle>
+    <mat-card-title>Device Actions</mat-card-title>
+    <mat-card-content>
+        <div fxLayout="row" >
+            <a *ngIf="device.isAssigned==true" class="btn btn-secondary me-2 mb-1"  fxFlex="15" [routerLink]="['/editor', device.topologyId]"> View in topology </a>
+<!-- 
+            <button *ngIf="device.isAssigned==true && device.ipAddress" class="btn btn-primary me-2 mb-1" fxFlex="15" (click)="modalDiscovery()" data-bs-toggle="modal"
+            data-bs-target="#staticBackdrop"> initiate discovery </button> -->
 
+            <button *ngIf="device.isAssigned==false" class="btn btn-success me-2 mb-1" fxFlex="15"
+             (click)="modalAssign()"  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Assign to topology</button>
+            <button class="btn btn-success me-2 mb-1" fxFlex="15"
+                data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add Interface</button>
+            <button class="btn btn-success me-2 mb-1" fxFlex="15" 
+            data-bs-toggle="modal" data-bs-target="#staticBackdrop">Add Protocol</button>
+            
+            <button class="btn btn-primary me-2 mb-1" fxFlex="15" 
+            data-bs-toggle="modal" data-bs-target="#staticBackdrop">Assign Configuration</button>
+            <button class="btn btn-primary me-2 mb-1" fxFlex="15" 
+            data-bs-toggle="modal" data-bs-target="#staticBackdrop">Use Template</button>
+            <button class="btn btn-secondary     me-2 mb-1" fxFlex="15"
+             data-bs-toggle="modal" data-bs-target="#staticBackdrop">Create Back Up</button>
+        </div>
+    </mat-card-content>
+<mat-divider inset></mat-divider>
+<br>
+<mat-accordion *ngIf="device.isAssigned==true && device.ipAddress">
+    <mat-expansion-panel (opened)="fetchNeighbors()" (closed)="panelOpenState = false">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                Initiate Discovery
+            </mat-panel-title>
+            <mat-panel-description>
+               Neighbors list : 
+            </mat-panel-description>
+        </mat-expansion-panel-header>
+            <mat-card-title>Device Neighbors</mat-card-title>
+            <mat-card-content>
+                <table mat-table [dataSource]="neighbors$" class="mat-elevation-z8 demo-table">
+
+                    <ng-container matColumnDef="check">
+                        <th mat-header-cell *matHeaderCellDef> Select Neighbor </th>
+                        <td mat-cell *matCellDef="let element"> <input class="form-check-input" type="checkbox"
+                            (change)="check($event)" value="{{element.neighbor}}" >
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="neighbor">
+                        <th mat-header-cell *matHeaderCellDef> Neighbor </th>
+                        <td mat-cell *matCellDef="let element"> {{element.neighbor}} </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="neighbor_interface">
+                        <th mat-header-cell *matHeaderCellDef> Neighbor Interface </th>
+                        <td mat-cell *matCellDef="let element"> {{element.neighbor_interface}} </td>
+                    </ng-container>
+            
+                    <ng-container matColumnDef="local_interface">
+                        <th mat-header-cell *matHeaderCellDef> Local Interface </th>
+                        <td mat-cell *matCellDef="let element"> {{element.local_interface}} </td>
+                    </ng-container>
+
+                                
+                    <ng-container matColumnDef="platform">
+                        <th mat-header-cell *matHeaderCellDef> Platform </th>
+                        <td mat-cell *matCellDef="let element"> {{element.platform}} </td>
+                    </ng-container>
+
+                                
+                    <ng-container matColumnDef="capability">
+                        <th mat-header-cell *matHeaderCellDef> Capability </th>
+                        <td mat-cell *matCellDef="let element"> {{element.capability}} </td>
+                    </ng-container>
+            
+                    <tr mat-header-row *matHeaderRowDef="neighborsColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: neighborsColumns;"></tr>
+                </table>
+                <mat-divider inset></mat-divider>
+                <br>
+                <!-- <div fxLayout="row">
+                    <button type="button" class="btn btn-success" fxFlex="30">Establish Connection with all devices</button>
+                </div> -->
+                <div *ngIf="loading" > 
+                    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                </div>
+            </mat-card-content>
+            <mat-divider inset></mat-divider>
+            <br>
+            <div fxLayout="row" fxLayoutGap="10">
+                <button type="button" class="btn btn-primary" fxFlex="8"  [disabled]='!checkedNeighbors?.length' 
+                (click)="addDevice()">Save</button>
+                <button type="button" class="btn btn-success" fxFlex="8"  [disabled]='!checkedNeighbors?.length' 
+                 (click)="connect()">Connect</button>
+            </div>
+    </mat-expansion-panel>
+</mat-accordion>
+
+<br>
 <mat-card class="example-card">
     <mat-card-subtitle>Device informations</mat-card-subtitle>
     <mat-card-title>Device Details</mat-card-title>
     <mat-card-content>
         <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20" class="stat">
-            <input disabled value="device id" fxFlex="25">
-            <input disabled value="device hostname" fxFlex="75">
+            <input disabled value="Device ID : {{device.id}}" fxFlex="25">
+            <input disabled value="Device Hostname : {{device.hostname}}" fxFlex="50">
+            <input disabled value="Device Ip Address : {{device.ipAddress}}" fxFlex="25">
         </div>
         <br>
         <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20" class="stat">
-            <input disabled value="device type" fxFlex="25">
-            <input disabled value="device os" fxFlex="25">
-            <input disabled value="device vendor" fxFlex="25">
-            <input disabled value="device status" fxFlex="25">
+            <input disabled value="Device Type : {{device.type}}" fxFlex="25">
+            <input disabled value="Device OS : {{device.os}}" fxFlex="25">
+            <input disabled value="Device Vendor : {{device.vendor}}" fxFlex="25">
+            <input disabled value="Device Status : {{device.status}}" fxFlex="25">
         </div>
     </mat-card-content>
     <mat-divider inset></mat-divider>
@@ -32,7 +137,7 @@
     <br>
     <mat-card-title>Device Interfaces</mat-card-title>
     <mat-card-content>
-        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 demo-table">
+        <table mat-table [dataSource]="interfaces$" class="mat-elevation-z8 demo-table">
             <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef> Id </th>
                 <td mat-cell *matCellDef="let element"> {{element.id}} </td>
@@ -48,23 +153,23 @@
                 <td mat-cell *matCellDef="let element"> {{element.type}} </td>
             </ng-container>
         
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            <tr mat-header-row *matHeaderRowDef="interfaceColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: interfaceColumns;"></tr>
         </table>
     </mat-card-content>
     <mat-divider inset></mat-divider>
     <br>
     <mat-card-title>Device Protocols</mat-card-title>
     <mat-card-content>
-        <table mat-table [dataSource]="dataSource1" class="mat-elevation-z8 demo-table">
+        <table mat-table [dataSource]="protocols$" class="mat-elevation-z8 demo-table">
             <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef> Id </th>
                 <td mat-cell *matCellDef="let element"> {{element.id}} </td>
             </ng-container>
         
-            <ng-container matColumnDef="ipAddress">
-                <th mat-header-cell *matHeaderCellDef> IpAddress </th>
-                <td mat-cell *matCellDef="let element"> {{element.name} </td>
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
             </ng-container>
         
             <ng-container matColumnDef="type">
@@ -72,8 +177,24 @@
                 <td mat-cell *matCellDef="let element"> {{element.type}} </td>
             </ng-container>
         
-            <tr mat-header-row *matHeaderRowDef="displayedColumns1"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+            <tr mat-header-row *matHeaderRowDef="protocolColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: protocolColumns;"></tr>
         </table>
     </mat-card-content>
 </mat-card>
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="false" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">{{modalTitle}}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="modalClose()" id="add-edit-modal-close"></button>
+            </div>
+            <div class="modal-body">
+                <app-show-discovered-devices [data] = data *ngIf="activateDiscoveryComponent"></app-show-discovered-devices>
+                <app-assign-device [deviceId]="deviceId" *ngIf="activateAssignDeviceComponent"></app-assign-device>
+            </div>
+        </div>
+    </div>
+</div>

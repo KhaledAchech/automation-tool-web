@@ -26,4 +26,8 @@ export class TopologyService {
   deleteTopology(id:number|string) {
     return this.http.delete(this.topologyUrl + `/${id}`)
   }
+
+  assignDevice(id:number|string, data:any){
+    return this.http.post(this.topologyUrl + `/${id}/addDevice`,data);
+  }
 }
