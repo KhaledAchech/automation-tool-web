@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -55,21 +56,26 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
-    public ArrayList<Node> getNodes(long id) {
+    public ArrayList<HashMap> getNodes(long id) {
         return diagramRepository.getDiagramNodes(id);
     }
 
     @Override
-    public ArrayList<Link> getLinks(long id) {
+    public ArrayList<HashMap> getLinks(long id) {
         return diagramRepository.getDiagramLinks(id);
     }
 
     @Override
     public Diagram getDiagramNodesAndLinks(long id) {
-        ArrayList<Node> nodes = this.getNodes(id);
-        ArrayList<Link> links = this.getLinks(id);
+        //ArrayList<Node> nodes = this.getNodes(id);
+        //ArrayList<HashMap> links = this.getLinks(id);
         //Diagram diagram =
         return null;
+    }
+
+    @Override
+    public Node getNodeFromDiagram(long id, String text) {
+        return diagramRepository.findNodeInDiagram(id,text);
     }
 
     @Override
@@ -79,8 +85,19 @@ public class DiagramServiceImpl implements DiagramService {
     }
 
     @Override
+    public ArrayList<HashMap> addLink(long id, String from, String to) {
+        return diagramRepository.addLink(id, from, to);
+    }
+
+    @Override
     public StringResponse updateDiagram(long id, Diagram diagram) {
         StringResponse response = new StringResponse(diagramRepository.replace(id,diagram));
+        return response;
+    }
+
+    @Override
+    public StringResponse deleteDiagramData(long id) {
+        StringResponse response = new StringResponse(diagramRepository.deleteDiagramData(id));
         return response;
     }
 }

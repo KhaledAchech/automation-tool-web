@@ -2,6 +2,7 @@ package com.clevory.back.service.network.impl;
 
 import com.clevory.back.model.network.Device;
 import com.clevory.back.model.network.Interface;
+import com.clevory.back.model.network.Protocol;
 import com.clevory.back.repository.network.InterfaceRepository;
 import com.clevory.back.service.network.itf.InterfaceService;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,15 @@ public class InterfaceServiceImpl implements InterfaceService {
 
     @Override
     public List<Interface> deleteInterface(long id) {
+
+        Interface anInterface = interfaceRepository.findById(id).get();
+
+        for (Device device : anInterface.getDevices())
+        {
+            System.out.println(device.getDeviceInterfaces());
+            device.getDeviceInterfaces().remove(anInterface);
+        }
+
         interfaceRepository.deleteById(id);
         return interfaceRepository.findAll();
     }

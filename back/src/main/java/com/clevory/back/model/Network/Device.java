@@ -18,12 +18,18 @@ public class Device {
     private Long id;
 
     @Column(length = 50)
-    private String name;
+    private String ipAddress;
+
+    //default logins for all the devices are clevory/clevory
+    @Column(length = 50)
+    private String username = "clevory";
+    @Column(length = 50)
+    private String password = "clevory";
 
     @Enumerated(EnumType.STRING)
     private Type type;
 
-    @Column(length = 50)
+    @Column(length = 50, unique = true)
     private String hostname;
 
     @Column(length = 50)

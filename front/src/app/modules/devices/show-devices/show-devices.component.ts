@@ -35,7 +35,7 @@ export class ShowDevicesComponent implements OnInit {
   modalAdd() {
     this.device = {
       id:0,
-      name:null,
+      ipAddress:null,
       os:null,
       status:'Down'
     }
@@ -87,7 +87,7 @@ export class ShowDevicesComponent implements OnInit {
           showDeleteSuccess.style.display = "none"
         }
       }, 4000);
-      this.dataSource$ = this.service.getDevices();
+      this.load();
     })
     }
   }

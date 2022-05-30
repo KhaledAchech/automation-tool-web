@@ -21,4 +21,6 @@ public interface TopologyService {
 
     //Add a device to a topology
     TopologyResponseDto addDeviceToTopology (long id, long deviceID);
+
+    TopologyResponseDto unAssignDevicesToTopology (long id);
 }

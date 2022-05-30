@@ -53,4 +53,10 @@ public class TopologyController {
 
     @PostMapping("/{id}/addDevice")
     public TopologyResponseDto addDevice (@PathVariable("id") long id,@RequestBody Device device) {return topologyService.addDeviceToTopology(id, device.getId());}
+
+    @DeleteMapping("/{id}/deleteDevices")
+    public TopologyResponseDto deleteDevices(@PathVariable("id") long id)
+    {
+        return topologyService.unAssignDevicesToTopology(id);
+    }
 }

@@ -23,7 +23,7 @@
         <table>
             <thead>
                 <th>Id</th>
-                <th>Name</th>
+                <th>Ip Address</th>
                 <th>Hostname</th>
                 <th>Type</th>
                 <th>OS</th>
@@ -36,7 +36,12 @@
             <tbody>
                 <tr *ngFor="let item of dataSource$|async">
                     <td>{{item.id}}</td>
-                    <td>{{item.name}}</td>
+                    <td *ngIf="!item.ipAddress">
+                        N/A
+                    </td>
+                    <td *ngIf="item.ipAddress">
+                        {{item.ipAddress}}
+                    </td>
                     <td>{{item.hostname}}</td>
                     <td>{{item.type}}</td>
                     <td>{{item.os}}</td>
@@ -96,9 +101,12 @@
                         </button>
                     </td>
                     <td>
-                        <button class="btn btn-outline-success me-2 mb-1"  *ngIf="item.isAssigned; else elseBlock" 
-                         data-bs-toggle="modal" data-bs-target="#staticBackdrop" disabled> Assigned </button>
-                        <ng-template #elseBlock><button class="btn btn-outline-success me-2 mb-1"  (click)="modalAssign(item)"  data-bs-toggle="modal"
+                        <div *ngIf="item.isAssigned; else elseBlock">
+                            <button class="btn btn-outline-success me-2 mb-1"disabled> Assigned </button>
+                            <a mat-list-item routerLink="/editor/{{item.topologyId}}">View in topology</a>
+                        </div>
+                        <ng-template #elseBlock>
+                            <button class="btn btn-outline-success me-2 mb-1"  (click)="modalAssign(item)"  data-bs-toggle="modal"
                             data-bs-target="#staticBackdrop">Assign to topology</button>
                         </ng-template>
                     </td>
@@ -122,8 +130,7 @@
                 <app-add-edit-device [device]="device" *ngIf="activateAddEditDeviceComponent">
                 </app-add-edit-device>
                 <app-show-brief-device [device]="device" *ngIf="activateShowDeviceDetailsComponent"></app-show-brief-device>
-                <app-show-device-configuration *ngIf="activateConfigureDeviceComponent">
-                </app-show-device-configuration>
+                <app-show-device-configuration *ngIf="activateConfigureDeviceComponent"></app-show-device-configuration>
                 <app-assign-device [deviceId]="deviceId" *ngIf="activateAssignDeviceComponent"></app-assign-device>
                 <app-show-device-interfaces [data]="data" *ngIf="activateDeviceInterfacesComponent"></app-show-device-interfaces>
             </div>

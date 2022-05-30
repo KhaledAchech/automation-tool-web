@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -60,16 +61,23 @@ public class DiagramController {
     }
 
     @GetMapping("/nodes/{id}")
-    public ArrayList<Node> getNodes(@PathVariable long id)
+    public ArrayList<HashMap> getNodes(@PathVariable long id)
+    {   ArrayList<HashMap> nodes =  diagramService.getNodes(id);
+        return nodes;
+    }
+    @GetMapping("/node/{id}")
+    public Node getNode(@PathVariable long id,  @RequestBody  Node node)
     {
-        return diagramService.getNodes(id);
+        return diagramService.getNodeFromDiagram(id, node.getText());
     }
 
     @GetMapping("/links/{id}")
-    public ArrayList<Link> getLinks(@PathVariable long id)
+    public ArrayList<HashMap> getLinks(@PathVariable long id)
     {
         return diagramService.getLinks(id);
     }
+
+
     @RequestMapping(value = "/name/{id}", method = RequestMethod.GET,
             name = MediaType.APPLICATION_JSON_VALUE)
     public StringResponse getName(@PathVariable long id)
@@ -93,6 +101,18 @@ public class DiagramController {
     public Object getDiagramDetails(@PathVariable long id)
     {
         return diagramService.getDiagrambyDiagramID(id);
+    }
+
+    @PostMapping("/addLink/{id}")
+    public ArrayList<HashMap> addLink (@PathVariable long id,@RequestBody Link link)
+    {
+        return diagramService.addLink(id, link.getFrom(), link.getTo());
+    }
+
+    @DeleteMapping("/deleteLink/{id}")
+    public StringResponse deleteLink (@PathVariable long id)
+    {
+        return diagramService.deleteDiagramData(id);
     }
 
 }

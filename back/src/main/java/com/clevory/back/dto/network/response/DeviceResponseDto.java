@@ -19,8 +19,8 @@ public class DeviceResponseDto {
     @JsonProperty("id")
     private Long id;
 
-    @JsonProperty("name")
-    private String name;
+    @JsonProperty("ipAddress")
+    private String ipAddress;
 
     @JsonProperty("hostname")
     private String hostname;
@@ -40,8 +40,8 @@ public class DeviceResponseDto {
     @JsonProperty("isAssigned")
     private boolean isAssigned;
 
-    /*@JsonProperty("topologies")
-    private Set<TopologySlimDto> topologies;*/
+    @JsonProperty("topologyId")
+    private Long topologyId;
 
     @JsonProperty("interfaces")
     private Set<InterfaceSlimDto> interfaces;
