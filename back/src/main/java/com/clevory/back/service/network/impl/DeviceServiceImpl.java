@@ -184,7 +184,7 @@ public class DeviceServiceImpl implements DeviceService {
         Device device = deviceRepository.findById(connectionRequest.getMainNodeId()).get();
 
 
-        if (device.isAssigned())
+        if ((device.isAssigned() && (device.getIpAddress()!=null)))
         {
             //Assign the neighbor to the same topology of the device
             topologyService.addDeviceToTopology(topologyId, connectionRequest.getConnectNodeId());
@@ -208,11 +208,19 @@ public class DeviceServiceImpl implements DeviceService {
                 diagramRepository.addNodeWithLocation(mainNode,topologyId);
                 System.out.println("add link if node loc null");
                 diagramRepository.addLink(topologyId, mainNode.getKey(), node.getKey());
+                device.setStatus("Connected");
+                neighbor.setStatus("Connected");
+                deviceRepository.save(device);
+                deviceRepository.save(neighbor);
             }
             else
             {
                 System.out.println("add link if node loc not null ");
                 diagramRepository.addLink(topologyId, mainNode.getKey(), node.getKey());
+                device.setStatus("Connected");
+                neighbor.setStatus("Connected");
+                deviceRepository.save(device);
+                deviceRepository.save(neighbor);
             }
         }
 

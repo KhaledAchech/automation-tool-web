@@ -2,18 +2,22 @@ package com.clevory.back.service.user.impl;
 
 import com.clevory.back.model.user.Role;
 import com.clevory.back.model.user.User;
+import com.clevory.back.repository.user.RoleRepository;
 import com.clevory.back.repository.user.UserRepository;
 import com.clevory.back.service.user.itf.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
+    private RoleRepository roleRepository;
 
     @Override
     public List<User> getUsers()
@@ -48,5 +52,16 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(thisUser);
         return thisUser;
+    }
+
+
+    @Override
+    public void addRoleToUser(String username, String roleName) {
+
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return null;
     }
 }

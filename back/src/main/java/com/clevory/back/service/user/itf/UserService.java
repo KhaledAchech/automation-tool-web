@@ -11,4 +11,7 @@ public interface UserService {
     User getUserById(long id);
     User save(User user);
     User update(long id,User user);
+
+    void addRoleToUser(String username, String roleName);
+    User getUserByUsername(String username);
 }

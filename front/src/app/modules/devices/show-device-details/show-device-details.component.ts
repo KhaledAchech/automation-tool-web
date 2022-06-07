@@ -35,6 +35,10 @@ export class ShowDeviceDetailsComponent implements OnInit {
   protocols$! : Observable<any[]>; 
 
   neighbors$! : Observable<any[]>;
+  newNeighbors$! : Observable<any[]>;
+
+
+  devices:  any[] = [];
 
   data!: Observable<any[]>; 
 
@@ -64,7 +68,6 @@ export class ShowDeviceDetailsComponent implements OnInit {
     // Device Details : 
     this.service.getDeviceById(this.id).subscribe(res => {
       this.device = res;
-      console.log(this.device)
     });
 
     // Device Protocls :
@@ -175,7 +178,7 @@ export class ShowDeviceDetailsComponent implements OnInit {
     }
   }
 
-  connect()
+connect()
   { this.loading = true;
     this.checkedNeighbors.forEach(item =>{
         if (item.includes("PC"))
@@ -231,5 +234,4 @@ export class ShowDeviceDetailsComponent implements OnInit {
         })
     })
   }
-
 }
