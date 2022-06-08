@@ -1,6 +1,7 @@
 package com.clevory.back.config;
 
 import com.clevory.back.filter.CustomAuthenticationFilter;
+import com.clevory.back.filter.CustomAuthorizationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.security.config.http.SessionCreationPolicy.*;
@@ -34,12 +36,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().antMatchers( "/api/tenants/**").hasAnyAuthority( "ROLE_CTNAS_ADMIN");
-        http.authorizeRequests().antMatchers( "/editor/**").hasAnyAuthority("ROLE_TENANT_ADMIN", "ROLE_CTNAS_ADMIN");
-        http.authorizeRequests().antMatchers( "/api/users/**").hasAnyAuthority("ROLE_TENANT_ADMIN", "ROLE_CTNAS_ADMIN");
-        http.authorizeRequests().antMatchers( "/api/roles/**").hasAnyAuthority("ROLE_TENANT_ADMIN", "ROLE_CTNAS_ADMIN");
-        http.authorizeRequests().antMatchers( "/api/**").hasAnyAuthority("ROLE_TENANT_ADMIN", "ROLE_CTNAS_ADMIN", "ROLE_MODERATOR");
         http.authorizeRequests().anyRequest().authenticated();
         http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
+        http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     @Bean
