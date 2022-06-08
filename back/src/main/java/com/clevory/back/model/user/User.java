@@ -21,7 +21,6 @@ public class User {
     @Column(length = 50, unique=true)
     private String username;
 
-    @Column(length = 50)
     private String password;
 
     //The user will get his authority from this relationship
