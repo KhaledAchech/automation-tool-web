@@ -19,8 +19,5 @@ public class Role {
     @Column(length = 50)
     private String name;
 
-    /*private boolean permissionToRead;
-    private boolean permissionToWrite;
-    private boolean permissionToExecute;*/
 
 }

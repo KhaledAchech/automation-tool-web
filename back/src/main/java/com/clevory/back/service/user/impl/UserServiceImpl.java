@@ -40,28 +40,41 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        userRepository.save(user);
-        return user;
+
+        if (userRepository.findByUsername(user.getUsername())!=null)
+            return null;
+
+        if (user.getUsername()!=null && user.getPassword()!=null)
+            return userRepository.save(user);
+
+        return null;
     }
 
     @Override
     public User update(long id, User user) {
-        User thisUser = this.getUserById(id);
-        thisUser.setUsername(user.getUsername());
-        thisUser.setPassword(user.getPassword());
 
-        userRepository.save(thisUser);
-        return thisUser;
+        if (user.getUsername()!=null && user.getPassword()!=null)
+        {
+            User thisUser = this.getUserById(id);
+            thisUser.setUsername(user.getUsername());
+            thisUser.setPassword(user.getPassword());
+
+            return userRepository.save(thisUser);
+        }
+
+        return null;
     }
 
 
     @Override
     public void addRoleToUser(String username, String roleName) {
-
+        User user = userRepository.findByUsername(username);
+        Role role = roleRepository.findByName(roleName);
+        user.getRoles().add(role);
     }
 
     @Override
     public User getUserByUsername(String username) {
-        return null;
+        return userRepository.findByUsername(username);
     }
 }

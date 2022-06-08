@@ -3,6 +3,7 @@ package com.clevory.back;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 @SpringBootApplication
 public class BackApplication {
 
@@ -10,5 +11,4 @@ public class BackApplication {
 	{
 		SpringApplication.run(BackApplication.class, args);
 	}
-
 }

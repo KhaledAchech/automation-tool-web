@@ -1,8 +1,10 @@
 package com.clevory.back.controller.user;
 
+import com.clevory.back.commun.wrapper.RoleToUserForm;
 import com.clevory.back.model.user.User;
 import com.clevory.back.service.user.itf.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +23,7 @@ public class UserController {
         super();
         this.userService = userService;
     }
+
     @GetMapping
     public List<User> getAll()
     {
@@ -35,6 +38,13 @@ public class UserController {
 
     @PostMapping
     public User create (@RequestBody User user) {return userService.save(user);}
+
+    @PostMapping("/addRoleToUser")
+    public ResponseEntity<?> addRoleToUser (@RequestBody RoleToUserForm roleToUserForm)
+    {
+        userService.addRoleToUser(roleToUserForm.getUsername(), roleToUserForm.getRolename());
+        return ResponseEntity.ok().build();
+    }
 
     @PutMapping("/{id}")
     public User update (@PathVariable("id") long id, @RequestBody  User user) {
