@@ -37,11 +37,31 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         customAuthenticationFilter.setFilterProcessesUrl("/app/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeRequests().antMatchers("/app/login/**", "/token/refresh/**").permitAll();
-        http.authorizeRequests().antMatchers( "/api/tenants/**", "/api/dcAutomation/**").hasAnyAuthority( "ROLE_CTNAS_ADMIN");
+
+        //public access.
         http.authorizeRequests()
-                .antMatchers( "/api/users/**", "/api/roles/**", "/editor/diagram/**", "/api/topologies/**")
+                .antMatchers(
+                        "/app/login/**",
+                        "/token/refresh/**")
+                .permitAll();
+
+        //Only CTNAS Admins.
+        http.authorizeRequests()
+                .antMatchers(
+                        "/api/tenants/**",
+                        "/api/dcAutomation/**")
+                .hasAnyAuthority( "ROLE_CTNAS_ADMIN");
+
+        //Only Tenant Admins and CTNAS admins.
+        http.authorizeRequests()
+                .antMatchers(
+                        "/api/users/**",
+                        "/api/roles/**",
+                        "/editor/diagram/**",
+                        "/api/topologies/**")
                 .hasAnyAuthority( "ROLE_TENANT_ADMIN");
+
+        //All the authenticated users with the roles defined as : 'ROLE_CTNAS_ADMIN' , 'ROLE_TENANT_ADMIN' , 'ROLE_MODERATOR'.
         http.authorizeRequests()
                 .antMatchers(
                         "/api/configurations/**",
