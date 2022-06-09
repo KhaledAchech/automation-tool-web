@@ -33,12 +33,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
+        customAuthenticationFilter.setFilterProcessesUrl("/app/login");
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeRequests().antMatchers("/token/refresh/**").permitAll();
-        http.authorizeRequests().antMatchers( "/api/tenants/**").hasAnyAuthority( "ROLE_CTNAS_ADMIN");
+        http.authorizeRequests().antMatchers("/app/login/**", "/token/refresh/**").permitAll();
+        http.authorizeRequests().antMatchers( "/api/tenants/**", "/api/dcAutomation/**").hasAnyAuthority( "ROLE_CTNAS_ADMIN");
+        http.authorizeRequests()
+                .antMatchers( "/api/users/**", "/api/roles/**", "/editor/diagram/**", "/api/topologies/**")
+                .hasAnyAuthority( "ROLE_TENANT_ADMIN");
+        http.authorizeRequests()
+                .antMatchers(
+                        "/api/configurations/**",
+                        "/api/devices/**",
+                        "/api/interfaces/**",
+                        "/api/protocols").
+                hasAnyAuthority( "ROLE_MODERATOR");
         http.authorizeRequests().anyRequest().authenticated();
-        http.addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
+        http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
