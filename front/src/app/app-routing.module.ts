@@ -5,16 +5,20 @@ import { ConfigurationsComponent } from './modules/configurations/configurations
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { DevicesComponent } from './modules/devices/devices.component';
 import { ShowDeviceDetailsComponent } from './modules/devices/show-device-details/show-device-details.component';
+import { AccessDeniedComponent } from './modules/errors/access-denied/access-denied.component';
+import { NotFoundComponent } from './modules/errors/not-found/not-found.component';
 import { InterfacesComponent } from './modules/interfaces/interfaces.component';
 import { ProtocolsComponent } from './modules/protocols/protocols.component';
 import { SigninComponent } from './modules/signin/signin.component';
 import { TenantsComponent } from './modules/tenants/tenants.component';
 import { EditorComponent } from './modules/topologies/editor/editor.component';
 import { TopologiesComponent } from './modules/topologies/topologies.component';
+import { AuthGuardGuard } from './services/connection/auth-guard.guard';
 
 const routes: Routes = [{
   path: '',
   component: DefaultComponent,
+  canActivate: [AuthGuardGuard],
   children: [{
     path:'',
     component: DashboardComponent
@@ -49,6 +53,14 @@ const routes: Routes = [{
 {
   path:'signin',
   component: SigninComponent
+},
+{
+  path:'error403',
+  component: AccessDeniedComponent
+},
+{
+  path:'**',
+  component: NotFoundComponent
 }
 ];
 

@@ -1,18 +1,15 @@
 package com.clevory.back;
 
-import com.clevory.back.model.user.Role;
-import com.clevory.back.model.user.User;
-import com.clevory.back.service.user.impl.UserServiceImpl;
-import com.clevory.back.service.user.itf.RoleService;
-import com.clevory.back.service.user.itf.UserService;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 
 
 @SpringBootApplication
@@ -28,5 +25,6 @@ public class BackApplication {
 	{
 		return new BCryptPasswordEncoder();
 	}
+
 
 }
