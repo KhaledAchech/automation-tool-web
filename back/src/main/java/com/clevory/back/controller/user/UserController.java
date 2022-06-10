@@ -38,6 +38,12 @@ public class UserController {
         return userService.getUserById(id);
     }
 
+    @GetMapping("/{username}")
+    public User getbyUsername(@PathVariable String username)
+    {
+        return userService.getUserByUsername(username);
+    }
+
     @PostMapping
     public User create (@RequestBody User user) {return userService.save(user);}
 

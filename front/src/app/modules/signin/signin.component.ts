@@ -20,15 +20,39 @@ export class SigninComponent implements OnInit {
 
   signin()
   {
-    console.log(this.username + " " + this.password)
     var data = {
       'username' : this.username,
       'password' : this.password
     }
-    this.service.authenticate(data).subscribe(res => {
+    this.service.authenticate(data).subscribe((res) => {
       if (res)
       {
+        var showConnectAlert= document.getElementById('connect-success-alert');
+        if(showConnectAlert) {
+          showConnectAlert.style.display = "block";
+        }
+        setTimeout(function() {
+          if(showConnectAlert) {
+            showConnectAlert.style.display = "none"
+          }
+        }, 4000);
         this.router.navigateByUrl('/');
+      }
+    },
+    (err)=>{
+      if (err)
+      {
+      var showWrongCredentials = document.getElementById('wrog-credentials-alert');
+      if(showWrongCredentials) {
+        showWrongCredentials.style.display = "block";
+        this.username = ''
+        this.password = ''
+      }
+      setTimeout(function() {
+        if(showWrongCredentials) {
+          showWrongCredentials.style.display = "none"
+        }
+      }, 4000);
       }
     });
   }

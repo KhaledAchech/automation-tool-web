@@ -7,6 +7,7 @@ import { DevicesComponent } from './modules/devices/devices.component';
 import { ShowDeviceDetailsComponent } from './modules/devices/show-device-details/show-device-details.component';
 import { AccessDeniedComponent } from './modules/errors/access-denied/access-denied.component';
 import { NotFoundComponent } from './modules/errors/not-found/not-found.component';
+import { ServerErrorComponent } from './modules/errors/server-error/server-error.component';
 import { InterfacesComponent } from './modules/interfaces/interfaces.component';
 import { ProtocolsComponent } from './modules/protocols/protocols.component';
 import { SigninComponent } from './modules/signin/signin.component';
@@ -59,7 +60,11 @@ const routes: Routes = [{
   component: AccessDeniedComponent
 },
 {
-  path:'**',
+  path:'error500', // server down
+  component: ServerErrorComponent
+},
+{
+  path:'**', // Page not found error
   component: NotFoundComponent
 }
 ];

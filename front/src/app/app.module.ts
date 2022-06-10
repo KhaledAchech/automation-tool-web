@@ -21,13 +21,16 @@ import { BasicAuthHtppInterceptorService } from './services/connection/basic-aut
 import { AuthenticationService } from './services/connection/authentication.service';
 import { AccessDeniedComponent } from './modules/errors/access-denied/access-denied.component';
 import { NotFoundComponent } from './modules/errors/not-found/not-found.component';
+import { ServerErrorComponent } from './modules/errors/server-error/server-error.component';
+import { UserService } from './services/user/user.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     SigninComponent,
     AccessDeniedComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    ServerErrorComponent
   ],
   imports: [
     BrowserModule,
@@ -47,6 +50,7 @@ import { NotFoundComponent } from './modules/errors/not-found/not-found.componen
     ProtocolService,
     DiagramService,
     ScriptService,
+    UserService,
     AuthenticationService,
     {
     provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true

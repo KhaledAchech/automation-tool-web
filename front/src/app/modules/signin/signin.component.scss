@@ -270,3 +270,41 @@ span:nth-child(18) {
     z-index: 1000; // or any value higher than your other elements
         position: absolute;
 }
+#connect-success-alert,
+#wrog-credentials-alert {
+    display: none;
+}
+
+#connect-success-alert,
+#wrog-credentials-alert {
+    animation-name: fadeInAndOut;
+    animation-duration: 4s;
+}
+
+@-webkit-keyframes fadeInAndOut {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeInAndOut {
+    0% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}

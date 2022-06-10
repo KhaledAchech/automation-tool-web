@@ -105,6 +105,22 @@ export class ShowDevicesComponent implements OnInit {
   //load data from the back end 
   load()
   {
+    this.service.getDevicesDetailed().subscribe(
+      (res)=>{
+      if (res){
+        console.info("Devices Fetched Succesfully");
+      }
+    },
+    (err)=>{
+       if (err.status === 403 )
+       {
+         this.router.navigateByUrl('/error403');
+       }
+       if (err.status === 500)
+       {
+         this.router.navigateByUrl('/error500');
+       }
+    })
     this.dataSource$ = this.service.getDevicesDetailed();
   }
 }

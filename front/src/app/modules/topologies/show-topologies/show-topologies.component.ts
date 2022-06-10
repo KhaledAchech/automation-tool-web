@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { TopologyService } from 'src/app/services/network/topology.service';
 
@@ -11,10 +12,11 @@ export class ShowTopologiesComponent implements OnInit {
 
   dataSource$!:  Observable<any[]>;
 
-  constructor(private service:TopologyService) { }
+  constructor(private service:TopologyService,
+              private router: Router) { }
 
   ngOnInit(): void {
-    this.dataSource$ = this.service.getTopologies();
+    this.load();
   }
 
   modalTitle:string = '';
@@ -54,14 +56,35 @@ export class ShowTopologiesComponent implements OnInit {
           showDeleteSuccess.style.display = "none"
         }
       }, 4000);
-       this.dataSource$ = this.service.getTopologies();
+      this.load();
     })
     }
   }
 
   modalClose() {
     this.activateAddEditTopologyComponent = false;
+    this.load();
+  }
+
+  load()
+  {
     this.dataSource$ = this.service.getTopologies();
+    this.service.getTopologies().subscribe(
+      (res)=>{
+      if (res){
+        console.info("Topologies Fetched Succesfully");
+      }
+    },
+    (err)=>{
+       if (err.status === 403 )
+       {
+         this.router.navigateByUrl('/error403');
+       }
+       if (err.status === 500)
+       {
+         this.router.navigateByUrl('/error500');
+       }
+    })
   }
 
 }

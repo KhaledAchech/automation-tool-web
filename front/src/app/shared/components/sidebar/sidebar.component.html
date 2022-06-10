@@ -11,7 +11,7 @@
 
     <h2 matSubheader>Pages</h2>
     <a mat-list-item routerLinkActive="list-item-active" routerLink="/"><mat-icon>desktop_windows</mat-icon>Monitor</a>
-    <a mat-menu-item routerLinkActive="list-item-active" routerLink="/topologies"><mat-icon>device_hub</mat-icon>Topologies</a>
+    <a mat-menu-item routerLinkActive="list-item-active" routerLink="/topologies" *ngIf="!hideTopology"><mat-icon>device_hub</mat-icon>Topologies</a>
         <div class="dropdown">
             <a mat-menu-item routerLinkActive="list-item-active" routerLink="/devices">
                 <mat-icon>devices_other</mat-icon>Devices <mat-icon class = "dropdown-menu">keyboard_arrow_right</mat-icon>
@@ -33,6 +33,6 @@
     <h2 matSubheader> Administration </h2>
     
     <a mat-list-item routerLinkActive="list-item-active" routerLink="/"><mat-icon>perm_identity</mat-icon>Profil</a>
-    <a mat-list-item routerLinkActive="list-item-active" routerLink="/"><mat-icon>group</mat-icon>Users</a>
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/" *ngIf="!hideUsers"><mat-icon>group</mat-icon>Users</a>
 </mat-nav-list>
 
