@@ -14,4 +14,7 @@ public interface UserService {
 
     void addRoleToUser(String username, String roleName);
     User getUserByUsername(String username);
+
+    List<User> getModerators();
+    List<User> getTenantAdmins();
 }

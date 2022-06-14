@@ -17,6 +17,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -105,6 +106,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    @Override
+    public List<User> getModerators() {
+        List<User> moderators = userRepository.findAll()
+                .stream()
+                .filter(r -> r.getRoles().size() == 1)
+                .collect(Collectors.toList());
+        return moderators;
+    }
+
+    @Override
+    public List<User> getTenantAdmins() {
+        List<User> tenantAdmins = userRepository.findAll()
+                .stream()
+                .filter(r -> r.getRoles().size() == 2)
+                .collect(Collectors.toList());
+        return tenantAdmins;
     }
 
 }

@@ -45,6 +45,8 @@ import { ShowBriefDeviceComponent } from 'src/app/modules/devices/show-brief-dev
 import { ShowDeviceDetailsComponent } from 'src/app/modules/devices/show-device-details/show-device-details.component';
 import { AssignDeviceComponent } from 'src/app/modules/devices/assign-device/assign-device.component';
 import { ShowDiscoveredDevicesComponent } from 'src/app/modules/devices/show-discovered-devices/show-discovered-devices.component';
+import { UsersComponent } from 'src/app/modules/users/users/users.component';
+import { ShowUsersComponent } from 'src/app/modules/users/show-users/show-users.component';
 
 @NgModule({
   declarations: [
@@ -76,7 +78,9 @@ import { ShowDiscoveredDevicesComponent } from 'src/app/modules/devices/show-dis
     ShowDeviceDetailsComponent,
     ShowBriefDeviceComponent,
     AssignDeviceComponent,
-    ShowDiscoveredDevicesComponent
+    ShowDiscoveredDevicesComponent,
+    UsersComponent,
+    ShowUsersComponent
   ],
   imports: [
     CommonModule,

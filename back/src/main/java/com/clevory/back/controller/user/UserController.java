@@ -1,6 +1,7 @@
 package com.clevory.back.controller.user;
 
 import com.clevory.back.commun.wrapper.RoleToUserForm;
+import com.clevory.back.commun.wrapper.UserResonseWrapper;
 import com.clevory.back.model.user.User;
 import com.clevory.back.service.user.itf.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +28,38 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAll()
+    public List<UserResonseWrapper> getAll()
     {
-        return userService.getUsers();
+        List<User> users = userService.getUsers();
+        List<UserResonseWrapper> userResonses = new ArrayList<>();
+        for (User u: users)
+        {
+            if (u.getRoles().size() == 3 )
+            {
+                userResonses.add(new UserResonseWrapper(u.getId(),u.getUsername(),"CTNAS Admin"));
+            }
+            if (u.getRoles().size() == 2)
+            {
+                userResonses.add(new UserResonseWrapper(u.getId(),u.getUsername(),"Tenant Admin"));
+            }
+            if (u.getRoles().size() == 1)
+            {
+                userResonses.add(new UserResonseWrapper(u.getId(),u.getUsername(),"Moderator"));
+            }
+        }
+        return userResonses;
+    }
+
+    @GetMapping("/moderators")
+    public List<User> getModerators()
+    {
+        return userService.getModerators();
+    }
+
+    @GetMapping("/tenantAdmins")
+    public List<User> getTenantAdmins()
+    {
+        return userService.getTenantAdmins();
     }
 
     @GetMapping("/{id}")

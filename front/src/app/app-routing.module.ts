@@ -14,6 +14,7 @@ import { SigninComponent } from './modules/signin/signin.component';
 import { TenantsComponent } from './modules/tenants/tenants.component';
 import { EditorComponent } from './modules/topologies/editor/editor.component';
 import { TopologiesComponent } from './modules/topologies/topologies.component';
+import { UsersComponent } from './modules/users/users/users.component';
 import { AuthGuardGuard } from './services/connection/auth-guard.guard';
 
 const routes: Routes = [{
@@ -48,6 +49,10 @@ const routes: Routes = [{
   }, {
     path : 'editor/:id',
     component: EditorComponent
+  },
+  {
+    path : 'users',
+    component: UsersComponent
   }
 ]
 },
