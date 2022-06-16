@@ -47,6 +47,8 @@ import { AssignDeviceComponent } from 'src/app/modules/devices/assign-device/ass
 import { ShowDiscoveredDevicesComponent } from 'src/app/modules/devices/show-discovered-devices/show-discovered-devices.component';
 import { UsersComponent } from 'src/app/modules/users/users/users.component';
 import { ShowUsersComponent } from 'src/app/modules/users/show-users/show-users.component';
+import { AddEditUserComponent } from 'src/app/modules/users/add-edit-user/add-edit-user.component';
+import { UpdateProfileComponent } from 'src/app/modules/users/update-profile/update-profile.component';
 
 @NgModule({
   declarations: [
@@ -80,7 +82,9 @@ import { ShowUsersComponent } from 'src/app/modules/users/show-users/show-users.
     AssignDeviceComponent,
     ShowDiscoveredDevicesComponent,
     UsersComponent,
-    ShowUsersComponent
+    ShowUsersComponent,
+    AddEditUserComponent,
+    UpdateProfileComponent
   ],
   imports: [
     CommonModule,

@@ -51,9 +51,15 @@ public class UserController {
     }
 
     @GetMapping("/moderators")
-    public List<User> getModerators()
+    public List<UserResonseWrapper> getModerators()
     {
-        return userService.getModerators();
+        List<User> users = userService.getModerators();
+        List<UserResonseWrapper> userResonses = new ArrayList<>();
+        for (User u: users)
+        {
+            userResonses.add(new UserResonseWrapper(u.getId(),u.getUsername(),"Moderator"));
+        }
+        return userResonses;
     }
 
     @GetMapping("/tenantAdmins")

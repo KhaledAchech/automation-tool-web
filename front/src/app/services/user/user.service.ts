@@ -18,4 +18,19 @@ export class UserService {
   getAllUsers():Observable<any[]>{
     return this.http.get<any>(this.userUrl);
   }
+  getAllModerators():Observable<any[]>{
+    return this.http.get<any>(this.userUrl + "/moderators");
+  }
+
+  addUser(data:any) {
+    return this.http.post(this.userUrl, data);
+  }
+
+  updateUserRole(id:number|string, data:any) {
+    return this.http.put(this.userUrl + `/${id}`, data);
+  }
+
+  deleteUser(id:number|string) {
+    return this.http.delete(this.userUrl + `/${id}`)
+  }
 }

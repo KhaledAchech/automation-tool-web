@@ -10,6 +10,7 @@ export class SidebarComponent implements OnInit {
 
   hideTopology: boolean = false;
   hideUsers: boolean = false;
+  hideRoles: boolean = false;
 
   user_roles : string[] = [];
   constructor(private authService: AuthenticationService) { }
@@ -27,10 +28,12 @@ export class SidebarComponent implements OnInit {
           {
             this.hideTopology = false;
             this.hideUsers = false;
+            this.hideRoles = false;
           }
           else{
             this.hideTopology = true;
             this.hideUsers = true;
+            this.hideRoles = true;
           }
         }
     }
