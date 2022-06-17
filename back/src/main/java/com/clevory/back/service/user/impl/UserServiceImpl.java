@@ -55,6 +55,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public List<User> deleteUser(long id)
     {
+        User user = userRepository.findById(id).get();
+        user.setRoles(new ArrayList<>());
+        userRepository.save(user);
         userRepository.deleteById(id);
         return userRepository.findAll();
     }
@@ -95,7 +98,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return null;
     }
 
-
     @Override
     public void addRoleToUser(String username, String roleName) {
         User user = userRepository.findByUsername(username);
@@ -124,6 +126,64 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .filter(r -> r.getRoles().size() == 2)
                 .collect(Collectors.toList());
         return tenantAdmins;
+    }
+
+    @Override
+    public User addUserWithRoles(User user, String rolename) {
+        if (userRepository.findByUsername(user.getUsername())!=null)
+            return null;
+
+        if (user.getUsername()!=null && user.getPassword()!=null)
+        {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            Role role = roleRepository.findByName(rolename);
+            if (rolename.equals("ROLE_CTNAS_ADMIN"))
+            {
+                user.getRoles().add(role);
+                user.getRoles().add(roleRepository.findById(2L).get());
+                user.getRoles().add(roleRepository.findById(3L).get());
+            }
+            if (rolename.equals("ROLE_TENANT_ADMIN"))
+            {
+                user.getRoles().add(role);
+                user.getRoles().add(roleRepository.findById(3L).get());
+            }
+            if (rolename.equals("ROLE_MODERATOR"))
+            {
+                user.getRoles().add(role);
+            }
+            return userRepository.save(user);
+        }
+
+        return null;
+    }
+
+    @Override
+    public User updateUserRoles(String username, String rolename) {
+
+        User user = userRepository.findByUsername(username);
+        Role role = roleRepository.findByName(rolename);
+
+        //initialise user roles
+        user.setRoles(new ArrayList<>());
+
+        //add the updated roles
+        if (rolename.equals("ROLE_CTNAS_ADMIN"))
+        {
+            user.getRoles().add(role);
+            user.getRoles().add(roleRepository.findById(2L).get());
+            user.getRoles().add(roleRepository.findById(3L).get());
+        }
+        if (rolename.equals("ROLE_TENANT_ADMIN"))
+        {
+            user.getRoles().add(role);
+            user.getRoles().add(roleRepository.findById(3L).get());
+        }
+        if (rolename.equals("ROLE_MODERATOR"))
+        {
+            user.getRoles().add(role);
+        }
+        return userRepository.save(user);
     }
 
 }

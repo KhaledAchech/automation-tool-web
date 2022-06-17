@@ -17,4 +17,8 @@ public interface UserService {
 
     List<User> getModerators();
     List<User> getTenantAdmins();
+
+    User addUserWithRoles(User user, String rolename);
+    User updateUserRoles(String username, String rolename);
+
 }

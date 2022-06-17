@@ -18,6 +18,12 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 50)
+    private String firstname;
+
+    @Column(length = 50)
+    private String lastname;
+
     @Column(length = 50, unique=true)
     private String username;
 

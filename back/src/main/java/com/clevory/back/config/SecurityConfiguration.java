@@ -73,6 +73,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         //All the authenticated users with the roles defined as : 'ROLE_CTNAS_ADMIN' , 'ROLE_TENANT_ADMIN' , 'ROLE_MODERATOR'.
         http.authorizeRequests()
                 .antMatchers(
+                        "/api/profile/**",
                         "/api/configurations/**",
                         "/api/devices/**",
                         "/api/interfaces/**",

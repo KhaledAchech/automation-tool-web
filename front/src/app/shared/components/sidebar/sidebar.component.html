@@ -1,8 +1,8 @@
 <mat-nav-list>
     <div class="profile-card">
         <div class="header">
-            <h2>Shiba Inu</h2>
-            <h4>example@email.com</h4>
+            <h2>{{fullname}}</h2>
+            <h4>{{email}}</h4>
         </div>
         <img src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Shiba Inu">
     </div>
@@ -32,7 +32,7 @@
     
     <h2 matSubheader> Administration </h2>
     
-    <a mat-list-item routerLinkActive="list-item-active" routerLink="/"><mat-icon>assignment_ind</mat-icon>Profile</a>
+    <a mat-list-item routerLinkActive="list-item-active" routerLink="/profile"><mat-icon>assignment_ind</mat-icon>Profile</a>
     <a mat-list-item routerLinkActive="list-item-active" routerLink="/users" *ngIf="!hideUsers"><mat-icon>group</mat-icon>Users</a>
 
 </mat-nav-list>

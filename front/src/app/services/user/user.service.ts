@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 export class UserService {
 
  readonly userUrl = "http://localhost:8080/api/users"
+ readonly profileUrl = "http://localhost:8080/api/profile"
+
 
  constructor(private http:HttpClient) { }
 
@@ -26,11 +28,27 @@ export class UserService {
     return this.http.post(this.userUrl, data);
   }
 
-  updateUserRole(id:number|string, data:any) {
-    return this.http.put(this.userUrl + `/${id}`, data);
+  addUserWithRoles(data:any) {
+    return this.http.post(this.userUrl + "/createUserWithRoles", data);
+  }
+
+  updateUserRole(data:any) {
+    return this.http.put(this.userUrl, data);
+  }
+
+  addRoleTouser(data:any){
+     return this.http.post(this.userUrl + "/addRoleToUser", data);
   }
 
   deleteUser(id:number|string) {
     return this.http.delete(this.userUrl + `/${id}`)
+  }
+
+  getProfile(username:string){
+    return this.http.get(this.profileUrl + `/${username}`);
+  }
+
+  updateProfile(id:number|string, data:any) {
+    return this.http.put(this.profileUrl + `/${id}`, data);
   }
 }

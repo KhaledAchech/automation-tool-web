@@ -2,6 +2,7 @@ package com.clevory.back.controller.user;
 
 import com.clevory.back.commun.wrapper.RoleToUserForm;
 import com.clevory.back.commun.wrapper.UserResonseWrapper;
+import com.clevory.back.commun.wrapper.UserWithRoles;
 import com.clevory.back.model.user.User;
 import com.clevory.back.service.user.itf.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -90,10 +91,27 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/createUserWithRoles")
+    public User createWithRoles (@RequestBody UserWithRoles userWithRoles)
+    {
+        User newUser = new User();
+        newUser.setUsername(userWithRoles.getUsername());
+        newUser.setPassword(userWithRoles.getPassword());
+        return userService.addUserWithRoles(newUser, userWithRoles.getRolename());
+    }
+
+
     @PutMapping("/{id}")
     public User update (@PathVariable("id") long id, @RequestBody  User user) {
         return userService.update(id, user);
     }
+
+    @PutMapping
+    public User updateUserRoles(@RequestBody RoleToUserForm roleToUserForm)
+    {
+        return userService.updateUserRoles(roleToUserForm.getUsername(), roleToUserForm.getRolename());
+    }
+
 
     @DeleteMapping("/{id}")
     public List<User> deleteById(@PathVariable("id") long id) {
