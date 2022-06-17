@@ -33,6 +33,8 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
 
+
+
 //    //User will manage all of the below :
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 //    List<Tenant> Tenants = new ArrayList<>();

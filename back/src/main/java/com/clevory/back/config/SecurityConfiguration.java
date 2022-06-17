@@ -74,6 +74,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(
                         "/api/profile/**",
+                        "/api/images/**",
                         "/api/configurations/**",
                         "/api/devices/**",
                         "/api/interfaces/**",
