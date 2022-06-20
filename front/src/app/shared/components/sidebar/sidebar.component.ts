@@ -17,6 +17,13 @@ export class SidebarComponent implements OnInit {
   email : string = ""
   fullname : string = ""
 
+  
+  selectedFile!: File;
+  retrievedImage: any;
+  base64Data: any;
+  convertedImage: any;
+  retrieveResonse: any;
+
   user!: any
 
   user_roles : string[] = [];
@@ -56,7 +63,23 @@ export class SidebarComponent implements OnInit {
       if (res)
       {
         this.user = res;
-        this.fullname = this.user.firstname + " " + this.user.lastname
+        if (this.user.firstname && this.user.lastname)
+          this.fullname = this.user.firstname + " " + this.user.lastname;
+        this.userService.getProfilePicture().subscribe((img)=>{
+            if (img)
+            {
+              this.retrievedImage = img;
+              this.base64Data = this.retrievedImage.picByte;
+              this.convertedImage = 'data:image/jpeg;base64,' + this.base64Data;
+              (document.getElementById('sideBarPic') as HTMLImageElement).src = this.convertedImage;
+            }
+            },
+            (err)=>{
+              if (err)
+              {
+                console.log(err);
+              }
+            })
       }
     })
   }

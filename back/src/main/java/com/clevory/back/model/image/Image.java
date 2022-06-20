@@ -2,18 +2,15 @@ package com.clevory.back.model.image;
 
 import com.clevory.back.model.network.Configuration;
 import com.clevory.back.model.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "IMAGE")
-@Getter
-@Setter
-@NoArgsConstructor
+@Getter @Setter @NoArgsConstructor
+@Data
+@ToString
 public class Image {
 
     @Id
@@ -28,7 +25,8 @@ public class Image {
 
     //image bytes can have large lengths so we specify a value
     //which is more than the default length for picByte column
-    @Column(name = "picByte", length = 1000)
+    @Lob
+    @Column(name = "picByte")
     private byte[] picByte;
 
     //belongs to :
@@ -40,4 +38,5 @@ public class Image {
         this.type = type;
         this.picByte = picByte;
     }
+
 }

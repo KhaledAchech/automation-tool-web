@@ -5,22 +5,34 @@
 }
 
 .profile-button {
-    background: #6876c8;
+    background: #171d3e;
     box-shadow: none;
-    border: none
+    border: none;
+    margin-right: 10%;
+}
+
+.rest-button {
+    background: #dee3e5;
+    box-shadow: none;
+    border: none;
+    margin-right: 10%;
+}
+
+.rest-button:hover {
+    background: #ede7e7;
 }
 
 .profile-button:hover {
-    background: #434d8b;
+    background: #3f4258;
 }
 
 .profile-button:focus {
-    background: #682773;
+    background: #2b0831;
     box-shadow: none
 }
 
 .profile-button:active {
-    background: #682773;
+    background: #686369;
     box-shadow: none
 }
 
@@ -31,4 +43,15 @@
 
 .labels {
     font-size: 14px
+}
+
+
+.fileBrowser
+{
+    display: none;
+}
+
+.fileLabel 
+{
+    cursor: pointer;
 }

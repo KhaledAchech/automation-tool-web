@@ -25,16 +25,20 @@ public class ImageController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity.BodyBuilder uplaodImage(@RequestParam("imageFile") MultipartFile file) throws IOException {
+    public Image uplaodImage(@RequestParam("imageFile") MultipartFile file) throws IOException {
 
-        System.out.println("Original Image Byte Size - " + file.getBytes().length);
-        imageService.uploadImage(file);
-        return ResponseEntity.status(HttpStatus.OK);
+        return imageService.uploadImage(file);
     }
 
     @GetMapping(path = { "/get/{imageName}" })
     public Image getImage(@PathVariable("imageName") String imageName) throws IOException {
 
         return imageService.getImage(imageName);
+    }
+
+    @GetMapping(path = { "/profile/picture" })
+    public Image getImage() throws IOException {
+
+        return imageService.getImageByUser();
     }
 }

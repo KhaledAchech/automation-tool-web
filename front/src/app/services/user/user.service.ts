@@ -9,6 +9,8 @@ export class UserService {
 
  readonly userUrl = "http://localhost:8080/api/users"
  readonly profileUrl = "http://localhost:8080/api/profile"
+ readonly imageUrl = "http://localhost:8080/api/images"
+
 
 
  constructor(private http:HttpClient) { }
@@ -50,5 +52,15 @@ export class UserService {
 
   updateProfile(id:number|string, data:any) {
     return this.http.put(this.profileUrl + `/${id}`, data);
+  }
+
+  uploadProfilePicture(data:any)
+  {
+    return this.http.post(this.imageUrl + "/upload", data);
+  }
+
+  getProfilePicture()
+  {
+    return this.http.get  (this.imageUrl + "/profile/picture");
   }
 }

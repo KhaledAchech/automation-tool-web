@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ErrorHandler, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/connection/authentication.service';
 import { UserService } from 'src/app/services/user/user.service';
 
@@ -14,9 +15,27 @@ export class UpdateProfileComponent implements OnInit {
 
   user!: any
 
+  selectedFile!: File;
+  retrievedImage: any;
+  base64Data: any;
+  convertedImage: any;
+  retrieveResonse: any;
+  message: string = "";
+  imageName: any;
+
+  // User password from form :
+  username : string = "";
+  password : string = "";
+  firstname: string = "";
+  lastname: string = "";
+
+  //User id
+  id : number = 0;
+
   user_roles : string[] = [];
   constructor(private authService: AuthenticationService,
-    private userService: UserService) { }
+    private userService: UserService,
+    private router: Router) { }
 
   ngOnInit(): void {
     if (this.authService.isUserLoggedIn()){
@@ -38,7 +57,24 @@ export class UpdateProfileComponent implements OnInit {
       if (res)
       {
         this.user = res;
-        this.fullname = this.user.firstname + " " + this.user.lastname
+        this.id = this.user.id;
+        if (this.user.firstname && this.user.lastname)
+          this.fullname = this.user.firstname + " " + this.user.lastname;
+        this.userService.getProfilePicture().subscribe((img)=>{
+            if (img)
+            {
+              this.retrievedImage = img;
+              this.base64Data = this.retrievedImage.picByte;
+              this.convertedImage = 'data:image/jpeg;base64,' + this.base64Data;
+              (document.getElementById('profilePic') as HTMLImageElement).src = this.convertedImage;
+            }
+            },
+            (err)=>{
+              if (err)
+              {
+                console.log(err);
+              }
+            })
       }
     })
   }
@@ -49,4 +85,76 @@ selectImage()
   input.accept="image/*";
   input.click();
 }
+
+public onFileChanged(event: Event) {
+    //Select File
+    const target= event.target as HTMLInputElement;
+    if (target.files)
+      this.selectedFile = target?.files[0];
+
+    if (this.selectedFile)
+    {
+      //FormData API provides methods and properties to allow us easily prepare form data to be sent with POST HTTP requests.
+      const uploadImageData = new FormData();
+      uploadImageData.append('imageFile', this.selectedFile, this.selectedFile.name);
+      
+      this.userService.uploadProfilePicture(uploadImageData).subscribe((res)=>{
+        if (res)
+        {
+          this.retrievedImage = res;
+          this.base64Data = this.retrievedImage.picByte;
+          this.convertedImage = 'data:image/jpeg;base64,' + this.base64Data;
+          (document.getElementById('profilePic') as HTMLImageElement).src = this.convertedImage;
+        }
+      },
+      (err)=>{
+        if (err)
+        {
+          console.log(err);
+        }
+      })
+    }
+
+    //(document.getElementById('profilePic') as HTMLImageElement).src = this.selectedFile.name;
+    //console.log(value);
+  
+  }
+
+  reset()
+  {
+    window.location.reload();
+  }
+
+  update()
+  {
+    //just for now then we will add form validation
+    var user ;
+    if (this.username && this.password)
+      user = {
+        username: this.username,
+        password: this.password,
+        firstname: this.firstname,
+        lastname: this.lastname
+      }
+    else
+      user = {
+          firstname: this.firstname,
+          lastname: this.lastname
+        }
+    var id:number = this.id;
+
+    console.log(user);
+    this.userService.updateProfile(id,user).subscribe(
+      (res)=>{
+        if (res)
+        {
+          this.authService.logOut();
+          window.location.reload();
+        }
+    },
+      (err)=>{
+        console.log(err);
+    })
+    //window.location.reload();
+  }
 }

@@ -2,8 +2,10 @@ package com.clevory.back.service.user.impl;
 
 import com.clevory.back.model.user.Role;
 import com.clevory.back.model.user.User;
+import com.clevory.back.repository.image.ImageRepository;
 import com.clevory.back.repository.user.RoleRepository;
 import com.clevory.back.repository.user.UserRepository;
+import com.clevory.back.service.image.itf.ImageService;
 import com.clevory.back.service.user.itf.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,6 +28,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private ImageService imageService;
     private final PasswordEncoder passwordEncoder;
 
 
@@ -57,6 +60,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     {
         User user = userRepository.findById(id).get();
         user.setRoles(new ArrayList<>());
+        imageService.deleteUserImages(user);
         userRepository.save(user);
         userRepository.deleteById(id);
         return userRepository.findAll();
@@ -86,11 +90,26 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User update(long id, User user) {
 
-        if (user.getUsername()!=null && user.getPassword()!=null)
+        /*if (user.getUsername()!=null && user.getPassword()!=null)
         {
             User thisUser = this.getUserById(id);
             thisUser.setUsername(user.getUsername());
             thisUser.setPassword(user.getPassword());
+
+            return userRepository.save(thisUser);
+        }*/
+
+        User thisUser = this.getUserById(id);
+        if (thisUser !=null)
+        {
+            if (user.getUsername()!=null)
+                thisUser.setUsername(user.getUsername());
+            if (user.getPassword()!=null)
+                thisUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            if (user.getFirstname()!=null)
+                thisUser.setFirstname(user.getFirstname());
+            if (user.getLastname()!=null)
+                thisUser.setLastname(user.getLastname());
 
             return userRepository.save(thisUser);
         }
