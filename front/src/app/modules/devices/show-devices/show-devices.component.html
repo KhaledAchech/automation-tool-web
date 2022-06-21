@@ -31,7 +31,7 @@
                 <th>Protocols</th>
                 <th>Status</th>
                 <th>Actions</th>
-                <th>Assign</th>
+                <th *ngIf="!hideAssign">Assign</th>
             </thead>
             <tbody>
                 <tr *ngFor="let item of dataSource$|async">
@@ -100,7 +100,7 @@
                             </svg>
                         </button>
                     </td>
-                    <td>
+                    <td *ngIf="!hideAssign">
                         <div *ngIf="item.isAssigned; else elseBlock">
                             <button class="btn btn-outline-success me-2 mb-1"disabled> Assigned </button>
                             <a mat-list-item routerLink="/editor/{{item.topologyId}}">View in topology</a>

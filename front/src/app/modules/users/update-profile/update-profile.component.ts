@@ -114,9 +114,6 @@ public onFileChanged(event: Event) {
         }
       })
     }
-
-    //(document.getElementById('profilePic') as HTMLImageElement).src = this.selectedFile.name;
-    //console.log(value);
   
   }
 
@@ -143,7 +140,6 @@ public onFileChanged(event: Event) {
         }
     var id:number = this.id;
 
-    console.log(user);
     this.userService.updateProfile(id,user).subscribe(
       (res)=>{
         if (res)
@@ -155,6 +151,5 @@ public onFileChanged(event: Event) {
       (err)=>{
         console.log(err);
     })
-    //window.location.reload();
   }
 }
