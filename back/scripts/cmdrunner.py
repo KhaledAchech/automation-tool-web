@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function
 import os
 import sys
 from mysqlconnector import connect, fetchData, fetchdevice
-from deviceconnector import showCdpNeighbors
+from deviceconnector import showCdpNeighbors, getDeviceStartupConfiguration, getDeviceRunningConfiguration
 
 from dotenv import load_dotenv
 
@@ -109,6 +109,94 @@ if (function_id == '1'):
     print("For the device : ", device['hostname'], " with id: ", device['id'])
     print ("and address of : ", device['ip_address'])
     showCdpNeighbors(device,  MY_DEVICE_USERNAME, MY_DEVICE_PASSWORD)
+    print(' ')
+    print ("-------------------------------------------------------------------------------------------")
+    #print(' ')
+    #print(' ')
+    #print ("################################################################################################")
+
+    exit()
+
+if (function_id == '2'):
+    print ("Connecting to the MySQL Database ... ")
+    print(' ')
+    myinstance = connect(MY_LOCALHOST,MY_USER, MY_PASS, MY_DB)
+    if (myinstance):
+        print ("Connected!")
+        #print(' ')
+        #print ("################################################################################################")
+        print(' ')
+        #tablename = input("Enter table name: ")
+        tablename = 'device'
+        print ("Fetching data ...")
+        print(' ')
+        device = fetchdevice(myinstance, tablename, device_id)
+        print(device)
+    else:
+        print("Unable to connect to the database...")
+        exit()
+
+    #print(' ')
+    #print ("################################################################################################")
+
+    print(' ')
+    MY_DEVICE_USERNAME = os.getenv("DEVICE_USERNAME")
+    MY_DEVICE_PASSWORD = os.getenv("DEVICE_PASSWORD")
+
+    #os = input("Enter device os: ")
+    #address = input("Enter the device address: ")
+    #cmd = input("Enter your command: ")
+
+    print ("Running the command 'Show startup config' on this device: "+ device_id )
+    #connection("cisco_xe", "192.168.1.26",  MY_DEVICE_USERNAME, MY_DEVICE_PASSWORD, "Show cdp neighbors")
+    print(' ')
+    print("For the device : ", device['hostname'], " with id: ", device['id'])
+    print ("and address of : ", device['ip_address'])
+    getDeviceStartupConfiguration(device,  MY_DEVICE_USERNAME, MY_DEVICE_PASSWORD)
+    print(' ')
+    print ("-------------------------------------------------------------------------------------------")
+    #print(' ')
+    #print(' ')
+    #print ("################################################################################################")
+
+    exit()
+
+if (function_id == '3'):
+    print ("Connecting to the MySQL Database ... ")
+    print(' ')
+    myinstance = connect(MY_LOCALHOST,MY_USER, MY_PASS, MY_DB)
+    if (myinstance):
+        print ("Connected!")
+        #print(' ')
+        #print ("################################################################################################")
+        print(' ')
+        #tablename = input("Enter table name: ")
+        tablename = 'device'
+        print ("Fetching data ...")
+        print(' ')
+        device = fetchdevice(myinstance, tablename, device_id)
+        print(device)
+    else:
+        print("Unable to connect to the database...")
+        exit()
+
+    #print(' ')
+    #print ("################################################################################################")
+
+    print(' ')
+    MY_DEVICE_USERNAME = os.getenv("DEVICE_USERNAME")
+    MY_DEVICE_PASSWORD = os.getenv("DEVICE_PASSWORD")
+
+    #os = input("Enter device os: ")
+    #address = input("Enter the device address: ")
+    #cmd = input("Enter your command: ")
+
+    print ("Running the command 'Show running config' on this device: "+ device_id )
+    #connection("cisco_xe", "192.168.1.26",  MY_DEVICE_USERNAME, MY_DEVICE_PASSWORD, "Show cdp neighbors")
+    print(' ')
+    print("For the device : ", device['hostname'], " with id: ", device['id'])
+    print ("and address of : ", device['ip_address'])
+    getDeviceRunningConfiguration(device,  MY_DEVICE_USERNAME, MY_DEVICE_PASSWORD)
     print(' ')
     print ("-------------------------------------------------------------------------------------------")
     #print(' ')
