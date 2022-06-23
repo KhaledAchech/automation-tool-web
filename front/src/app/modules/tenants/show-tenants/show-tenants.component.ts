@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { TenantService } from 'src/app/services/network/tenant.service';
 
@@ -11,7 +12,9 @@ export class ShowTenantsComponent implements OnInit {
 
   dataSource$!:  Observable<any[]>; 
 
-  constructor(private service:TenantService) { }
+  constructor(
+    private service:TenantService,
+    private router:Router) { }
 
   ngOnInit(): void {
     this.load();
@@ -73,6 +76,22 @@ export class ShowTenantsComponent implements OnInit {
 
   load()
   {
+    this.service.getTenantsWithTopologies().subscribe(
+      (res)=>{
+      if (res){
+        console.info("Tenants Fetched Succesfully");
+      }
+    },
+    (err)=>{
+       if (err.status === 403 )
+       {
+         this.router.navigateByUrl('/error403');
+       }
+       if (err.status === 500)
+       {
+         this.router.navigateByUrl('/error500');
+       }
+    })
     this.dataSource$ = this.service.getTenantsWithTopologies();
   }
 }

@@ -8,13 +8,13 @@
 <div class="alert alert-success" role="alert" id="connection-success-alert">
    Successfully Connected!
 </div>
-<mat-card class="example-card">
-    <mat-card-subtitle>Actions</mat-card-subtitle>
-    <mat-card-title>Device Actions</mat-card-title>
+<mat-card class="example-card" >
+    <mat-card-subtitle *ngIf="!hideAssign">Actions</mat-card-subtitle>
+    <mat-card-title *ngIf="!hideAssign">Device Actions</mat-card-title>
     <mat-card-content>
-        <div fxLayout="row" >
+        <div fxLayout="row" *ngIf="!hideAssign">
             <a *ngIf="device.isAssigned==true" class="btn btn-secondary me-2 mb-1"  fxFlex="15" [routerLink]="['/editor', device.topologyId]"> View in topology </a>
-<!-- 
+            <!-- 
             <button *ngIf="device.isAssigned==true && device.ipAddress" class="btn btn-primary me-2 mb-1" fxFlex="15" (click)="modalDiscovery()" data-bs-toggle="modal"
             data-bs-target="#staticBackdrop"> initiate discovery </button> -->
 
@@ -35,7 +35,7 @@
     </mat-card-content>
 <mat-divider inset></mat-divider>
 <br>
-<mat-accordion *ngIf="device.isAssigned==true && device.ipAddress">
+<mat-accordion *ngIf="device.isAssigned==true && device.ipAddress && !hideAssign">
     <mat-expansion-panel (opened)="fetchNeighbors()" (closed)="panelOpenState = false">
         <mat-expansion-panel-header>
             <mat-panel-title>
@@ -97,7 +97,7 @@
             </mat-card-content>
             <mat-divider inset></mat-divider>
             <br>
-            <div fxLayout="row" fxLayoutGap="10">
+            <div fxLayout="row" fxLayoutGap="10" *ngIf="!hideAssign">
                 <button type="button" class="btn btn-primary" fxFlex="8"  [disabled]='!checkedNeighbors?.length' 
                 (click)="addDevice()">Save</button>
                 <button type="button" class="btn btn-success" fxFlex="8"  [disabled]='!checkedNeighbors?.length' 

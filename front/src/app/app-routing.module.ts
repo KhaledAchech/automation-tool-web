@@ -5,19 +5,27 @@ import { ConfigurationsComponent } from './modules/configurations/configurations
 import { DashboardComponent } from './modules/dashboard/dashboard.component';
 import { DevicesComponent } from './modules/devices/devices.component';
 import { ShowDeviceDetailsComponent } from './modules/devices/show-device-details/show-device-details.component';
+import { AccessDeniedComponent } from './modules/errors/access-denied/access-denied.component';
+import { NotFoundComponent } from './modules/errors/not-found/not-found.component';
+import { ServerErrorComponent } from './modules/errors/server-error/server-error.component';
 import { InterfacesComponent } from './modules/interfaces/interfaces.component';
 import { ProtocolsComponent } from './modules/protocols/protocols.component';
+import { SigninComponent } from './modules/signin/signin.component';
 import { TenantsComponent } from './modules/tenants/tenants.component';
 import { EditorComponent } from './modules/topologies/editor/editor.component';
 import { TopologiesComponent } from './modules/topologies/topologies.component';
+import { UpdateProfileComponent } from './modules/users/update-profile/update-profile.component';
+import { UsersComponent } from './modules/users/users/users.component';
+import { AuthGuardGuard } from './services/connection/auth-guard.guard';
 
 const routes: Routes = [{
   path: '',
   component: DefaultComponent,
+  canActivate: [AuthGuardGuard],
   children: [{
     path:'',
     component: DashboardComponent
-  }, {
+  },{
     path:'tenants',
     component: TenantsComponent
   }, {
@@ -42,9 +50,34 @@ const routes: Routes = [{
   }, {
     path : 'editor/:id',
     component: EditorComponent
+  },
+  {
+    path : 'users',
+    component: UsersComponent
+  },
+  {
+    path : 'profile',
+    component: UpdateProfileComponent
   }
 ]
-}];
+},
+{
+  path:'signin',
+  component: SigninComponent
+},
+{
+  path:'error403',
+  component: AccessDeniedComponent
+},
+{
+  path:'error500', // server down
+  component: ServerErrorComponent
+},
+{
+  path:'**', // Page not found error
+  component: NotFoundComponent
+}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -4,6 +4,7 @@ import { DeviceService } from 'src/app/services/network/device.service';
 import { Observable } from 'rxjs';
 import { ScriptService } from 'src/app/services/network/script.service';
 import { ConnectionData } from 'src/app/common/interfaces/connectionData';
+import { AuthenticationService } from 'src/app/services/connection/authentication.service';
 
 
 
@@ -21,6 +22,7 @@ export class ShowDeviceDetailsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private service: DeviceService,
+              private authService: AuthenticationService,
               private scriptService: ScriptService) { }
 
   id:any = null;
@@ -35,6 +37,10 @@ export class ShowDeviceDetailsComponent implements OnInit {
   protocols$! : Observable<any[]>; 
 
   neighbors$! : Observable<any[]>;
+  newNeighbors$! : Observable<any[]>;
+
+
+  devices:  any[] = [];
 
   data!: Observable<any[]>; 
 
@@ -50,9 +56,28 @@ export class ShowDeviceDetailsComponent implements OnInit {
 
   panelOpenState = false;
 
+  hideAssign: boolean = false;
+
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
 
+    if (this.authService.isUserLoggedIn()){
+        let user_token = sessionStorage.getItem("token");
+        if (user_token)
+        {
+          let jwtData = user_token.split('.')[1]
+          let decodedJwtJsonData = window.atob(jwtData)
+          // Get user roles then check to see what links to hide depending on the user roles
+          let user_roles = JSON.parse(decodedJwtJsonData).roles;
+          if (user_roles.length === 2 || user_roles.length === 3)
+          {
+            this.hideAssign = false;
+          }
+          else{
+            this.hideAssign = true;
+          }
+        }
+    }
     //Fetch data from the server.
     this.load();
   }
@@ -64,7 +89,6 @@ export class ShowDeviceDetailsComponent implements OnInit {
     // Device Details : 
     this.service.getDeviceById(this.id).subscribe(res => {
       this.device = res;
-      console.log(this.device)
     });
 
     // Device Protocls :
@@ -175,7 +199,7 @@ export class ShowDeviceDetailsComponent implements OnInit {
     }
   }
 
-  connect()
+connect()
   { this.loading = true;
     this.checkedNeighbors.forEach(item =>{
         if (item.includes("PC"))
@@ -231,5 +255,4 @@ export class ShowDeviceDetailsComponent implements OnInit {
         })
     })
   }
-
 }

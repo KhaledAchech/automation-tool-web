@@ -119,6 +119,7 @@ public class TopologyServiceImpl implements TopologyService {
         {
             device.getTopologies().remove(topology);
             device.setAssigned(false);
+            device.setStatus("Disconnected");
             deviceRepository.save(device);
         }
         topologyRepository.save(topology);

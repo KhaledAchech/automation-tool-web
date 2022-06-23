@@ -1,0 +1,25 @@
+<form>
+    <div class="mb-3">
+        <label for="Email" class="form-label">Email</label>
+        <input type="text" class="form-control" [(ngModel)]="email" name="email" [disabled]="user.id!=0">
+    </div>
+    <div class="mb-3" *ngIf="user.id==0">
+        <label for="Password" class="form-label">Password</label>
+        <input type="password" class="form-control" [(ngModel)]="password" name="password">
+    </div>
+    <div class="mb-3">
+        <label for="Role" class="form-label">Role</label>
+        <select class="form-select" aria-label="User Roles" (change)="selectRole($event)">
+            <option selected [(ngModel)]="role" name="role">{{user.role}}</option>
+            <option value="ROLE_CTNAS_ADMIN" *ngIf="administratorRank==3">CTNAS Admin</option>
+            <option value="ROLE_TENANT_ADMIN">Tenant Admin</option>
+            <option value="ROLE_MODERATOR">Moderator</option>
+        </select>
+    </div>
+    <button (click)="addUser()" *ngIf="user.id==0" class="btn btn-primary">
+        Add
+    </button>
+    <button (click)="updateUserRole()" *ngIf="user.id!=0" class="btn btn-primary">
+        Update
+    </button>
+</form>

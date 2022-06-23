@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { DeviceService } from 'src/app/services/network/device.service';
 import { Router } from '@angular/router';
+import { AuthenticationService } from 'src/app/services/connection/authentication.service';
 
 
 @Component({
@@ -14,10 +15,31 @@ export class ShowDevicesComponent implements OnInit {
   dataSource$!:  Observable<any[]>; 
   protocols!: any[];
 
+  hideAssign: boolean = false;
+
   constructor(private service:DeviceService,
+              private authService: AuthenticationService,
               private router: Router) { }
 
   ngOnInit(): void {
+    
+     if (this.authService.isUserLoggedIn()){
+        let user_token = sessionStorage.getItem("token");
+        if (user_token)
+        {
+          let jwtData = user_token.split('.')[1]
+          let decodedJwtJsonData = window.atob(jwtData)
+          // Get user roles then check to see what links to hide depending on the user roles
+          let user_roles = JSON.parse(decodedJwtJsonData).roles;
+          if (user_roles.length === 2 || user_roles.length === 3)
+          {
+            this.hideAssign = false;
+          }
+          else{
+            this.hideAssign = true;
+          }
+        }
+    }
     this.load();
   }
 
@@ -105,6 +127,22 @@ export class ShowDevicesComponent implements OnInit {
   //load data from the back end 
   load()
   {
+    this.service.getDevicesDetailed().subscribe(
+      (res)=>{
+      if (res){
+        console.info("Devices Fetched Succesfully");
+      }
+    },
+    (err)=>{
+       if (err.status === 403 )
+       {
+         this.router.navigateByUrl('/error403');
+       }
+       if (err.status === 500)
+       {
+         this.router.navigateByUrl('/error500');
+       }
+    })
     this.dataSource$ = this.service.getDevicesDetailed();
   }
 }

@@ -266,11 +266,19 @@ public class DiagramRepository {
     public ArrayList<HashMap> addLink(long id, String from, String to)
     {
         Link link = new Link();
-        ArrayList links = this.getDiagramLinks(id);
+        ArrayList<HashMap> links = this.getDiagramLinks(id);
 
         if (from == null || to == null)
         {
             return links;
+        }
+
+        for (HashMap l : links)
+        {
+            if ((l.get("from").equals(from) && l.get("to").equals(to)) || (l.get("to").equals(from) && l.get("from").equals(to)))
+            {
+                return null;
+            }
         }
 
         linkRepository.save(link);
@@ -288,7 +296,7 @@ public class DiagramRepository {
                 .with("to", link.getTo());
 
 
-        links.add(link);
+        //links.add(link);
 
         try {
             Object run = this.dbContext.getDatabase().table(table)
@@ -297,7 +305,7 @@ public class DiagramRepository {
                                     ("links",row.g("links").append(newLink)))
                     .run(this.rethinkDBConnectionFactory.createConnection());
 
-            this.dbContext.getLog().info("replace links {}", run);
+            this.dbContext.getLog().info("create link {}", run);
 
             return this.getDiagramLinks(id);
         }
@@ -315,7 +323,7 @@ public class DiagramRepository {
                     .delete()
                     .run(this.rethinkDBConnectionFactory.createConnection());
 
-            this.dbContext.getLog().info("delete links {}", run);
+            this.dbContext.getLog().info("delete links and nodes {}", run);
 
             return "Diagram data deleted!";
         }
