@@ -29,6 +29,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatListModule} from '@angular/material/list';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 import { ShowProtocolsComponent } from 'src/app/modules/protocols/show-protocols/show-protocols.component';
 import { AddEditProtocolComponent } from 'src/app/modules/protocols/add-edit-protocol/add-edit-protocol.component';
 import { ShowInterfacesComponent } from 'src/app/modules/interfaces/show-interfaces/show-interfaces.component';
@@ -104,6 +106,8 @@ import { UpdateProfileComponent } from 'src/app/modules/users/update-profile/upd
     MatProgressBarModule,
     MatListModule,
     MatExpansionModule,
+    MatRadioModule,
+    MatCheckboxModule,
     GojsAngularModule
   ]
 })
