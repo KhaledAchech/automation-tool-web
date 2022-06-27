@@ -36,8 +36,7 @@ def writeStartUpConfig(device, config):
         os.makedirs(path)
 
     filename = path + str(device['id']) + '_' + device['hostname'] +'_' + date + '.txt'
-    with open(filename, 'w') as f:
-        f.writelines(config)
+    writeConfig(filename,config)
 
 def writeRunningConfig(device, config):
     date = datetime.today().strftime('%d-%m-%Y')
@@ -53,6 +52,8 @@ def writeRunningConfig(device, config):
         os.makedirs(path)
 
     filename = path + str(device['id']) + '_' + device['hostname'] +'_' + date + '.txt'
+    writeConfig(filename,config)
+
+def writeConfig(filename, config):
     with open(filename, 'w') as f:
         f.writelines(config)
-    #json_dump(config, filename)
