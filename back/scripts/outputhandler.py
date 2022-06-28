@@ -55,5 +55,17 @@ def writeRunningConfig(device, config):
     writeConfig(filename,config)
 
 def writeConfig(filename, config):
+    print (config)
     with open(filename, 'w') as f:
         f.writelines(config)
+
+    with open(filename, 'r') as file:
+        fileread = file.readlines()
+
+    exclude = ["!", "secret", "password"] #the lines that contains these words or characters will be excluded to clean up the output.
+
+    #Overwrite the content of the file with the organised well structured data after excluding the lines we don't want to have in the client side.
+    with open(filename, 'w') as f:
+        for string in fileread:
+            if not any(exclude[j] in string for j in range(len(exclude))):
+                    f.write(string)

@@ -122,7 +122,7 @@ public class DeviceConnectionAutomationController {
         return res;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/config/startup/{id}")
     public ConfigWrapper getDeviceStartupConfig(@PathVariable String id) throws IOException {
 
         ConfigWrapper res = new ConfigWrapper();
@@ -153,7 +153,7 @@ public class DeviceConnectionAutomationController {
         return res;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/config/running/{id}")
     public ConfigWrapper getDeviceRunningConfig(@PathVariable String id) throws IOException {
 
         ConfigWrapper res = new ConfigWrapper();
