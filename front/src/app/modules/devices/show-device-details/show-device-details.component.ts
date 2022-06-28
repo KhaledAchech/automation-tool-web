@@ -38,7 +38,9 @@ export class ShowDeviceDetailsComponent implements OnInit {
 
   neighbors$! : Observable<any[]>;
   newNeighbors$! : Observable<any[]>;
-
+  
+  startUpConfig! : string;
+  runningConfig! : string; 
 
   devices:  any[] = [];
 
@@ -120,6 +122,36 @@ export class ShowDeviceDetailsComponent implements OnInit {
     if (!this.neighbors$)
     {
       this.neighbors$ = this.scriptService.getDeviceNeighbors(this.id);
+    }
+  }
+
+  //Load data from backend script result
+  fetchStartupConfig()
+  {
+    // Device Startup Configuration 
+    if (!this.startUpConfig)
+    {
+      this.scriptService.getStartupConfiguration(this.id).subscribe((res)=>{
+        if (res)
+        {
+          this.startUpConfig = res.configString;
+        }
+      });
+    }
+  }
+
+  //Load data from backend script result
+  fetchRunningConfig()
+  {
+    // Device Startup Configuration
+   if (!this.runningConfig)
+    {
+      this.scriptService.getRunningConfiguration(this.id).subscribe((res)=>{
+        if (res)
+        {
+          this.runningConfig = res.configString;
+        }
+      });
     }
   }
 

@@ -15,4 +15,12 @@ export class ScriptService {
     return this.http.get<any>(this.scriptUrl + `/${id}`);
   }
 
+    getStartupConfiguration(id:number|string){
+    return this.http.get<any>(this.scriptUrl + `/config/startup/${id}`);
+  }
+  
+    getRunningConfiguration(id:number|string){
+    return this.http.get<any>(this.scriptUrl + `/config/running/${id}`);
+  }
+
 }

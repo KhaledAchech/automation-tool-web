@@ -253,7 +253,7 @@ public class DeviceConnectionAutomationController {
         String year =String.valueOf(date.getYear());
 
 
-        String outputDir = "show-running-config-CMD_Output_" +
+        String outputDir = "Outputs/show-running-config-CMD_Output_" +
                 day + "-" + month + "-" + year;
 
         return outputDir;

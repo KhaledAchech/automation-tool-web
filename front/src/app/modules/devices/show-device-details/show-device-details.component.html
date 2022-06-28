@@ -137,218 +137,35 @@
             <input disabled value="configuration date" fxFlex="75"> -->
             
             <mat-accordion fxFlex="50">
-                <mat-expansion-panel (closed)="panelOpenState = false" class="startup">
+                <mat-expansion-panel (opened)="fetchStartupConfig()" (closed)="panelOpenState = false" class="startup">
                     <mat-expansion-panel-header class="startup">
                         <mat-panel-title class="startup">
                             Startup Configuration
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                     <mat-card-content>
-                        <div class="startUpconfig">
-                        <p>
-                        <mark>Using 3189 out of 129016 bytes</mark>
-                        <br>
-                            first &#xa;&#xa;second&#xa;third
-                        <br>
-                        ! Last configuration change at 13:36:36 UTC Thu May 12 2022
-                        <br>
-                        !
-                        <br>
-                        version 15.2
-                        <br>
-                        service timestamps debug datetime msec
-                        <br>
-                        service timestamps log datetime msec
-                        <br>
-                        !
-                        <br>
-                        hostname PE2
-                        <br>
-                        !
-                        <br>
-                        boot-start-marker
-                        <br>
-                        boot-end-marker
-                        <br>
-                        !
-                        <br>
-                        !
-                        <br>
-                        ip domain name lab.ap.com
-                        <br>
-                        ip cef
-                        <br>
-                        no ipv6 cef
-                        <br>
-                        !
-                        <br>
-                        multilink bundle-name authenticated
-                        <br>
-                        !
-                        <br>
-                        interface Loopback0
-                        <br>
-                        ip address 2.2.2.2 255.255.255.255.
-                        <br>
-                        !
-                        <br>
-                        interface FastEthernet0/0
-                        <br>
-                        ip address dhcp
-                        <br>
-                        duplex full
-                        <br>
-                        !
-                        <br>
-                        interface Ethernet1/0
-                        <br>
-                        ip address 10.2.4.2 255.255.255.0
-                        <br>
-                        duplex full
-                        <br>
-                        !
-                        <br>
-                        interface Ethernet1/1
-                        <br>
-                        ip address 192.0.1.21 255.255.255.0
-                        <br>
-                        duplex full
-                        <br>
-                        !
-                        <br>
-                        interface Ethernet1/2
-                        <br>
-                        no ip address
-                        <br>
-                        shutdown
-                        <br>
-                        duplex full
-                        <br>
-                        !
-                        <br>
-                        interface Ethernet1/3
-                        <br>
-                        no ip address
-                        <br>
-                        shutdown
-                        <br>
-                        duplex full
-                        <br>
-                        !
-                        <br>
-                        interface Ethernet1/4
-                        <br>
-                        !
-                        end
-                        </p>
+                        <div class="startUpconfig" *ngIf ="startUpConfig" style="white-space: pre-line">
+                            {{startUpConfig}}
+                        </div>
+                        <div class="startUpconfig" *ngIf="!startUpConfig">
+                           No startup configuration assigned to this device yet!
                         </div>
                     </mat-card-content>
                 </mat-expansion-panel>
             </mat-accordion>
             <mat-accordion fxFlex="50">
-                <mat-expansion-panel (closed)="panelOpenState = false" class="running">
+                <mat-expansion-panel (opened)="fetchRunningConfig()" (closed)="panelOpenState = false" class="running">
                     <mat-expansion-panel-header class="running">
                         <mat-panel-title class="running">
                             Running Configuration
                         </mat-panel-title>
                 </mat-expansion-panel-header>
                     <mat-card-content>
-                        <div class="Runningconfig">
-                            <p>
-                            Building configuration...
-                            <br>
-                            Current configuration : 3127 bytes
-                            <br>
-                            !
-                            <br>
-                            version 15.2
-                            <br>
-                            service timestamps debug datetime msec
-                            <br>
-                            service timestamps log datetime msec
-                            <br>
-                            !
-                            <br>
-                            hostname PE2
-                            <br>
-                            !
-                            <br>
-                            boot-start-marker
-                            <br>
-                            boot-end-marker
-                            <br>
-                            !
-                            <br>
-                            ip domain name lab.ap.com
-                            <br>
-                            ip cef
-                            <br>
-                            no ipv6 cef
-                            <br>
-                            !
-                            <br>
-                            !
-                            <br>
-                            multilink bundle-name authenticated
-                            <br>
-                            !
-                            <br>
-                            interface Loopback0
-                            <br>
-                            ip address 2.2.2.2 255.255.255.255
-                            <br>
-                            !
-                            <br>
-                            interface FastEthernet0/0
-                            <br>
-                            ip address dhcp
-                            <br>
-                            duplex full
-                            <br>
-                            interface Ethernet2/4
-                            <br>
-                            !
-                            <br>
-                            router ospf 1
-                            <br>
-                            network 0.0.0.0 255.255.255.255 area 0
-                            <br>
-                            !
-                            <br>
-                            router bgp 10
-                            <br>
-                            bgp log-neighbor-changes
-                            <br>
-                            neighbor 1.1.1.1 remote-as 10
-                            <br>
-                            neighbor 3.3.3.3 remote-as 10
-                            <br>
-                            neighbor 4.4.4.4 remote-as 10
-                            <br>
-                            neighbor 10.10.10.10 remote-as 10
-                            <br>
-                            neighbor 192.0.1.1 remote-as 100
-                            <br>
-                            !
-                            <br>
-                            line con 0
-                            <br>
-                            stopbits 1
-                            <br>
-                            line aux 0
-                            <br>
-                            stopbits 1
-                            <br>
-                            line vty 0 4
-                            <br>
-                            login local
-                            <br>
-                            transport input telnet ssh
-                            <br>
-                            !
-                            <br>
-                            end
-                            </p>
+                        <div class="Runningconfig" *ngIf ="runningConfig" style="white-space: pre-line">
+                            {{runningConfig}}
+                        </div>
+                        <div class="Runningconfig" *ngIf="!runningConfig">
+                            No running configuration assigned to this device yet!
                         </div>
                     </mat-card-content>
                 </mat-expansion-panel>
