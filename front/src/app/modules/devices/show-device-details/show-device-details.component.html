@@ -148,7 +148,9 @@
                         <div class="startUpconfig" *ngIf ="startUpConfig" style="white-space: pre-line">
                             <!-- {{startUpConfig}} -->
                             <ul style="list-style: none;">
-                                <li *ngFor="let line of startUpConfigArray" color="line.color">{{line.text}}</li>
+                                <li *ngFor="let line of startUpConfigArray">
+                                    <span [style.color]="line.color">{{line.text}}</span>
+                                </li>
                             </ul>
                         </div>
                         <div class="startUpconfig" *ngIf="!startUpConfig">

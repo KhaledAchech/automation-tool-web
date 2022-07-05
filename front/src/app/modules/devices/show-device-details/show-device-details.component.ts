@@ -320,17 +320,30 @@ highlightDiff()
   if (this.isChecked)
     if ( this.runningConfig && this.startUpConfig )
     {
-      let spanElem = document.getElementById("diffLine");
       let startupTexts: string[] = [];
+      let runningTexts: string[] = [];
+
       this.startUpConfigArray.forEach(line => {
         if (line)
           startupTexts.push(line.text);
       });
+      this.runningConfigArray.forEach(line => {
+        if (line)
+          runningTexts.push(line.text);
+      })
+
       this.runningConfigArray.forEach((line,i) => {
         if (!startupTexts.includes(line.text))
           this.runningConfigArray[i].color = "yellow";
         else
           this.runningConfigArray[i].color = "white";
+      })
+
+      this.startUpConfigArray.forEach((line,i) => {
+        if (!runningTexts.includes(line.text))
+          this.startUpConfigArray[i].color = "yellow";
+        else
+          this.startUpConfigArray[i].color = "white";
       })
     }
     else

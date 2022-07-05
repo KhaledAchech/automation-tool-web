@@ -8,6 +8,7 @@ import { ShowDeviceDetailsComponent } from './modules/devices/show-device-detail
 import { AccessDeniedComponent } from './modules/errors/access-denied/access-denied.component';
 import { NotFoundComponent } from './modules/errors/not-found/not-found.component';
 import { ServerErrorComponent } from './modules/errors/server-error/server-error.component';
+import { FaqComponent } from './modules/help/faq/faq.component';
 import { InterfacesComponent } from './modules/interfaces/interfaces.component';
 import { ProtocolsComponent } from './modules/protocols/protocols.component';
 import { SigninComponent } from './modules/signin/signin.component';
@@ -66,6 +67,10 @@ const routes: Routes = [{
   component: SigninComponent
 },
 {
+  path: 'help',
+  component: FaqComponent
+},
+{
   path:'error403',
   component: AccessDeniedComponent
 },
@@ -76,7 +81,7 @@ const routes: Routes = [{
 {
   path:'**', // Page not found error
   component: NotFoundComponent
-}
+},
 ];
 
 @NgModule({
