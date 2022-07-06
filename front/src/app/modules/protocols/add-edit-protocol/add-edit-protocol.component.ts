@@ -24,52 +24,59 @@ export class AddEditProtocolComponent implements OnInit {
   }
 
     addProtocol() {
-    var protocol = {
-      name:this.name,
-      type:this.type,
-      configuration:this.configuration
-    }
-    this.service.addProtocol(protocol).subscribe(res => {
-      var closeModalBtn = document.getElementById('add-edit-modal-close');
-      if(closeModalBtn) {
-        closeModalBtn.click();
+    if (this.name.length>0 && this.type.length>0)
+    {
+      var protocol = {
+        name:this.name,
+        type:this.type,
+        configuration:this.configuration
       }
-
-      var showAddSuccess = document.getElementById('add-success-alert');
-      if(showAddSuccess) {
-        showAddSuccess.style.display = "block";
-      }
-      setTimeout(function() {
-        if(showAddSuccess) {
-          showAddSuccess.style.display = "none"
+      this.service.addProtocol(protocol).subscribe(res => {
+        var closeModalBtn = document.getElementById('add-edit-modal-close');
+        if(closeModalBtn) {
+          closeModalBtn.click();
         }
-      }, 4000);
+  
+        var showAddSuccess = document.getElementById('add-success-alert');
+        if(showAddSuccess) {
+          showAddSuccess.style.display = "block";
+        }
+        setTimeout(function() {
+          if(showAddSuccess) {
+            showAddSuccess.style.display = "none"
+          }
+        }, 4000);
+      })
+
     }
-    )}
+  }
 
   updateProtocol() {
-    var protocol = {
-      id: this.id,
-      name:this.name,
-      type:this.type,
-      configuration:this.configuration
-    }
-    var id:number = this.id;
-    this.service.updateProtocol(id,protocol).subscribe(res => {
-      var closeModalBtn = document.getElementById('add-edit-modal-close');
-      if(closeModalBtn) {
-        closeModalBtn.click();
+    if (this.name.length>0 && this.type.length>0)
+    {
+      var protocol = {
+        id: this.id,
+        name:this.name,
+        type:this.type,
+        configuration:this.configuration
       }
-
-      var showUpdateSuccess = document.getElementById('update-success-alert');
-      if(showUpdateSuccess) {
-        showUpdateSuccess.style.display = "block";
-      }
-      setTimeout(function() {
-        if(showUpdateSuccess) {
-          showUpdateSuccess.style.display = "none"
+      var id:number = this.id;
+      this.service.updateProtocol(id,protocol).subscribe(res => {
+        var closeModalBtn = document.getElementById('add-edit-modal-close');
+        if(closeModalBtn) {
+          closeModalBtn.click();
         }
-      }, 4000);
+  
+        var showUpdateSuccess = document.getElementById('update-success-alert');
+        if(showUpdateSuccess) {
+          showUpdateSuccess.style.display = "block";
+        }
+        setTimeout(function() {
+          if(showUpdateSuccess) {
+            showUpdateSuccess.style.display = "none"
+          }
+        }, 4000);
+      })
     }
-    )}
+  }
   }

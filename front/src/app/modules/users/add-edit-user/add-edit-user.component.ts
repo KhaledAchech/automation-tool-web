@@ -45,50 +45,57 @@ export class AddEditUserComponent implements OnInit {
   }
 
     addUser() {
-    this.addUserForm.username = this.email;
-    this.addUserForm.password = this.password;
-    this.addUserForm.rolename = this.role;
-    this.service.addUserWithRoles(this.addUserForm).subscribe(res => {
-      var closeModalBtn = document.getElementById('add-edit-modal-close');
-              if(closeModalBtn) {
-                closeModalBtn.click();
-              }
-
-              var showAddSuccess = document.getElementById('add-success-alert');
-              if(showAddSuccess) {
-                showAddSuccess.style.display = "block";
-              }
-              setTimeout(function() {
-                if(showAddSuccess) {
-                  showAddSuccess.style.display = "none"
+    if (this.email.length>0 && this.password.length>0 && this.role.length>0)
+    {
+      this.addUserForm.username = this.email;
+      this.addUserForm.password = this.password;
+      this.addUserForm.rolename = this.role;
+      this.service.addUserWithRoles(this.addUserForm).subscribe(res => {
+        var closeModalBtn = document.getElementById('add-edit-modal-close');
+                if(closeModalBtn) {
+                  closeModalBtn.click();
                 }
-              }, 4000);
-            }     
-    )
+  
+                var showAddSuccess = document.getElementById('add-success-alert');
+                if(showAddSuccess) {
+                  showAddSuccess.style.display = "block";
+                }
+                setTimeout(function() {
+                  if(showAddSuccess) {
+                    showAddSuccess.style.display = "none"
+                  }
+                }, 4000);
+              })
+
+    }
   }
     
 
   //update user role
   updateUserRole() {
-    this.userRoleForm.username = this.email;
-    this.userRoleForm.rolename = this.role;
-    this.service.updateUserRole(this.userRoleForm).subscribe(res => {
-      var closeModalBtn = document.getElementById('add-edit-modal-close');
-      if(closeModalBtn) {
-        closeModalBtn.click();
-      }
-
-      var showUpdateSuccess = document.getElementById('update-success-alert');
-      if(showUpdateSuccess) {
-        showUpdateSuccess.style.display = "block";
-      }
-      setTimeout(function() {
-        if(showUpdateSuccess) {
-          showUpdateSuccess.style.display = "none"
+    if (this.email.length>0 && this.role.length>0)
+    {
+      this.userRoleForm.username = this.email;
+      this.userRoleForm.rolename = this.role;
+      this.service.updateUserRole(this.userRoleForm).subscribe(res => {
+        var closeModalBtn = document.getElementById('add-edit-modal-close');
+        if(closeModalBtn) {
+          closeModalBtn.click();
         }
-      }, 4000);
+  
+        var showUpdateSuccess = document.getElementById('update-success-alert');
+        if(showUpdateSuccess) {
+          showUpdateSuccess.style.display = "block";
+        }
+        setTimeout(function() {
+          if(showUpdateSuccess) {
+            showUpdateSuccess.style.display = "none"
+          }
+        }, 4000);
+      })
+
     }
-    )}
+  }
 
   selectRole(event: Event)
   {

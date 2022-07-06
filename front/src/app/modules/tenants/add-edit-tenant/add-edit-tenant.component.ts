@@ -19,7 +19,9 @@ export class AddEditTenantComponent implements OnInit {
     this.name = this.tenant.name;
   }
   addTenant() {
-    var tenant = {
+    if (this.name.length>0)
+    {
+      var tenant = {
       name:this.name,
     }
     this.service.addTenant(tenant).subscribe(res => {
@@ -38,30 +40,34 @@ export class AddEditTenantComponent implements OnInit {
         }
       }, 4000);
     })
+    }
       
   }
 
   updateTenant() {
-   var tenant = {
-      id: this.id,
-      name:this.name,
-    }
-    var id:number = this.id;
-    this.service.updateTenant(id,tenant).subscribe(res => {
-      var closeModalBtn = document.getElementById('add-edit-modal-close');
-      if(closeModalBtn) {
-        closeModalBtn.click();
-      }
-
-      var showUpdateSuccess = document.getElementById('update-success-alert');
-      if(showUpdateSuccess) {
-        showUpdateSuccess.style.display = "block";
-      }
-      setTimeout(function() {
-        if(showUpdateSuccess) {
-          showUpdateSuccess.style.display = "none"
+    if (this.name.length>0)
+    {
+      var tenant = {
+          id: this.id,
+          name:this.name,
         }
-      }, 4000);
-      })
+        var id:number = this.id;
+        this.service.updateTenant(id,tenant).subscribe(res => {
+          var closeModalBtn = document.getElementById('add-edit-modal-close');
+          if(closeModalBtn) {
+            closeModalBtn.click();
+          }
+
+          var showUpdateSuccess = document.getElementById('update-success-alert');
+          if(showUpdateSuccess) {
+            showUpdateSuccess.style.display = "block";
+          }
+          setTimeout(function() {
+            if(showUpdateSuccess) {
+              showUpdateSuccess.style.display = "none"
+            }
+          }, 4000);
+          })
+      }
   }
 }

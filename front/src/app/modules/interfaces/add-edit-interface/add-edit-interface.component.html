@@ -1,11 +1,23 @@
-<form>
+<form class="was-validated">
     <div class="mb-3">
-        <label for="Ip-address" class="form-label">Ip-address</label>
-        <input type="text" class="form-control" [(ngModel)]="ipAddress" name="ipAddress">
+        <label for="Ip-address" class="form-label">Ip-address*</label>
+        <input type="text"  class="form-control has-validation" required [(ngModel)]="ipAddress" name="ipAddress">
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+        <div class="invalid-feedback">
+            Please check your inputs.
+        </div>
     </div>
     <div class="mb-3">
-        <label for="Type" class="form-label">Type</label>
-        <input type="text" class="form-control" [(ngModel)]="type" name="type">
+        <label for="Type" class="form-label">Type*</label>
+        <input type="text"  class="form-control has-validation" required [(ngModel)]="type" name="type">
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+        <div class="invalid-feedback">
+            Please check your inputs.
+        </div>
     </div>
     <!--<div class="mb-3">
         <label for="Protocol" class="form-label">Protocol</label>

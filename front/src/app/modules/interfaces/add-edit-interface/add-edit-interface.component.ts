@@ -25,55 +25,62 @@ export class AddEditInterfaceComponent implements OnInit {
     //this.protocol = this.interface.protocol;
   }
   addInterface() {
-    var anInterface = {
-      ipAddress:this.ipAddress,
-      type:this.type,
-      speed:this.speed,
-      state:this.state
-    }
-    this.service.addInterface(anInterface).subscribe(res => {
-      var closeModalBtn = document.getElementById('add-edit-modal-close');
-      if(closeModalBtn) {
-        closeModalBtn.click();
+    if(this.ipAddress.length>0 && this.type.length>0)
+    {
+      var anInterface = {
+        ipAddress:this.ipAddress,
+        type:this.type,
+        speed:this.speed,
+        state:this.state
       }
-
-      var showAddSuccess = document.getElementById('add-success-alert');
-      if(showAddSuccess) {
-        showAddSuccess.style.display = "block";
-      }
-      setTimeout(function() {
-        if(showAddSuccess) {
-          showAddSuccess.style.display = "none"
+      this.service.addInterface(anInterface).subscribe(res => {
+        var closeModalBtn = document.getElementById('add-edit-modal-close');
+        if(closeModalBtn) {
+          closeModalBtn.click();
         }
-      }, 4000);
+  
+        var showAddSuccess = document.getElementById('add-success-alert');
+        if(showAddSuccess) {
+          showAddSuccess.style.display = "block";
+        }
+        setTimeout(function() {
+          if(showAddSuccess) {
+            showAddSuccess.style.display = "none"
+          }
+        }, 4000);
+      })
     }
-    )}
+  }
   
 
   updateInterface() {
-    var anInterface = {
-      id:this.id,
-      ipAddress:this.ipAddress,
-      type:this.type,
-      speed:this.speed,
-      state:this.state
-    }
-    var id:number = this.id;
-    this.service.updateInterface(id,anInterface).subscribe(res => {
-      var closeModalBtn = document.getElementById('add-edit-modal-close');
-      if(closeModalBtn) {
-        closeModalBtn.click();
+    if(this.ipAddress.length>0 && this.type.length>0)
+    {
+      var anInterface = {
+        id:this.id,
+        ipAddress:this.ipAddress,
+        type:this.type,
+        speed:this.speed,
+        state:this.state
       }
-
-      var showUpdateSuccess = document.getElementById('update-success-alert');
-      if(showUpdateSuccess) {
-        showUpdateSuccess.style.display = "block";
-      }
-      setTimeout(function() {
-        if(showUpdateSuccess) {
-          showUpdateSuccess.style.display = "none"
+      var id:number = this.id;
+      this.service.updateInterface(id,anInterface).subscribe(res => {
+        var closeModalBtn = document.getElementById('add-edit-modal-close');
+        if(closeModalBtn) {
+          closeModalBtn.click();
         }
-      }, 4000);
+  
+        var showUpdateSuccess = document.getElementById('update-success-alert');
+        if(showUpdateSuccess) {
+          showUpdateSuccess.style.display = "block";
+        }
+        setTimeout(function() {
+          if(showUpdateSuccess) {
+            showUpdateSuccess.style.display = "none"
+          }
+        }, 4000);
+      })
+
     }
-    )}
+  }
   }

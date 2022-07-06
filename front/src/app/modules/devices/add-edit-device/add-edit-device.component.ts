@@ -29,59 +29,66 @@ export class AddEditDeviceComponent implements OnInit {
     this.vendor = this.device.vendor;
   }
   addDevice() {
-    var device = {
-      ipAddress: this.ipAddress,
-      hostname: this.hostname,
-      type: this.type,
-      os: this.os,
-      vendor: this.vendor,
-      status: 'Down'
-    }
-    this.service.addDevice(device).subscribe(res => {
-      var closeModalBtn = document.getElementById('add-edit-modal-close');
-      if(closeModalBtn) {
-        closeModalBtn.click();
+    if (this.hostname.length>0 && this.type.length>0 && this.os.length>0)
+    {
+      var device = {
+        ipAddress: this.ipAddress,
+        hostname: this.hostname,
+        type: this.type,
+        os: this.os,
+        vendor: this.vendor,
+        status: 'Down'
       }
-
-      var showAddSuccess = document.getElementById('add-success-alert');
-      if(showAddSuccess) {
-        showAddSuccess.style.display = "block";
-      }
-      setTimeout(function() {
-        if(showAddSuccess) {
-          showAddSuccess.style.display = "none"
+      this.service.addDevice(device).subscribe(res => {
+        var closeModalBtn = document.getElementById('add-edit-modal-close');
+        if(closeModalBtn) {
+          closeModalBtn.click();
         }
-      }, 4000);
+  
+        var showAddSuccess = document.getElementById('add-success-alert');
+        if(showAddSuccess) {
+          showAddSuccess.style.display = "block";
+        }
+        setTimeout(function() {
+          if(showAddSuccess) {
+            showAddSuccess.style.display = "none"
+          }
+        }, 4000);
+      })
     }
-    )}
+  }
   
 
 
   updateDevice() {
-   var device = {
-      ipAddress: this.ipAddress,
-      hostname: this.hostname,
-      type: this.type,
-      os: this.os,
-      vendor: this.vendor
-    }
-    var id:number = this.id;
-     this.service.updateDevice(id,device).subscribe(res => {
-      var closeModalBtn = document.getElementById('add-edit-modal-close');
-      if(closeModalBtn) {
-        closeModalBtn.click();
-      }
-
-      var showUpdateSuccess = document.getElementById('update-success-alert');
-      if(showUpdateSuccess) {
-        showUpdateSuccess.style.display = "block";
-      }
-      setTimeout(function() {
-        if(showUpdateSuccess) {
-          showUpdateSuccess.style.display = "none"
-        }
-      }, 4000);
-     })
+  if (this.hostname.length>0 && this.type.length>0 && this.os.length>0)
+  {
+    var device = {
+       ipAddress: this.ipAddress,
+       hostname: this.hostname,
+       type: this.type,
+       os: this.os,
+       vendor: this.vendor
+     }
+     var id:number = this.id;
+      this.service.updateDevice(id,device).subscribe(res => {
+       var closeModalBtn = document.getElementById('add-edit-modal-close');
+       if(closeModalBtn) {
+         closeModalBtn.click();
+       }
+ 
+       var showUpdateSuccess = document.getElementById('update-success-alert');
+       if(showUpdateSuccess) {
+         showUpdateSuccess.style.display = "block";
+       }
+       setTimeout(function() {
+         if(showUpdateSuccess) {
+           showUpdateSuccess.style.display = "none"
+         }
+       }, 4000);
+      })
+    
+  }
   }
 
   selectType(event: Event)

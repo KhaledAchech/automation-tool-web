@@ -124,32 +124,35 @@ public onFileChanged(event: Event) {
 
   update()
   {
-    //just for now then we will add form validation
-    var user ;
-    if (this.username && this.password)
-      user = {
-        username: this.username,
-        password: this.password,
-        firstname: this.firstname,
-        lastname: this.lastname
-      }
-    else
-      user = {
-          firstname: this.firstname,
-          lastname: this.lastname
-        }
-    var id:number = this.id;
+    if (this.username.length> 0 || this.password.length>0 
+      || this.firstname.length>0 || this.lastname.length>0)
+      {
+        var user = {
+          username: this.username.length>0 ? this.username : null,
+          password: this.password.length>0 ? this.password : null,
+          firstname:  this.firstname.length>0 ? this.firstname : null,
+          lastname:   this.lastname.length>0 ? this.lastname : null,
+        };
 
-    this.userService.updateProfile(id,user).subscribe(
-      (res)=>{
-        if (res)
-        {
-          this.authService.logOut();
-          window.location.reload();
-        }
-    },
-      (err)=>{
-        console.log(err);
-    })
+        var id:number = this.id;
+    
+        this.userService.updateProfile(id,user).subscribe(
+          (res)=>{
+            if (res)
+            {
+              this.authService.logOut();
+              window.location.reload();
+            }
+        },
+          (err)=>{
+            console.log(err);
+        })
+
+      }
+      else
+      {
+        alert("There is nothing to update.");
+      }
+    //just for now then we will add form validation
   }
 }
