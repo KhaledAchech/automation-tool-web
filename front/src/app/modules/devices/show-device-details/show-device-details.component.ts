@@ -350,11 +350,16 @@ highlightDiff()
     {
       alert("Nothing to compare to!");
       this.isChecked = false;
-      this.runningConfigArray.forEach(line => line.color = "white")
+      this.runningConfigArray.forEach(line => line.color = "white");
+      this.startUpConfigArray.forEach(line => line.color = "white");
     }
 
     if (!this.isChecked)
-     this.runningConfigArray.forEach(line => line.color = "white")
+    {
+      this.runningConfigArray.forEach(line => line.color = "white");
+      this.startUpConfigArray.forEach(line => line.color = "white");
+    }
+     
   
 }
 }

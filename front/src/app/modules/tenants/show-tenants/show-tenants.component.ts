@@ -11,7 +11,7 @@ import { TenantService } from 'src/app/services/network/tenant.service';
 export class ShowTenantsComponent implements OnInit {
 
   dataSource$!:  Observable<any[]>; 
-
+  searchTerm: any;
   constructor(
     private service:TenantService,
     private router:Router) { }

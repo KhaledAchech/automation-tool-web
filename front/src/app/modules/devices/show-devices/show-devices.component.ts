@@ -14,6 +14,7 @@ export class ShowDevicesComponent implements OnInit {
   
   dataSource$!:  Observable<any[]>; 
   protocols!: any[];
+  searchTerm:any;
 
   hideAssign: boolean = false;
 
@@ -144,5 +145,13 @@ export class ShowDevicesComponent implements OnInit {
        }
     })
     this.dataSource$ = this.service.getDevicesDetailed();
+  }
+
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    console.log(filterValue);
+    // this.dataSource.filter = filterValue.trim().toLowerCase();
+    // this.dataSource.subscribe((res:any)=> console.log(res));
   }
 }

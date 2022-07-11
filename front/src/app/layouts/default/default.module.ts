@@ -51,6 +51,7 @@ import { UsersComponent } from 'src/app/modules/users/users/users.component';
 import { ShowUsersComponent } from 'src/app/modules/users/show-users/show-users.component';
 import { AddEditUserComponent } from 'src/app/modules/users/add-edit-user/add-edit-user.component';
 import { UpdateProfileComponent } from 'src/app/modules/users/update-profile/update-profile.component';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 @NgModule({
   declarations: [
@@ -103,6 +104,7 @@ import { UpdateProfileComponent } from 'src/app/modules/users/update-profile/upd
     MatIconModule,
     MatChipsModule,
     NgbModule,
+    Ng2SearchPipeModule,
     MatProgressBarModule,
     MatListModule,
     MatExpansionModule,

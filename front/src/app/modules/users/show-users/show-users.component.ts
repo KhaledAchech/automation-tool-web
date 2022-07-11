@@ -11,7 +11,8 @@ import { UserService } from 'src/app/services/user/user.service';
 })
 export class ShowUsersComponent implements OnInit {
 
-  dataSource$!:  Observable<any[]>; 
+  dataSource$!:  Observable<any[]>;
+  searchTerm:any;
   role: string = '';
 
   modalTitle:string = '';

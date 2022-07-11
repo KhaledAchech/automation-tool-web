@@ -165,3 +165,21 @@ tbody {
     }
   }
 }
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+.active-purple-2 input[type="search"]:focus:not([readonly]) {
+  border-bottom: 1px solid #4d9ce6;
+  box-shadow: 0 1px 0 0 #4d9ce6;
+}
+
+.active-purple input[type="search"] {
+  border-top: 0cm;
+  border-left: 0cm;
+  border-right: 0cm;
+  border-bottom: 1px solid #969696;
+  box-shadow: 0 1px 0 0 #969696;
+}
