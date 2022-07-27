@@ -1,6 +1,7 @@
 package com.clevory.back.controller.script;
 
 import com.clevory.back.commun.managers.ScriptManager;
+import com.clevory.back.commun.wrapper.ConfigWrapper;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -13,6 +14,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +39,7 @@ public class DeviceConnectionAutomationController {
 
         if(this.scriptManager.runDevicesNeighbors())
         {
-            String outputDir = getDir();
+            String outputDir = getNeighborsDir();
 
             File folder = new File(outputDir);
             File[] listOfFiles = folder.listFiles();
@@ -83,7 +86,7 @@ public class DeviceConnectionAutomationController {
 
         if(this.scriptManager.runDeviceNeighbor(id))
         {
-            String outputDir = getDir();
+            String outputDir = getNeighborsDir();
 
             File folder = new File(outputDir);
             File[] listOfFiles = folder.listFiles();
@@ -119,7 +122,69 @@ public class DeviceConnectionAutomationController {
         return res;
     }
 
-    private String getDir()
+    @GetMapping("/config/startup/{id}")
+    public ConfigWrapper getDeviceStartupConfig(@PathVariable String id) throws IOException {
+
+        ConfigWrapper res = new ConfigWrapper();
+
+        if(this.scriptManager.runStartUpConfig(id))
+        {
+            String outputDir = getStartupConfigDir();
+
+            File folder = new File(outputDir);
+            File[] listOfFiles = folder.listFiles();
+
+            for (int i = 0; i < listOfFiles.length; i++)
+            {
+                if (listOfFiles[i].isFile())
+                {
+                    if (listOfFiles[i].getName().contains(id))
+                    {
+                        String clsPath =  new ClassPathResource(outputDir+"/" +listOfFiles[i].getName()).getPath();
+
+                        //Read the text file
+                        res.setConfigString(Files.readString(Path.of(clsPath)));
+                    }
+                }
+            }
+
+        }
+
+        return res;
+    }
+
+    @GetMapping("/config/running/{id}")
+    public ConfigWrapper getDeviceRunningConfig(@PathVariable String id) throws IOException {
+
+        ConfigWrapper res = new ConfigWrapper();
+
+        if(this.scriptManager.runRunningConfig(id))
+        {
+            String outputDir = getRunningConfigDir();
+
+            File folder = new File(outputDir);
+            File[] listOfFiles = folder.listFiles();
+
+            for (int i = 0; i < listOfFiles.length; i++)
+            {
+                if (listOfFiles[i].isFile())
+                {
+                    if (listOfFiles[i].getName().contains(id))
+                    {
+                        String clsPath =  new ClassPathResource(outputDir+"/" +listOfFiles[i].getName()).getPath();
+
+                        //Read the text file
+                        res.setConfigString(Files.readString(Path.of(clsPath)));
+                    }
+                }
+            }
+
+        }
+
+        return res;
+    }
+
+    private String getNeighborsDir()
     {
         LocalDate date = LocalDate.now();
 
@@ -140,6 +205,56 @@ public class DeviceConnectionAutomationController {
 
         String outputDir = "Outputs/show-cdp-neighbors-CMD_Output_" +
                day + "-" + month + "-" + year;
+
+        return outputDir;
+    }
+
+    private String getStartupConfigDir()
+    {
+        LocalDate date = LocalDate.now();
+
+        String day = "";
+        if (date.getDayOfMonth() < 10)
+            day = "0" + date.getDayOfMonth();
+        else
+            day = String.valueOf(date.getDayOfMonth());
+
+        String month = "";
+        if (date.getMonthValue() < 10)
+            month = "0" + date.getMonthValue() ;
+        else
+            month = String.valueOf(date.getMonthValue());
+
+        String year =String.valueOf(date.getYear());
+
+
+        String outputDir = "Outputs/show-startUp-config-CMD_Output_" +
+                day + "-" + month + "-" + year;
+
+        return outputDir;
+    }
+
+    private String getRunningConfigDir()
+    {
+        LocalDate date = LocalDate.now();
+
+        String day = "";
+        if (date.getDayOfMonth() < 10)
+            day = "0" + date.getDayOfMonth();
+        else
+            day = String.valueOf(date.getDayOfMonth());
+
+        String month = "";
+        if (date.getMonthValue() < 10)
+            month = "0" + date.getMonthValue() ;
+        else
+            month = String.valueOf(date.getMonthValue());
+
+        String year =String.valueOf(date.getYear());
+
+
+        String outputDir = "Outputs/show-running-config-CMD_Output_" +
+                day + "-" + month + "-" + year;
 
         return outputDir;
     }

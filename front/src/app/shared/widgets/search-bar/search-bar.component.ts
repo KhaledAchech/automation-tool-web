@@ -12,7 +12,9 @@ export class SearchBarComponent implements OnInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
+    console.log(filterValue);
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.dataSource.subscribe((res:any)=> console.log(res));
   }
   constructor() { }
 

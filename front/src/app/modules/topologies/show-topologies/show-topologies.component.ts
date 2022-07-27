@@ -11,6 +11,7 @@ import { TopologyService } from 'src/app/services/network/topology.service';
 export class ShowTopologiesComponent implements OnInit {
 
   dataSource$!:  Observable<any[]>;
+  searchTerm: any;
 
   constructor(private service:TopologyService,
               private router: Router) { }

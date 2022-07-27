@@ -1,7 +1,13 @@
-<form>
+<form class="was-validated">
     <div class="mb-3">
-        <label for="Name" class="form-label">Name</label>
-        <input type="text" class="form-control" [(ngModel)]="name" name="name">
+        <label for="Name" class="form-label">Name*</label>
+        <input type="text" class="form-control has-validation" [(ngModel)]="name" name="name" required>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+        <div class="invalid-feedback">
+            Please check your inputs.
+        </div>
     </div>
     <button (click)="addTenant()" *ngIf="tenant.id==0" class="btn btn-primary">
         Add

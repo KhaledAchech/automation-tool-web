@@ -9,6 +9,7 @@ import { InterfaceService } from 'src/app/services/network/interface.service';
 })
 export class ShowInterfacesComponent implements OnInit {
 
+  searchTerm: any;
   dataSource$!:  Observable<any[]>; 
 
   constructor(private service:InterfaceService) { }

@@ -2,7 +2,6 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -23,6 +22,8 @@ import { AccessDeniedComponent } from './modules/errors/access-denied/access-den
 import { NotFoundComponent } from './modules/errors/not-found/not-found.component';
 import { ServerErrorComponent } from './modules/errors/server-error/server-error.component';
 import { UserService } from './services/user/user.service';
+import { FaqComponent } from './modules/help/faq/faq.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -30,16 +31,18 @@ import { UserService } from './services/user/user.service';
     SigninComponent,
     AccessDeniedComponent,
     NotFoundComponent,
-    ServerErrorComponent
+    ServerErrorComponent,
+    FaqComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     DefaultModule,
-     HttpClientModule,
+    HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    MatIconModule
   ],
   providers: [
     TenantService,

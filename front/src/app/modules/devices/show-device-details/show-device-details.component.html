@@ -91,6 +91,7 @@
                 <!-- <div fxLayout="row">
                     <button type="button" class="btn btn-success" fxFlex="30">Establish Connection with all devices</button>
                 </div> -->
+                
                 <div *ngIf="loading" > 
                     <mat-progress-bar mode="indeterminate"></mat-progress-bar>
                 </div>
@@ -126,11 +127,60 @@
     </mat-card-content>
     <mat-divider inset></mat-divider>
     <br>
-    <mat-card-title>Device Configuration</mat-card-title>
-    <mat-card-content>
-        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="20" class="stat">
-            <input disabled value="configuration id" fxFlex="25">
-            <input disabled value="configuration date" fxFlex="75">
+    <mat-card-title *ngIf="!hideAssign" >Device Configuration</mat-card-title>
+    <mat-card-content *ngIf="!hideAssign">
+        <mat-divider inset></mat-divider>
+        <br>
+        <mat-checkbox color="primary" [(ngModel)]="isChecked" (change)="highlightDiff()">
+            Highlight Differences</mat-checkbox>
+        <div fxLayout="row" fxLayoutAlign="space-between center" fxLayoutGap="5" class="stat">
+            <!-- <input disabled value="configuration id" fxFlex="25">
+            <input disabled value="configuration date" fxFlex="75"> -->
+            
+            <mat-accordion fxFlex="50">
+                <mat-expansion-panel (opened)="fetchStartupConfig()" (closed)="panelOpenState = false" class="startup">
+                    <mat-expansion-panel-header class="startup">
+                        <mat-panel-title class="startup">
+                            Startup Configuration
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-card-content>
+                        <div class="startUpconfig" *ngIf ="startUpConfig" style="white-space: pre-line">
+                            <!-- {{startUpConfig}} -->
+                            <ul style="list-style: none;">
+                                <li *ngFor="let line of startUpConfigArray">
+                                    <span [style.color]="line.color">{{line.text}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="startUpconfig" *ngIf="!startUpConfig">
+                           No startup configuration assigned to this device yet!
+                        </div>
+                    </mat-card-content>
+                </mat-expansion-panel>
+            </mat-accordion>
+            <mat-accordion fxFlex="50">
+                <mat-expansion-panel (opened)="fetchRunningConfig()" (closed)="panelOpenState = false" class="running">
+                    <mat-expansion-panel-header class="running">
+                        <mat-panel-title class="running">
+                            Running Configuration
+                        </mat-panel-title>
+                </mat-expansion-panel-header>
+                    <mat-card-content>
+                        <div class="Runningconfig" *ngIf ="runningConfig" style="white-space: pre-line">
+                            <!-- {{runningConfig}} -->
+                            <ul style="list-style: none;">
+                                <li *ngFor="let line of runningConfigArray" >
+                                    <span [style.color]="line.color">{{line.text}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="Runningconfig" *ngIf="!runningConfig">
+                            No running configuration assigned to this device yet!
+                        </div>
+                    </mat-card-content>
+                </mat-expansion-panel>
+            </mat-accordion>
         </div>
     </mat-card-content>
     <mat-divider inset></mat-divider>

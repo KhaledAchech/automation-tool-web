@@ -10,6 +10,7 @@ import { ProtocolService } from 'src/app/services/network/protocol.service';
 export class ShowProtocolsComponent implements OnInit {
   
   dataSource$!:  Observable<any[]>; 
+  searchTerm: any;
 
   constructor(private service:ProtocolService) { }
 

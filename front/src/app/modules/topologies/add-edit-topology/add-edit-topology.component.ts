@@ -25,51 +25,58 @@ export class AddEditTopologyComponent implements OnInit {
   }
 
     addTopology() {
-    var topology = {
-      name:this.name,
-      type:this.type
-    }
-    this.service.addTopology(topology).subscribe(res => {
-      var closeModalBtn = document.getElementById('add-edit-modal-close');
-      if(closeModalBtn) {
-        closeModalBtn.click();
+    if(this.name.length > 0 && this.type.length > 0)
+    {
+      var topology = {
+        name:this.name,
+        type:this.type
       }
-
-      var showAddSuccess = document.getElementById('add-success-alert');
-      if(showAddSuccess) {
-        showAddSuccess.style.display = "block";
-      }
-      setTimeout(function() {
-        if(showAddSuccess) {
-          showAddSuccess.style.display = "none"
+      this.service.addTopology(topology).subscribe(res => {
+        var closeModalBtn = document.getElementById('add-edit-modal-close');
+        if(closeModalBtn) {
+          closeModalBtn.click();
         }
-      }, 4000);
-    })
+
+        var showAddSuccess = document.getElementById('add-success-alert');
+        if(showAddSuccess) {
+          showAddSuccess.style.display = "block";
+        }
+        setTimeout(function() {
+          if(showAddSuccess) {
+            showAddSuccess.style.display = "none"
+          }
+        }, 4000);
+      })
+    }
+    
      //this.router.navigateByUrl('/editor');
   }
 
   updateTopology() {
-    var topology = {
-      id: this.id,
-      name:this.name,
-      type:this.type
-    }
-    var id:number = this.id;
-    this.service.updateTopology(id,topology).subscribe(res => {
-      var closeModalBtn = document.getElementById('add-edit-modal-close');
-      if(closeModalBtn) {
-        closeModalBtn.click();
+    if(this.name.length > 0 && this.type.length > 0)
+    {
+      var topology = {
+        id: this.id,
+        name:this.name,
+        type:this.type
       }
-
-      var showUpdateSuccess = document.getElementById('update-success-alert');
-      if(showUpdateSuccess) {
-        showUpdateSuccess.style.display = "block";
-      }
-      setTimeout(function() {
-        if(showUpdateSuccess) {
-          showUpdateSuccess.style.display = "none"
+      var id:number = this.id;
+      this.service.updateTopology(id,topology).subscribe(res => {
+        var closeModalBtn = document.getElementById('add-edit-modal-close');
+        if(closeModalBtn) {
+          closeModalBtn.click();
         }
-      }, 4000);
-    })
+  
+        var showUpdateSuccess = document.getElementById('update-success-alert');
+        if(showUpdateSuccess) {
+          showUpdateSuccess.style.display = "block";
+        }
+        setTimeout(function() {
+          if(showUpdateSuccess) {
+            showUpdateSuccess.style.display = "none"
+          }
+        }, 4000);
+      })
+    }
   }
 }

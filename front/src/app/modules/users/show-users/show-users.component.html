@@ -18,7 +18,10 @@
         User successfully deleted!
     </div>
     <br>
-    <app-widget-search-bar [dataSource]="dataSource$"></app-widget-search-bar>
+    <!-- <app-widget-search-bar [dataSource]="dataSource$"></app-widget-search-bar> -->
+    <div class="md-form active-purple active-purple-2 mb-3">
+        <input class="form-control" type="search" [(ngModel)]="searchTerm" placeholder="Search ...">
+    </div>
     <div class="mat-elevation-z8">
         <table>
             <thead>
@@ -28,7 +31,7 @@
                 <th>Actions</th>
             </thead>
             <tbody>
-                <tr *ngFor="let item of dataSource$|async">
+                <tr *ngFor="let item of dataSource$|async | filter:searchTerm">
                     <td>{{item.id}}</td>
                     <td>{{item.email}}</td>
                     <td>{{item.role}}</td>

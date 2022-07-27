@@ -19,6 +19,9 @@ export class ShowDeviceDetailsComponent implements OnInit {
   activateDiscoveryComponent:boolean = false;
   activateAssignDeviceComponent:boolean = false;
 
+  color: string = 'white';
+
+  isChecked: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private service: DeviceService,
@@ -38,7 +41,11 @@ export class ShowDeviceDetailsComponent implements OnInit {
 
   neighbors$! : Observable<any[]>;
   newNeighbors$! : Observable<any[]>;
-
+  
+  startUpConfig! : string;
+  startUpConfigArray = [] as any[];
+  runningConfig! : string; 
+  runningConfigArray = [] as any[];
 
   devices:  any[] = [];
 
@@ -120,6 +127,58 @@ export class ShowDeviceDetailsComponent implements OnInit {
     if (!this.neighbors$)
     {
       this.neighbors$ = this.scriptService.getDeviceNeighbors(this.id);
+    }
+  }
+
+  //Load data from backend script result
+  fetchStartupConfig()
+  {
+    // Device Startup Configuration 
+    if (!this.startUpConfig)
+    {
+      this.scriptService.getStartupConfiguration(this.id).subscribe((res)=>{
+        if (res)
+        {
+          this.startUpConfig = res.configString;
+          // this.startUpConfigArray = this.startUpConfig.split('\n');
+          this.startUpConfig.split('\n').forEach(line =>{
+          if (line && line!=='\r')
+          {
+            var config = {
+                        "text": line,
+                        "color": "white"
+                      }
+            this.startUpConfigArray.push(config);
+          }
+        })
+        }
+      });
+    }
+  }
+
+  //Load data from backend script result
+  fetchRunningConfig()
+  {
+    // Device Startup Configuration
+   if (!this.runningConfig)
+    {
+      this.scriptService.getRunningConfiguration(this.id).subscribe((res)=>{
+        if (res)
+        {
+          this.runningConfig = res.configString;
+          // this.runningConfigArray = this.runningConfig.split('\n');
+          this.runningConfig.split('\n').forEach(line =>{
+          if (line && line!=='\r')
+          {
+            var config = {
+                        "text": line,
+                        "color": "white"
+                      }
+            this.runningConfigArray.push(config);
+          }
+        })
+        }
+      });
     }
   }
 
@@ -255,4 +314,52 @@ connect()
         })
     })
   }
+
+highlightDiff()
+{
+  if (this.isChecked)
+    if ( this.runningConfig && this.startUpConfig )
+    {
+      let startupTexts: string[] = [];
+      let runningTexts: string[] = [];
+
+      this.startUpConfigArray.forEach(line => {
+        if (line)
+          startupTexts.push(line.text);
+      });
+      this.runningConfigArray.forEach(line => {
+        if (line)
+          runningTexts.push(line.text);
+      })
+
+      this.runningConfigArray.forEach((line,i) => {
+        if (!startupTexts.includes(line.text))
+          this.runningConfigArray[i].color = "yellow";
+        else
+          this.runningConfigArray[i].color = "white";
+      })
+
+      this.startUpConfigArray.forEach((line,i) => {
+        if (!runningTexts.includes(line.text))
+          this.startUpConfigArray[i].color = "yellow";
+        else
+          this.startUpConfigArray[i].color = "white";
+      })
+    }
+    else
+    {
+      alert("Nothing to compare to!");
+      this.isChecked = false;
+      this.runningConfigArray.forEach(line => line.color = "white");
+      this.startUpConfigArray.forEach(line => line.color = "white");
+    }
+
+    if (!this.isChecked)
+    {
+      this.runningConfigArray.forEach(line => line.color = "white");
+      this.startUpConfigArray.forEach(line => line.color = "white");
+    }
+     
+  
+}
 }

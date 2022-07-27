@@ -1,15 +1,21 @@
-<form>
+<form class="was-validated">
         <div class="mb-3">
             <label for="IP Address" class="form-label">IP Address</label>
             <input type="text" class="form-control" [(ngModel)]="ipAddress" name="ipAddress">
         </div>
     <div class="mb-3">
-        <label for="Hostname" class="form-label">Hostname</label>
-        <input type="text" class="form-control" [(ngModel)]="hostname" name="hostname">
+        <label for="Hostname" class="form-label">Hostname*</label>
+        <input type="text"  class="form-control has-validation" [(ngModel)]="hostname" name="hostname" required>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+        <div class="invalid-feedback">
+            Please check your inputs.
+        </div>
     </div>
     <div class="mb-3">
-        <label for="Type" class="form-label">Type</label>
-        <select class="form-select" aria-label="Device Types" (change)="selectType($event)">
+        <label for="Type" class="form-label">Type*</label>
+        <select class="form-select" aria-label="Device Types" (change)="selectType($event)" required>
             <option selected [(ngModel)]="type" name="type">{{device.type}}</option>
             <option value="ROUTER">ROUTER</option>
             <option value="SWITCH">SWITCH</option>
@@ -19,10 +25,17 @@
             <option value="GATEWAY">GATEWAY</option>
             <option value="CLOUD">CLOUD</option>
         </select>
+        <div class="invalid-feedback">Invalid select value.</div>
     </div>
     <div class="mb-3">
-        <label for="os" class="form-label">OS</label>
-        <input type="text" class="form-control" [(ngModel)]="os" name="os">
+        <label for="os" class="form-label">OS*</label>
+        <input type="text" class="form-control has-validation" [(ngModel)]="os" name="os" required>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+        <div class="invalid-feedback">
+            Please check your inputs.
+        </div>
     </div>
     <div class="mb-3">
         <label for="Vendor" class="form-label">Vendor</label>
