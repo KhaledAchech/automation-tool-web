@@ -53,9 +53,12 @@ public class ProtocolServiceImpl implements ProtocolService {
     @Override
     public Protocol update(long id, Protocol protocol) {
         Protocol thisProtocol = this.getProtocolById(id);
-        thisProtocol.setName(protocol.getName());
-        thisProtocol.setType(protocol.getType());
-        thisProtocol.setConfiguration(protocol.getConfiguration());
+        if (protocol.getName()!=null)
+            thisProtocol.setName(protocol.getName());
+        if (protocol.getType()!=null)
+            thisProtocol.setType(protocol.getType());
+        if (protocol.getConfiguration()!=null)
+            thisProtocol.setConfiguration(protocol.getConfiguration());
 
         protocolRepository.save(thisProtocol);
         return thisProtocol;

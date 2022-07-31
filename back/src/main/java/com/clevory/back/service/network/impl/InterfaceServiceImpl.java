@@ -52,10 +52,14 @@ public class InterfaceServiceImpl implements InterfaceService {
     @Override
     public Interface update(long id, Interface anInterface) {
         Interface thisInterface = this.getInterfaceById(id);
-        thisInterface.setIpAddress(anInterface.getIpAddress());
-        thisInterface.setSpeed(anInterface.getSpeed());
-        thisInterface.setState(anInterface.getState());
-        thisInterface.setType(anInterface.getType());
+        if (anInterface.getIpAddress()!=null)
+            thisInterface.setIpAddress(anInterface.getIpAddress());
+        if (anInterface.getSpeed()!=null)
+            thisInterface.setSpeed(anInterface.getSpeed());
+        if (anInterface.getState()!=null)
+            thisInterface.setState(anInterface.getState());
+        if (anInterface.getType()!=null)
+            thisInterface.setType(anInterface.getType());
 
         interfaceRepository.save(thisInterface);
         return thisInterface;
