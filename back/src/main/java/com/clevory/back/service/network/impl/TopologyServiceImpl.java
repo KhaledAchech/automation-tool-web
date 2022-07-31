@@ -11,6 +11,7 @@ import com.clevory.back.model.network.Tenant;
 import com.clevory.back.model.network.Topology;
 import com.clevory.back.repository.editor.DiagramRepository;
 import com.clevory.back.repository.network.DeviceRepository;
+import com.clevory.back.repository.network.TenantRepository;
 import com.clevory.back.repository.network.TopologyRepository;
 import com.clevory.back.service.network.itf.TopologyService;
 import lombok.AllArgsConstructor;
@@ -25,6 +26,7 @@ public class TopologyServiceImpl implements TopologyService {
     private TopologyRepository topologyRepository;
     private DeviceRepository deviceRepository;
     private DiagramRepository diagramRepository;
+    private TenantRepository tenantRepository;
 
     private NetworkStructMapper networkStructMapper;
     private DiagramStructMapper diagramStructMapper;
@@ -33,6 +35,7 @@ public class TopologyServiceImpl implements TopologyService {
             TopologyRepository topologyRepository,
             DeviceRepository deviceRepository,
             DiagramRepository diagramRepository,
+            TenantRepository tenantRepository,
             NetworkStructMapper networkStructMapper,
             DiagramStructMapper diagramStructMapper
     )
@@ -40,6 +43,7 @@ public class TopologyServiceImpl implements TopologyService {
         this.topologyRepository = topologyRepository;
         this.deviceRepository = deviceRepository;
         this.diagramRepository = diagramRepository;
+        this.tenantRepository = tenantRepository;
         this.networkStructMapper = networkStructMapper;
         this.diagramStructMapper = diagramStructMapper;
     }
@@ -67,6 +71,8 @@ public class TopologyServiceImpl implements TopologyService {
 
     @Override
     public Topology save(Topology topology) {
+
+        topology.setTenant(tenantRepository.findById(1L).get());// => Useless line needs to be deleted after, used now just for validation purposes.
         topologyRepository.save(topology);
         Diagram diagram = new Diagram();
         diagram.setDiagramId(topology.getId());
